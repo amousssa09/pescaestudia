@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PescaEstudio - Aprende Pescando</title>
+    <style>
+        /* ========== ESTILOS GENERALES - Paleta Pixel Art Retro ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(to bottom, #87CEEB 0%, #4A90E2 100%);
+            color: #2C3E50;
+            overflow-x: hidden;
+            image-rendering: pixelated;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ========== BOTONES ========== */
+        .btn {
+            padding: 12px 24px;
+            border: 3px solid #2C3E50;
+            background: #3498DB;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 #2C3E50;
+            transition: all 0.1s;
+            text-transform: uppercase;
+            font-family: 'Courier New', monospace;
+        }
+
+        .btn:hover {
+            background: #2980B9;
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 #2C3E50;
+        }
+
+        .btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0 0 0 #2C3E50;
+        }
+
+        .btn-secondary {
+            background: #95A5A6;
+        }
+
+        .btn-secondary:hover {
+            background: #7F8C8D;
+        }
+
+        .btn-danger {
+            background: #E74C3C;
+        }
+
+        .btn-danger:hover {
+            background: #C0392B;
+        }
+
+        .btn-success {
+            background: #2ECC71;
+        }
+
+        .btn-success:hover {
+            background: #27AE60;
+        }
+
+        /* ========== PANTALLAS ========== */
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ========== MENÚ PRINCIPAL ========== */
+        #mainMenu {
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        .logo {
+            font-size: 64px;
+            text-shadow: 4px 4px 0 #2C3E50;
+            color: #FFD700;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .menu-buttons .btn {
+            width: 300px;
+            font-size: 20px;
+        }
+
+        /* ========== GESTIÓN DE TEMARIOS ========== */
+        .panel {
+            background: white;
+            border: 4px solid #2C3E50;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 6px 6px 0 #2C3E50;
+        }
+
+        .panel-header {
+            border-bottom: 3px solid #2C3E50;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .temario-item {
+            background: #ECF0F1;
+            border: 2px solid #2C3E50;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .temario-item:hover {
+            background: #BDC3C7;
+            transform: translateX(5px);
+        }
+
+        .temario-item.selected {
+            background: #3498DB;
+            color: white;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #2C3E50;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .form-group {
+            margin: 15px 0;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* ========== JUEGO DE PESCA ========== */
+        #gameScreen {
+            position: relative;
+        }
+
+        .game-header {
+            background: white;
+            border: 4px solid #2C3E50;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 4px 4px 0 #2C3E50;
+        }
+
+        .player-stats, .bot-stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat {
+            font-weight: bold;
+        }
+
+        .stat-value {
+            color: #3498DB;
+            font-size: 20px;
+        }
+
+        .ocean {
+            position: relative;
+            height: 400px;
+            background: linear-gradient(to bottom, #4A90E2 0%, #2C5F8D 100%);
+            border: 4px solid #2C3E50;
+            overflow: hidden;
+            box-shadow: 6px 6px 0 #2C3E50;
+        }
+
+        .wave {
+            position: absolute;
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.3);
+            animation: wave 3s infinite linear;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .fishing-rod {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 0;
+            background: #8B4513;
+            transition: height 0.5s;
+        }
+
+        .fishing-rod.casting {
+            height: 300px;
+        }
+
+        .bait {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: #FFD700;
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.5s;
+        }
+
+        .fishing-rod.casting .bait {
+            opacity: 1;
+        }
+
+        .fish-caught {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            font-size: 48px;
+            animation: catchFish 1s forwards;
+        }
+
+        @keyframes catchFish {
+            0% { transform: translateX(-50%) translateY(200px) scale(0); }
+            50% { transform: translateX(-50%) translateY(0) scale(1.5); }
+            100% { transform: translateX(-50%) translateY(0) scale(1); }
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .action-buttons .btn {
+            margin: 0 10px;
+        }
+
+        /* ========== MODAL DE PREGUNTAS ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border: 4px solid #2C3E50;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 8px 8px 0 #2C3E50;
+        }
+
+        .question-text {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .answer-option {
+            background: #ECF0F1;
+            border: 2px solid #2C3E50;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .answer-option:hover {
+            background: #BDC3C7;
+            transform: translateX(5px);
+        }
+
+        .answer-option.correct {
+            background: #2ECC71;
+            color: white;
+        }
+
+        .answer-option.incorrect {
+            background: #E74C3C;
+            color: white;
+        }
+
+        /* ========== PROGRESO Y LOGROS ========== */
+        .achievement {
+            background: #F39C12;
+            border: 3px solid #2C3E50;
+            padding: 10px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .achievement-icon {
+            font-size: 32px;
+        }
+
+        .achievement.unlocked {
+            background: #FFD700;
+        }
+
+        .achievement.locked {
+            opacity: 0.5;
+            background: #95A5A6;
+        }
+
+        /* ========== TABLA DE RESULTADOS ========== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 2px solid #2C3E50;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #3498DB;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: #ECF0F1;
+        }
+
+        tr:nth-child(odd) {
+            background: white;
+        }
+
+        tr.winner {
+            background: #FFD700 !important;
+            font-weight: bold;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .btn {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+
+            .menu-buttons .btn {
+                width: 250px;
+                font-size: 18px;
+            }
+
+            .game-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        /* ========== UTILIDADES ========== */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .flex {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .flex-center {
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* ========== ANIMACIÓN DE COFRE ========== */
+        @keyframes chestOpen {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(-10deg); }
+            50% { transform: scale(1.3) rotate(10deg); }
+            75% { transform: scale(1.2) rotate(-5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .chest-animation {
+            animation: chestOpen 0.5s ease-in-out;
+        }
+
+        /* ========== CONFIGURACIÓN DE PARTIDA ========== */
+        .checkbox-group {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 2px solid #2C3E50;
+            padding: 10px;
+            background: #ECF0F1;
+        }
+
+        .checkbox-item {
+            padding: 5px;
+            margin: 5px 0;
+        }
+
+        .checkbox-item input {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        /* ========== TIMER ========== */
+        .timer {
+            font-size: 32px;
+            font-weight: bold;
+            color: #E74C3C;
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border: 4px solid #2C3E50;
+            margin: 20px 0;
+            box-shadow: 4px 4px 0 #2C3E50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ========== PANTALLA: MENÚ PRINCIPAL ========== -->
+        <div id="mainMenu" class="screen active">
+            <div class="logo">🎣 PESCAESTUDIO 🎣</div>
+            <p style="font-size: 18px; margin-bottom: 20px;">¡Aprende pescando peces de conocimiento!</p>
+            <div class="menu-buttons">
+                <button class="btn" onclick="showScreen('configScreen')">🎮 JUGAR</button>
+                <button class="btn" onclick="showScreen('temasScreen')">📚 GESTIONAR TEMARIOS</button>
+                <button class="btn" onclick="showScreen('progressScreen')">📊 PROGRESO</button>
+                <button class="btn btn-secondary" onclick="showScreen('achievementsScreen')">🏆 LOGROS</button>
+            </div>
+        </div>
+
+        <!-- ========== PANTALLA: GESTIÓN DE TEMARIOS ========== -->
+        <div id="temasScreen" class="screen">
+            <div class="panel">
+                <div class="panel-header">📚 Gestión de Temarios</div>
+                
+                <div class="form-group">
+                    <button class="btn btn-success" onclick="crearTemario()">➕ Nuevo Temario</button>
+                    <button class="btn btn-secondary" onclick="exportarTemarios()">💾 Exportar Todo</button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📂 Importar</button>
+                    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importarTemarios(event)">
+                </div>
+
+                <div id="temariosList"></div>
+
+                <div id="temarioEditor" class="hidden">
+                    <h3>Editor de Temario</h3>
+                    <div class="form-group">
+                        <label>Nombre del Temario:</label>
+                        <input type="text" id="temarioNombre" placeholder="Ej: Historia Universal">
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-success" onclick="agregarPunto()">➕ Nuevo Punto</button>
+                    </div>
+
+                    <div id="puntosList"></div>
+
+                    <div id="puntoEditor" class="hidden">
+                        <h4>Editor de Punto</h4>
+                        <div class="form-group">
+                            <label>Nombre del Punto:</label>
+                            <input type="text" id="puntoNombre" placeholder="Ej: Edad Media">
+                        </div>
+
+                        <!-- NUEVO: Importar preguntas por JSON (archivo o portapapeles) -->
+                        <div class="form-group">
+                            <label>Importar preguntas (.json):</label>
+                            <input type="file" id="importPreguntasFile" accept=".json" onchange="importarPreguntasJSON(event)">
+                        </div>
+                        <div class="form-group">
+                            <label>Pegar preguntas JSON:</label>
+                            <textarea id="preguntasJSONPaste" rows="5" placeholder='Pega aquí el array JSON de preguntas'></textarea>
+                            <button class="btn btn-success mt-10" onclick="importarPreguntasDesdeTexto()">Importar desde texto</button>
+                        </div>
+
+                        <div id="preguntasList"></div>
+
+                        <div class="form-group flex mt-20">
+                            <button class="btn btn-success" onclick="guardarPunto()">💾 Guardar Punto</button>
+                            <button class="btn btn-secondary" onclick="cerrarPuntoEditor()">✖ Cancelar</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group flex mt-20">
+                        <button class="btn btn-success" onclick="guardarTemario()">💾 Guardar Temario</button>
+                        <button class="btn btn-danger" onclick="eliminarTemario()">🗑 Eliminar Temario</button>
+                        <button class="btn btn-secondary" onclick="cerrarTemarioEditor()">✖ Cancelar</button>
+                    </div>
+                </div>
+
+                <div class="form-group mt-20">
+                    <button class="btn" onclick="showScreen('mainMenu')">🏠 Volver al Menú</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== PANTALLA: CONFIGURACIÓN DE PARTIDA ========== -->
+        <div id="configScreen" class="screen">
+            <div class="panel">
+                <div class="panel-header">⚙️ Configuración de Partida</div>
+
+                <div class="form-group">
+                    <label>Seleccionar Temario:</label>
+                    <select id="temarioSelect" onchange="cargarPuntosTemario()">
+                        <option value="">-- Selecciona un temario --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Seleccionar Puntos a Estudiar:</label>
+                    <div class="checkbox-group" id="puntosCheckboxes">
+                        <p style="color: #7F8C8D;">Primero selecciona un temario</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="seleccionarTodosPuntos()">✓ Todos</button>
+                    <button class="btn btn-secondary" onclick="deseleccionarTodosPuntos()">✗ Ninguno</button>
+                </div>
+
+                <div class="form-group">
+                    <label>Modo de Ronda:</label>
+                    <select id="modoRonda" onchange="cambiarModoRonda()">
+                        <option value="tiempo">Por Tiempo</option>
+                        <option value="dinero">Por Objetivo de Dinero</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="tiempoConfig">
+                    <label>Duración (minutos):</label>
+                    <input type="number" id="duracionMinutos" min="1" max="60" value="5">
+                </div>
+
+                <div class="form-group hidden" id="dineroConfig">
+                    <label>Objetivo de Dinero:</label>
+                    <input type="number" id="objetivoDinero" min="100" max="10000" value="1000" step="100">
+                </div>
+
+                <div class="form-group">
+                    <label>Número de Bots:</label>
+                    <input type="number" id="numBots" min="0" max="5" value="3">
+                </div>
+
+                <div class="form-group">
+                    <label>Dificultad:</label>
+                    <select id="dificultad">
+                        <option value="facil">Fácil (más tiempo, bots lentos)</option>
+                        <option value="normal" selected>Normal</option>
+                        <option value="dificil">Difícil (menos tiempo, bots rápidos)</option>
+                    </select>
+                </div>
+
+                <div class="form-group flex">
+                    <button class="btn btn-success" onclick="iniciarJuego()">🎣 ¡Comenzar a Pescar!</button>
+                    <button class="btn btn-secondary" onclick="showScreen('mainMenu')">🏠 Volver</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== PANTALLA: JUEGO ========== -->
+        <div id="gameScreen" class="screen">
+            <div class="game-header">
+                <div class="player-stats">
+                    <div class="stat">💰 Dinero: <span class="stat-value" id="playerMoney">0</span></div>
+                    <div class="stat">🐟 Peces: <span class="stat-value" id="playerFish">0</span></div>
+                    <div class="stat">📦 Cofres: <span class="stat-value" id="playerChests">0</span></div>
+                </div>
+                <div class="timer" id="gameTimer">05:00</div>
+                <div class="bot-stats">
+                    <div class="stat">🤖 Bots: <span class="stat-value" id="botsCount">0</span></div>
+                </div>
+            </div>
+
+            <div class="ocean" id="ocean">
+                <div class="wave" style="top: 20px;"></div>
+                <div class="wave" style="top: 60px; animation-delay: 1s;"></div>
+                <div class="wave" style="top: 100px; animation-delay: 2s;"></div>
+                <div class="fishing-rod" id="fishingRod">
+                    <div class="bait"></div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-success" id="castButton" onclick="lanzarCana()">🎣 Lanzar Caña</button>
+                <button class="btn btn-secondary" onclick="pausarJuego()">⏸ Pausar</button>
+                <button class="btn btn-danger" onclick="abandonarJuego()">🏠 Abandonar</button>
+            </div>
+
+            <div class="panel mt-20">
+                <div class="panel-header">🏆 Clasificación</div>
+                <table id="rankingTable">
+                    <thead>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Jugador</th>
+                            <th>💰 Dinero</th>
+                            <th>🐟 Peces</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rankingBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ========== PANTALLA: RESULTADOS ========== -->
+        <div id="resultsScreen" class="screen">
+            <div class="panel">
+                <div class="panel-header text-center">🏆 ¡PARTIDA FINALIZADA! 🏆</div>
+
+                <div id="resultsSummary" class="text-center" style="font-size: 24px; margin: 30px 0;">
+                </div>
+
+                <table id="finalRanking">
+                    <thead>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Jugador</th>
+                            <th>💰 Dinero</th>
+                            <th>🐟 Peces</th>
+                            <th>📦 Cofres</th>
+                        </tr>
+                    </thead>
+                    <tbody id="finalRankingBody">
+                    </tbody>
+                </table>
+
+                <div class="form-group flex flex-center mt-20">
+                    <button class="btn btn-success" onclick="showScreen('configScreen')">🔄 Jugar de Nuevo</button>
+                    <button class="btn" onclick="showScreen('mainMenu')">🏠 Menú Principal</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== PANTALLA: PROGRESO ========== -->
+        <div id="progressScreen" class="screen">
+            <div class="panel">
+                <div class="panel-header">📊 Progreso del Jugador</div>
+
+                <div id="statsDisplay">
+                    <h3>Estadísticas Totales</h3>
+                    <table>
+                        <tr>
+                            <td><strong>💰 Dinero Total Acumulado:</strong></td>
+                            <td id="totalMoney">0</td>
+                        </tr>
+                        <tr>
+                            <td><strong>🐟 Peces Pescados:</strong></td>
+                            <td id="totalFish">0</td>
+                        </tr>
+                        <tr>
+                            <td><strong>📦 Cofres Abiertos:</strong></td>
+                            <td id="totalChests">0</td>
+                        </tr>
+                        <tr>
+                            <td><strong>✅ Preguntas Correctas:</strong></td>
+                            <td id="totalCorrect">0</td>
+                        </tr>
+                        <tr>
+                            <td><strong>❌ Preguntas Incorrectas:</strong></td>
+                            <td id="totalIncorrect">0</td>
+                        </tr>
+                        <tr>
+                            <td><strong>🎮 Partidas Jugadas:</strong></td>
+                            <td id="totalGames">0</td>
+                        </tr>
+                        <tr>
+                            <td><strong>🏆 Victorias:</strong></td>
+                            <td id="totalWins">0</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="form-group flex mt-20">
+                    <button class="btn btn-success" onclick="guardarProgreso()">💾 Guardar Progreso (Exportar JSON)</button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('loadProgressFile').click()">📂 Cargar Progreso (Importar JSON)</button>
+                    <input type="file" id="loadProgressFile" accept=".json" style="display:none" onchange="cargarProgreso(event)">
+                    <button class="btn btn-danger" onclick="resetearProgreso()">🗑 Resetear Progreso</button>
+                </div>
+
+                <div class="form-group mt-20">
+                    <button class="btn" onclick="showScreen('mainMenu')">🏠 Volver al Menú</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== PANTALLA: LOGROS ========== -->
+        <div id="achievementsScreen" class="screen">
+            <div class="panel">
+                <div class="panel-header">🏆 Logros</div>
+
+                <div id="achievementsList"></div>
+
+                <div class="form-group mt-20">
+                    <button class="btn" onclick="showScreen('mainMenu')">🏠 Volver al Menú</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== MODAL: PREGUNTA ========== -->
+        <div id="questionModal" class="modal">
+            <div class="modal-content">
+                <div class="question-text" id="questionText"></div>
+                <div id="answersContainer"></div>
+            </div>
+        </div>
+
+        <!-- ========== MODAL: COFRE ========== -->
+        <div id="chestModal" class="modal">
+            <div class="modal-content chest-animation">
+                <div class="text-center">
+                    <div style="font-size: 64px;">📦</div>
+                    <h2 id="chestTitle">¡Cofre Encontrado!</h2>
+                    <p id="chestMessage" style="font-size: 20px; margin: 20px 0;"></p>
+                    <button class="btn btn-success" onclick="cerrarCofre()">Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== DATOS GLOBALES DEL JUEGO ==========
+        let gameData = {
+            temarios: [],
+            playerStats: {
+                totalMoney: 0,
+                totalFish: 0,
+                totalChests: 0,
+                totalCorrect: 0,
+                totalIncorrect: 0,
+                totalGames: 0,
+                totalWins: 0
+            },
+            achievements: [
+                { id: 'first_fish', name: 'Primer Pez', desc: 'Pesca tu primer pez', icon: '🐟', unlocked: false },
+                { id: 'rare_fish', name: 'Pez Legendario', desc: 'Pesca un pez legendario', icon: '🐠', unlocked: false },
+                { id: 'chest_opener', name: 'Buscatesoros', desc: 'Abre tu primer cofre', icon: '📦', unlocked: false },
+                { id: 'hundred_questions', name: 'Estudioso', desc: 'Responde 100 preguntas correctas', icon: '📚', unlocked: false },
+                { id: 'first_win', name: 'Primera Victoria', desc: 'Gana tu primera partida', icon: '🏆', unlocked: false },
+                { id: 'millionaire', name: 'Millonario', desc: 'Acumula 1000 de dinero en total', icon: '💰', unlocked: false }
+            ]
+        };
+
+        // Estado actual del juego
+        let currentGame = {
+            active: false,
+            paused: false,
+            timer: null,
+            timeLeft: 0,
+            mode: 'tiempo',
+            targetMoney: 0,
+            player: { name: 'TÚ', money: 0, fish: 0, chests: 0 },
+            bots: [],
+            questions: [],
+            currentQuestion: null,
+            difficulty: 'normal'
+        };
+
+        // Editor temporal
+        let editor = {
+            temarioIndex: -1,
+            puntoIndex: -1,
+            preguntaIndex: -1
+        };
+
+        // ========== TIPOS DE PECES ==========
+        const fishTypes = [
+            { name: 'Pez Común', emoji: '🐟', rarity: 'común', minValue: 10, maxValue: 30, weight: 60 },
+            { name: 'Pez Raro', emoji: '🐠', rarity: 'raro', minValue: 40, maxValue: 80, weight: 25 },
+            { name: 'Pez Épico', emoji: '🦈', rarity: 'épico', minValue: 90, maxValue: 150, weight: 10 },
+            { name: 'Pez Legendario', emoji: '🐋', rarity: 'legendario', minValue: 200, maxValue: 500, weight: 5 }
+        ];
+
+        // ========== TIPOS DE COFRES ==========
+        const chestTypes = [
+            { type: 'bonus', name: 'Cofre de Bonus', effect: '+50 dinero', value: 50, emoji: '💰' },
+            { type: 'penalty', name: 'Cofre Maldito', effect: '-30 dinero', value: -30, emoji: '💀' },
+            { type: 'multiplier', name: 'Cofre Dorado', effect: 'x2 próximo pez', value: 2, emoji: '✨' },
+            { type: 'mega', name: 'Cofre Mega', effect: '+100 dinero', value: 100, emoji: '🎁' }
+        ];
+
+        // ========== INICIALIZACIÓN ==========
+        window.onload = function() {
+            cargarDatosLocalStorage();
+            cargarDatosEjemplo();
+            actualizarStatsDisplay();
+            actualizarLogros();
+        };
+
+        // ========== GESTIÓN DE PANTALLAS ==========
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+
+            // Actualizar datos según la pantalla
+            if (screenId === 'temasScreen') {
+                mostrarTemarios();
+            } else if (screenId === 'configScreen') {
+                cargarTemarioSelect();
+            } else if (screenId === 'progressScreen') {
+                actualizarStatsDisplay();
+            } else if (screenId === 'achievementsScreen') {
+                actualizarLogros();
+            }
+        }
+
+        // ========== GESTIÓN DE TEMARIOS ==========
+        function mostrarTemarios() {
+            const container = document.getElementById('temariosList');
+            if (gameData.temarios.length === 0) {
+                container.innerHTML = '<p style="color: #7F8C8D;">No hay temarios creados. ¡Crea tu primer temario!</p>';
+                return;
+            }
+
+            container.innerHTML = gameData.temarios.map((t, i) => `
+                <div class="temario-item" onclick="editarTemario(${i})">
+                    <strong>📖 ${t.nombre}</strong>
+                    <div style="font-size: 12px; color: #7F8C8D; margin-top: 5px;">
+                        ${t.puntos.length} punto(s) | ${t.puntos.reduce((sum, p) => sum + p.preguntas.length, 0)} pregunta(s)
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function crearTemario() {
+            editor.temarioIndex = -1;
+            editor.puntoIndex = -1;
+            editor.preguntaIndex = -1;
+            
+            document.getElementById('temarioNombre').value = '';
+            document.getElementById('puntosList').innerHTML = '';
+            document.getElementById('temarioEditor').classList.remove('hidden');
+            document.getElementById('puntoEditor').classList.add('hidden');
+            document.getElementById('preguntaEditor').classList.add('hidden');
+        }
+
+        function editarTemario(index) {
+            editor.temarioIndex = index;
+            const temario = gameData.temarios[index];
+            
+            document.getElementById('temarioNombre').value = temario.nombre;
+            mostrarPuntos();
+            document.getElementById('temarioEditor').classList.remove('hidden');
+            document.getElementById('puntoEditor').classList.add('hidden');
+            document.getElementById('preguntaEditor').classList.add('hidden');
+        }
+
+        function guardarTemario() {
+            const nombre = document.getElementById('temarioNombre').value.trim();
+            if (!nombre) {
+                alert('⚠️ Por favor ingresa un nombre para el temario');
+                return;
+            }
+
+            if (editor.temarioIndex === -1) {
+                gameData.temarios.push({ nombre, puntos: [] });
+            } else {
+                gameData.temarios[editor.temarioIndex].nombre = nombre;
+            }
+
+            guardarDatosLocalStorage();
+            cerrarTemarioEditor();
+            mostrarTemarios();
+            alert('✅ Temario guardado correctamente');
+        }
+
+        function eliminarTemario() {
+            if (editor.temarioIndex === -1) return;
+            if (!confirm('¿Estás seguro de eliminar este temario?')) return;
+
+            gameData.temarios.splice(editor.temarioIndex, 1);
+            guardarDatosLocalStorage();
+            cerrarTemarioEditor();
+            mostrarTemarios();
+            alert('🗑 Temario eliminado');
+        }
+
+        function cerrarTemarioEditor() {
+            document.getElementById('temarioEditor').classList.add('hidden');
+            editor.temarioIndex = -1;
+            editor.puntoIndex = -1;
+            editor.preguntaIndex = -1;
+        }
+
+        // ========== GESTIÓN DE PUNTOS ==========
+        function mostrarPuntos() {
+            if (editor.temarioIndex === -1) return;
+            const puntos = gameData.temarios[editor.temarioIndex].puntos;
+            const container = document.getElementById('puntosList');
+
+            if (puntos.length === 0) {
+                container.innerHTML = '<p style="color: #7F8C8D;">No hay puntos creados.</p>';
+                return;
+            }
+
+            container.innerHTML = puntos.map((p, i) => `
+                <div class="temario-item" onclick="editarPunto(${i})">
+                    <strong>📌 ${p.nombre}</strong>
+                    <div style="font-size: 12px; color: #7F8C8D; margin-top: 5px;">
+                        ${p.preguntas.length} pregunta(s)
+                    </div>
+                    <button class="btn btn-danger btn-sm" onclick="event.stopPropagation(); eliminarPunto(${i})" style="padding: 5px 10px; margin-top: 5px;">🗑 Eliminar</button>
+                </div>
+            `).join('');
+        }
+
+        function agregarPunto() {
+            editor.puntoIndex = -1;
+            editor.preguntaIndex = -1;
+            
+            document.getElementById('puntoNombre').value = '';
+            document.getElementById('preguntasList').innerHTML = '';
+            document.getElementById('puntoEditor').classList.remove('hidden');
+            document.getElementById('preguntaEditor').classList.add('hidden');
+        }
+
+        function editarPunto(index) {
+            editor.puntoIndex = index;
+            const punto = gameData.temarios[editor.temarioIndex].puntos[index];
+            
+            document.getElementById('puntoNombre').value = punto.nombre;
+            mostrarPreguntas();
+            document.getElementById('puntoEditor').classList.remove('hidden');
+            document.getElementById('preguntaEditor').classList.add('hidden');
+        }
+
+        function guardarPunto() {
+            const nombre = document.getElementById('puntoNombre').value.trim();
+            if (!nombre) {
+                alert('⚠️ Por favor ingresa un nombre para el punto');
+                return;
+            }
+
+            if (editor.puntoIndex === -1) {
+                gameData.temarios[editor.temarioIndex].puntos.push({ nombre, preguntas: [] });
+            } else {
+                gameData.temarios[editor.temarioIndex].puntos[editor.puntoIndex].nombre = nombre;
+            }
+
+            guardarDatosLocalStorage();
+            cerrarPuntoEditor();
+            mostrarPuntos();
+        }
+
+        function eliminarPunto(index) {
+            if (!confirm('¿Eliminar este punto?')) return;
+            gameData.temarios[editor.temarioIndex].puntos.splice(index, 1);
+            guardarDatosLocalStorage();
+            mostrarPuntos();
+        }
+
+        function cerrarPuntoEditor() {
+            document.getElementById('puntoEditor').classList.add('hidden');
+            editor.puntoIndex = -1;
+            editor.preguntaIndex = -1;
+        }
+
+        // ========== IMPORTAR PREGUNTAS POR JSON ==========
+        function importarPreguntasJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const preguntas = JSON.parse(e.target.result);
+                    if (!Array.isArray(preguntas)) throw new Error('Formato inválido');
+
+                    // Validar formato básico
+                    preguntas.forEach(p => {
+                        if (!p.tipo || !p.pregunta || typeof p.correcta === 'undefined') {
+                            throw new Error('Pregunta inválida');
+                        }
+                        if (p.tipo === 'multiple' && (!Array.isArray(p.opciones) || p.opciones.length !== 4)) {
+                            throw new Error('Pregunta múltiple inválida');
+                        }
+                    });
+
+                    // Añadir preguntas al punto actual
+                    if (editor.temarioIndex === -1 || editor.puntoIndex === -1) {
+                        alert('Selecciona un punto antes de importar preguntas');
+                        return;
+                    }
+                    gameData.temarios[editor.temarioIndex].puntos[editor.puntoIndex].preguntas.push(...preguntas);
+                    guardarDatosLocalStorage();
+                    mostrarPreguntas();
+                    alert('✅ Preguntas importadas correctamente');
+                } catch (err) {
+                    alert('❌ Error al importar: ' + err.message);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // ========== IMPORTAR PREGUNTAS POR JSON DESDE TEXTO ==========
+        function importarPreguntasDesdeTexto() {
+            const texto = document.getElementById('preguntasJSONPaste').value.trim();
+            if (!texto) {
+                alert('Pega el código JSON antes de importar');
+                return;
+            }
+            try {
+                const preguntas = JSON.parse(texto);
+                if (!Array.isArray(preguntas)) throw new Error('Formato inválido');
+
+                preguntas.forEach(p => {
+                    if (!p.tipo || !p.pregunta || typeof p.correcta === 'undefined') {
+                        throw new Error('Pregunta inválida');
+                    }
+                    if (p.tipo === 'multiple' && (!Array.isArray(p.opciones) || p.opciones.length !== 4)) {
+                        throw new Error('Pregunta múltiple inválida');
+                    }
+                });
+
+                if (editor.temarioIndex === -1 || editor.puntoIndex === -1) {
+                    alert('Selecciona un punto antes de importar preguntas');
+                    return;
+                }
+                gameData.temarios[editor.temarioIndex].puntos[editor.puntoIndex].preguntas.push(...preguntas);
+                guardarDatosLocalStorage();
+                mostrarPreguntas();
+                document.getElementById('preguntasJSONPaste').value = '';
+                alert('✅ Preguntas importadas correctamente');
+            } catch (err) {
+                alert('❌ Error al importar: ' + err.message);
+            }
+        }
+
+        // ========== GESTIÓN DE PREGUNTAS ==========
+
+        // Solo mostrar preguntas, eliminar edición/creación manual
+        function mostrarPreguntas() {
+            if (editor.temarioIndex === -1 || editor.puntoIndex === -1) return;
+            const preguntas = gameData.temarios[editor.temarioIndex].puntos[editor.puntoIndex].preguntas;
+            const container = document.getElementById('preguntasList');
+
+            if (preguntas.length === 0) {
+                container.innerHTML = '<p style="color: #7F8C8D;">No hay preguntas creadas.</p>';
+                return;
+            }
+
+            container.innerHTML = preguntas.map((p, i) => `
+                <div class="temario-item">
+                    <strong>${p.tipo === 'multiple' ? '📝' : '✔️'} ${p.pregunta.substring(0, 60)}${p.pregunta.length > 60 ? '...' : ''}</strong>
+                </div>
+            `).join('');
+        }
+
+        // ========== IMPORTAR/EXPORTAR TEMARIOS ==========
+        function exportarTemarios() {
+            const dataStr = JSON.stringify(gameData.temarios, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'pescaestudio_temarios.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            alert('✅ Temarios exportados correctamente');
+        }
+
+        function importarTemarios(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (!Array.isArray(imported)) {
+                        throw new Error('Formato inválido');
+                    }
+                    gameData.temarios = imported;
+                    guardarDatosLocalStorage();
+                    mostrarTemarios();
+                    alert('✅ Temarios importados correctamente');
+                } catch (err) {
+                    alert('❌ Error al importar: archivo no válido');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // ========== CONFIGURACIÓN DE PARTIDA ==========
+        function cargarTemarioSelect() {
+            const select = document.getElementById('temarioSelect');
+            select.innerHTML = '<option value="">-- Selecciona un temario --</option>';
+            gameData.temarios.forEach((t, i) => {
+                select.innerHTML += `<option value="${i}">${t.nombre}</option>`;
+            });
+        }
+
+        function cargarPuntosTemario() {
+            const temarioIndex = document.getElementById('temarioSelect').value;
+            const container = document.getElementById('puntosCheckboxes');
+            
+            if (!temarioIndex) {
+                container.innerHTML = '<p style="color: #7F8C8D;">Primero selecciona un temario</p>';
+                return;
+            }
+
+            const puntos = gameData.temarios[temarioIndex].puntos;
+            if (puntos.length === 0) {
+                container.innerHTML = '<p style="color: #7F8C8D;">Este temario no tiene puntos</p>';
+                return;
+            }
+
+            container.innerHTML = puntos.map((p, i) => `
+                <div class="checkbox-item">
+                    <input type="checkbox" id="punto_${i}" value="${i}" checked>
+                    <label for="punto_${i}">${p.nombre} (${p.preguntas.length} preguntas)</label>
+                </div>
+            `).join('');
+        }
+
+        function seleccionarTodosPuntos() {
+            document.querySelectorAll('#puntosCheckboxes input[type="checkbox"]').forEach(cb => cb.checked = true);
+        }
+
+        function deseleccionarTodosPuntos() {
+            document.querySelectorAll('#puntosCheckboxes input[type="checkbox"]').forEach(cb => cb.checked = false);
+        }
+
+        function cambiarModoRonda() {
+            const modo = document.getElementById('modoRonda').value;
+            if (modo === 'tiempo') {
+                document.getElementById('tiempoConfig').classList.remove('hidden');
+                document.getElementById('dineroConfig').classList.add('hidden');
+            } else {
+                document.getElementById('tiempoConfig').classList.add('hidden');
+                document.getElementById('dineroConfig').classList.remove('hidden');
+            }
+        }
+
+        // ========== INICIAR JUEGO ==========
+        function iniciarJuego() {
+            const temarioIndex = document.getElementById('temarioSelect').value;
+            if (!temarioIndex) {
+                alert('⚠️ Por favor selecciona un temario');
+                return;
+            }
+
+            const puntosSeleccionados = [];
+            document.querySelectorAll('#puntosCheckboxes input[type="checkbox"]:checked').forEach(cb => {
+                puntosSeleccionados.push(parseInt(cb.value));
+            });
+
+            if (puntosSeleccionados.length === 0) {
+                alert('⚠️ Por favor selecciona al menos un punto');
+                return;
+            }
+
+            // Recopilar preguntas
+            const preguntas = [];
+            puntosSeleccionados.forEach(pIndex => {
+                const punto = gameData.temarios[temarioIndex].puntos[pIndex];
+                preguntas.push(...punto.preguntas);
+            });
+
+            if (preguntas.length === 0) {
+                alert('⚠️ Los puntos seleccionados no tienen preguntas');
+                return;
+            }
+
+            // Configurar juego
+            currentGame.mode = document.getElementById('modoRonda').value;
+            currentGame.difficulty = document.getElementById('dificultad').value;
+            currentGame.questions = preguntas;
+            currentGame.player = { name: 'TÚ', money: 0, fish: 0, chests: 0 };
+            currentGame.active = true;
+            currentGame.paused = false;
+            currentGame.multiplier = 1;
+
+            // Configurar tiempo o dinero
+            if (currentGame.mode === 'tiempo') {
+                const minutos = parseInt(document.getElementById('duracionMinutos').value);
+                currentGame.timeLeft = minutos * 60;
+            } else {
+                currentGame.targetMoney = parseInt(document.getElementById('objetivoDinero').value);
+            }
+
+            // Crear bots
+            const numBots = parseInt(document.getElementById('numBots').value);
+            currentGame.bots = [];
+            const botNames = ['🤖 Bot Alpha', '🤖 Bot Beta', '🤖 Bot Gamma', '🤖 Bot Delta', '🤖 Bot Omega'];
+            for (let i = 0; i < numBots; i++) {
+                currentGame.bots.push({
+                    name: botNames[i],
+                    money: 0,
+                    fish: 0,
+                    chests: 0
+                });
+            }
+
+            showScreen('gameScreen');
+            actualizarUI();
+            iniciarTimer();
+            iniciarBotsAI();
+
+            document.getElementById('botsCount').textContent = numBots;
+        }
+
+        // ========== MECÁNICA DE PESCA ==========
+        function lanzarCana() {
+            if (!currentGame.active || currentGame.paused) return;
+
+            const rod = document.getElementById('fishingRod');
+            const button = document.getElementById('castButton');
+            
+            button.disabled = true;
+            rod.classList.add('casting');
+
+            setTimeout(() => {
+                // 70% pregunta, 30% cofre
+                if (Math.random() < 0.7) {
+                    mostrarPregunta();
+                } else {
+                    encontrarCofre();
+                }
+                
+                rod.classList.remove('casting');
+                button.disabled = false;
+            }, 1500);
+        }
+
+        function mostrarPregunta() {
+            if (currentGame.questions.length === 0) return;
+
+            const pregunta = currentGame.questions[Math.floor(Math.random() * currentGame.questions.length)];
+            currentGame.currentQuestion = pregunta;
+
+            document.getElementById('questionText').textContent = pregunta.pregunta;
+            const container = document.getElementById('answersContainer');
+
+            if (pregunta.tipo === 'multiple') {
+                container.innerHTML = pregunta.opciones.map((op, i) => `
+                    <div class="answer-option" onclick="responderPregunta(${i + 1})">
+                        ${i + 1}. ${op}
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = `
+                    <div class="answer-option" onclick="responderPregunta('true')">Verdadero</div>
+                    <div class="answer-option" onclick="responderPregunta('false')">Falso</div>
+                `;
+            }
+
+            document.getElementById('questionModal').classList.add('active');
+        }
+
+        function responderPregunta(respuesta) {
+            const pregunta = currentGame.currentQuestion;
+            const correcta = pregunta.correcta.toString() === respuesta.toString();
+
+            // Marcar respuesta
+            const opciones = document.querySelectorAll('.answer-option');
+            opciones.forEach((op, i) => {
+                op.style.pointerEvents = 'none';
+                if (pregunta.tipo === 'multiple') {
+                    if (i + 1 === pregunta.correcta) {
+                        op.classList.add('correct');
+                    } else if (i + 1 === respuesta) {
+                        op.classList.add('incorrect');
+                    }
+                } else {
+                    const isTrue = op.textContent.includes('Verdadero');
+                    if ((isTrue && pregunta.correcta === 'true') || (!isTrue && pregunta.correcta === 'false')) {
+                        op.classList.add('correct');
+                    } else if ((isTrue && respuesta === 'true') || (!isTrue && respuesta === 'false')) {
+                        op.classList.add('incorrect');
+                    }
+                }
+            });
+
+            setTimeout(() => {
+                document.getElementById('questionModal').classList.remove('active');
+                
+                if (correcta) {
+                    pescarPez();
+                    gameData.playerStats.totalCorrect++;
+                } else {
+                    gameData.playerStats.totalIncorrect++;
+                }
+                
+                guardarDatosLocalStorage();
+            }, 1500);
+        }
+
+        function pescarPez() {
+            // Seleccionar pez según rareza
+            const rand = Math.random() * 100;
+            let accumulated = 0;
+            let selectedFish = fishTypes[0];
+
+            for (let fish of fishTypes) {
+                accumulated += fish.weight;
+                if (rand <= accumulated) {
+                    selectedFish = fish;
+                    break;
+                }
+            }
+
+            const value = Math.floor(Math.random() * (selectedFish.maxValue - selectedFish.minValue + 1)) + selectedFish.minValue;
+            const finalValue = Math.floor(value * currentGame.multiplier);
+            
+            currentGame.player.money += finalValue;
+            currentGame.player.fish++;
+            gameData.playerStats.totalMoney += finalValue;
+            gameData.playerStats.totalFish++;
+
+            // Resetear multiplicador
+            currentGame.multiplier = 1;
+
+            // Animación
+            const ocean = document.getElementById('ocean');
+            const fishElement = document.createElement('div');
+            fishElement.className = 'fish-caught';
+            fishElement.innerHTML = `${selectedFish.emoji}<br><span style="font-size: 20px;">+${finalValue}💰</span>`;
+            ocean.appendChild(fishElement);
+
+            setTimeout(() => fishElement.remove(), 1000);
+
+            actualizarUI();
+            verificarLogros();
+            verificarFinJuego();
+        }
+
+        function encontrarCofre() {
+            const chest = chestTypes[Math.floor(Math.random() * chestTypes.length)];
+            
+            document.getElementById('chestTitle').textContent = `¡${chest.name}!`;
+            document.getElementById('chestMessage').textContent = chest.effect;
+            
+            currentGame.player.chests++;
+            gameData.playerStats.totalChests++;
+
+            switch (chest.type) {
+                case 'bonus':
+                case 'mega':
+                    currentGame.player.money += chest.value;
+                    gameData.playerStats.totalMoney += chest.value;
+                    break;
+                case 'penalty':
+                    currentGame.player.money = Math.max(0, currentGame.player.money + chest.value);
+                    break;
+                case 'multiplier':
+                    currentGame.multiplier = chest.value;
+                    document.getElementById('chestMessage').textContent += ' (siguiente pez)';
+                    break;
+            }
+
+            document.getElementById('chestModal').classList.add('active');
+            actualizarUI();
+            verificarLogros();
+        }
+
+        function cerrarCofre() {
+            document.getElementById('chestModal').classList.remove('active');
+            verificarFinJuego();
+        }
+
+        // ========== BOTS AI ==========
+        function iniciarBotsAI() {
+            if (currentGame.bots.length === 0) return;
+
+            const speed = currentGame.difficulty === 'facil' ? 8000 : currentGame.difficulty === 'normal' ? 5000 : 3000;
+
+            currentGame.botsInterval = setInterval(() => {
+                if (!currentGame.active || currentGame.paused) return;
+
+                currentGame.bots.forEach(bot => {
+                    // 80% éxito para bots
+                    if (Math.random() < 0.8) {
+                        const fish = fishTypes[Math.floor(Math.random() * fishTypes.length)];
+                        const value = Math.floor(Math.random() * (fish.maxValue - fish.minValue + 1)) + fish.minValue;
+                        bot.money += value;
+                        bot.fish++;
+                    }
+
+                    // 20% encuentran cofre
+                    if (Math.random() < 0.2) {
+                        const chest = chestTypes[Math.floor(Math.random() * chestTypes.length)];
+                        bot.chests++;
+                        if (chest.type === 'bonus' || chest.type === 'mega') {
+                            bot.money += chest.value;
+                        } else if (chest.type === 'penalty') {
+                            bot.money = Math.max(0, bot.money + chest.value);
+                        }
+                    }
+                });
+
+                actualizarRanking();
+            }, speed);
+        }
+
+        // ========== TIMER ==========
+        function iniciarTimer() {
+            if (currentGame.mode !== 'tiempo') return;
+
+            currentGame.timer = setInterval(() => {
+                if (currentGame.paused) return;
+
+                currentGame.timeLeft--;
+                actualizarTimerDisplay();
+
+                if (currentGame.timeLeft <= 0) {
+                    finalizarJuego();
+                }
+            }, 1000);
+        }
+
+        function actualizarTimerDisplay() {
+            if (currentGame.mode !== 'tiempo') {
+                document.getElementById('gameTimer').textContent = `💰 Objetivo: ${currentGame.targetMoney}`;
+                return;
+            }
+
+            const minutos = Math.floor(currentGame.timeLeft / 60);
+            const segundos = currentGame.timeLeft % 60;
+            document.getElementById('gameTimer').textContent = 
+                `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+        }
+
+        // ========== ACTUALIZAR UI ==========
+        function actualizarUI() {
+            document.getElementById('playerMoney').textContent = currentGame.player.money;
+            document.getElementById('playerFish').textContent = currentGame.player.fish;
+            document.getElementById('playerChests').textContent = currentGame.player.chests;
+            actualizarTimerDisplay();
+            actualizarRanking();
+        }
+
+        function actualizarRanking() {
+            const todos = [currentGame.player, ...currentGame.bots];
+            todos.sort((a, b) => b.money - a.money);
+
+            const tbody = document.getElementById('rankingBody');
+            tbody.innerHTML = todos.map((p, i) => `
+                <tr ${p.name === 'TÚ' ? 'class="winner"' : ''}>
+                    <td>${i + 1}º</td>
+                    <td>${p.name}</td>
+                    <td>${p.money}</td>
+                    <td>${p.fish}</td>
+                </tr>
+            `).join('');
+        }
+
+        // ========== CONTROL DE JUEGO ==========
+        function pausarJuego() {
+            currentGame.paused = !currentGame.paused;
+            const btn = event.target;
+            btn.textContent = currentGame.paused ? '▶️ Reanudar' : '⏸ Pausar';
+        }
+
+        function abandonarJuego() {
+            if (!confirm('¿Seguro que quieres abandonar la partida?')) return;
+            
+            currentGame.active = false;
+            clearInterval(currentGame.timer);
+            clearInterval(currentGame.botsInterval);
+            showScreen('mainMenu');
+        }
+
+        function verificarFinJuego() {
+            if (currentGame.mode === 'dinero' && currentGame.player.money >= currentGame.targetMoney) {
+                finalizarJuego();
+            }
+        }
+
+        function finalizarJuego() {
+            currentGame.active = false;
+            clearInterval(currentGame.timer);
+            clearInterval(currentGame.botsInterval);
+
+            // Calcular resultados
+            const todos = [currentGame.player, ...currentGame.bots];
+            todos.sort((a, b) => b.money - a.money);
+
+            const ganador = todos[0];
+            const posicionJugador = todos.findIndex(p => p.name === 'TÚ') + 1;
+
+            // Actualizar estadísticas
+            gameData.playerStats.totalGames++;
+            if (ganador.name === 'TÚ') {
+                gameData.playerStats.totalWins++;
+            }
+            guardarDatosLocalStorage();
+
+            // Mostrar resultados
+            const summary = document.getElementById('resultsSummary');
+            if (ganador.name === 'TÚ') {
+                summary.innerHTML = '🎉 ¡VICTORIA! 🎉<br>¡Has ganado la partida!';
+            } else {
+                summary.innerHTML = `📊 Posición Final: ${posicionJugador}º<br>${ganador.name} ha ganado`;
+            }
+
+            const tbody = document.getElementById('finalRankingBody');
+            tbody.innerHTML = todos.map((p, i) => `
+                <tr ${i === 0 ? 'class="winner"' : ''}>
+                    <td>${i + 1}º ${i === 0 ? '🏆' : ''}</td>
+                    <td>${p.name}</td>
+                    <td>${p.money}</td>
+                    <td>${p.fish}</td>
+                    <td>${p.chests}</td>
+                </tr>
+            `).join('');
+
+            verificarLogros();
+            showScreen('resultsScreen');
+        }
+
+        // ========== LOGROS ==========
+        function verificarLogros() {
+            const achievements = gameData.achievements;
+
+            // Primer pez
+            if (!achievements[0].unlocked && gameData.playerStats.totalFish >= 1) {
+                achievements[0].unlocked = true;
+                mostrarNotificacionLogro(achievements[0]);
+            }
+
+            // Pez legendario
+            if (!achievements[1].unlocked && currentGame.player.fish > 0) {
+                // Verificar si pescó legendario (simplificado)
+                if (Math.random() < 0.1) achievements[1].unlocked = true;
+            }
+
+            // Primer cofre
+            if (!achievements[2].unlocked && gameData.playerStats.totalChests >= 1) {
+                achievements[2].unlocked = true;
+                mostrarNotificacionLogro(achievements[2]);
+            }
+
+            // 100 preguntas correctas
+            if (!achievements[3].unlocked && gameData.playerStats.totalCorrect >= 100) {
+                achievements[3].unlocked = true;
+                mostrarNotificacionLogro(achievements[3]);
+            }
+
+            // Primera victoria
+            if (!achievements[4].unlocked && gameData.playerStats.totalWins >= 1) {
+                achievements[4].unlocked = true;
+                mostrarNotificacionLogro(achievements[4]);
+            }
+
+            // Millonario
+            if (!achievements[5].unlocked && gameData.playerStats.totalMoney >= 1000) {
+                achievements[5].unlocked = true;
+                mostrarNotificacionLogro(achievements[5]);
+            }
+
+            guardarDatosLocalStorage();
+        }
+
+        function mostrarNotificacionLogro(logro) {
+            // Crear notificación temporal
+            const notif = document.createElement('div');
+            notif.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #FFD700;
+                border: 4px solid #2C3E50;
+                padding: 20px;
+                box-shadow: 6px 6px 0 #2C3E50;
+                z-index: 9999;
+                animation: slideIn 0.5s;
+                max-width: 300px;
+            `;
+            notif.innerHTML = `
+                <div style="font-size: 32px; text-align: center;">${logro.icon}</div>
+                <div style="font-weight: bold; text-align: center; margin: 10px 0;">¡LOGRO DESBLOQUEADO!</div>
+                <div style="text-align: center;">${logro.name}</div>
+                <div style="font-size: 12px; color: #7F8C8D; text-align: center; margin-top: 5px;">${logro.desc}</div>
+            `;
+            document.body.appendChild(notif);
+
+            setTimeout(() => {
+                notif.style.animation = 'slideOut 0.5s';
+                setTimeout(() => notif.remove(), 500);
+            }, 3000);
+        }
+
+        function actualizarLogros() {
+            const container = document.getElementById('achievementsList');
+            container.innerHTML = gameData.achievements.map(a => `
+                <div class="achievement ${a.unlocked ? 'unlocked' : 'locked'}">
+                    <div class="achievement-icon">${a.icon}</div>
+                    <div>
+                        <strong>${a.name}</strong>
+                        <div style="font-size: 12px; color: #7F8C8D;">${a.desc}</div>
+                        ${a.unlocked ? '<div style="color: #27AE60; font-weight: bold; margin-top: 5px;">✓ DESBLOQUEADO</div>' : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ========== PROGRESO ==========
+        function actualizarStatsDisplay() {
+            const stats = gameData.playerStats;
+            document.getElementById('totalMoney').textContent = stats.totalMoney;
+            document.getElementById('totalFish').textContent = stats.totalFish;
+            document.getElementById('totalChests').textContent = stats.totalChests;
+            document.getElementById('totalCorrect').textContent = stats.totalCorrect;
+            document.getElementById('totalIncorrect').textContent = stats.totalIncorrect;
+            document.getElementById('totalGames').textContent = stats.totalGames;
+            document.getElementById('totalWins').textContent = stats.totalWins;
+        }
+
+        function guardarProgreso() {
+            const progressData = {
+                version: '1.0',
+                fecha: new Date().toISOString(),
+                temarios: gameData.temarios,
+                playerStats: gameData.playerStats,
+                achievements: gameData.achievements
+            };
+
+            const dataStr = JSON.stringify(progressData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'pescaestudio_progreso.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            alert('✅ Progreso guardado correctamente');
+        }
+
+        function cargarProgreso(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (!data.version || !data.temarios || !data.playerStats) {
+                        throw new Error('Formato inválido');
+                    }
+
+                    gameData.temarios = data.temarios || [];
+                    gameData.playerStats = data.playerStats || {
+                        totalMoney: 0,
+                        totalFish: 0,
+                        totalChests: 0,
+                        totalCorrect: 0,
+                        totalIncorrect: 0,
+                        totalGames: 0,
+                        totalWins: 0
+                    };
+                    gameData.achievements = data.achievements || gameData.achievements;
+
+                    guardarDatosLocalStorage();
+                    actualizarStatsDisplay();
+                    alert('✅ Progreso cargado correctamente');
+                } catch (err) {
+                    alert('❌ Error al cargar progreso: archivo no válido');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function resetearProgreso() {
+            if (!confirm('¿Seguro que quieres resetear todo tu progreso? Esta acción no se puede deshacer.')) return;
+
+            gameData.playerStats = {
+                totalMoney: 0,
+                totalFish: 0,
+                totalChests: 0,
+                totalCorrect: 0,
+                totalIncorrect: 0,
+                totalGames: 0,
+                totalWins: 0
+            };
+            gameData.achievements.forEach(a => a.unlocked = false);
+
+            guardarDatosLocalStorage();
+            actualizarStatsDisplay();
+            actualizarLogros();
+            alert('🗑 Progreso reseteado');
+        }
+
+        // ========== LOCALSTORAGE ==========
+        function guardarDatosLocalStorage() {
+            localStorage.setItem('pescaestudio_data', JSON.stringify(gameData));
+        }
+
+        function cargarDatosLocalStorage() {
+            const saved = localStorage.getItem('pescaestudio_data');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    gameData.temarios = data.temarios || [];
+                    gameData.playerStats = data.playerStats || gameData.playerStats;
+                    gameData.achievements = data.achievements || gameData.achievements;
+                } catch (err) {
+                    console.error('Error cargando datos:', err);
+                }
+            }
+        }
+
+        // ========== DATOS DE EJEMPLO ==========
+        function cargarDatosEjemplo() {
+            if (gameData.temarios.length > 0) return; // Ya hay datos
+
+            gameData.temarios = [
+                {
+                    nombre: 'Historia Universal',
+                    puntos: [
+                        {
+                            nombre: 'Edad Media',
+                            preguntas: [
+                                {
+                                    tipo: 'multiple',
+                                    pregunta: '¿En qué año cayó el Imperio Romano de Occidente?',
+                                    opciones: ['476 d.C.', '1453 d.C.', '330 d.C.', '800 d.C.'],
+                                    correcta: 1
+                                },
+                                {
+                                    tipo: 'boolean',
+                                    pregunta: 'La Edad Media comenzó con la caída de Roma',
+                                    correcta: 'true'
+                                },
+                                {
+                                    tipo: 'multiple',
+                                    pregunta: '¿Quién fue coronado emperador en el año 800?',
+                                    opciones: ['Napoleón', 'Carlomagno', 'Julio César', 'Constantino'],
+                                    correcta: 2
+                                },
+                                {
+                                    tipo: 'boolean',
+                                    pregunta: 'El feudalismo fue el sistema económico predominante en la Edad Media',
+                                    correcta: 'true'
+                                }
+                            ]
+                        },
+                        {
+                            nombre: 'Edad Moderna',
+                            preguntas: [
+                                {
+                                    tipo: 'multiple',
+                                    pregunta: '¿En qué año descubrió Colón América?',
+                                    opciones: ['1492', '1500', '1453', '1520'],
+                                    correcta: 1
+                                },
+                                {
+                                    tipo: 'boolean',
+                                    pregunta: 'La Revolución Francesa ocurrió en el siglo XVIII',
+                                    correcta: 'true'
+                                },
+                                {
+                                    tipo: 'multiple',
+                                    pregunta: '¿Quién inventó la imprenta moderna?',
+                                    opciones: ['Leonardo da Vinci', 'Johannes Gutenberg', 'Isaac Newton', 'Galileo Galilei'],
+                                    correcta: 2
+                                },
+                                {
+                                    tipo: 'boolean',
+                                    pregunta: 'El Renacimiento se originó en Italia',
+                                    correcta: 'true'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    nombre: 'Ciencias Naturales',
+                    puntos: [
+                        {
+                            nombre: 'Biología',
+                            preguntas: [
+                                {
+                                    tipo: 'multiple',
+                                    pregunta: '¿Cuál es la unidad básica de la vida?',
+                                    opciones: ['Átomo', 'Célula', 'Tejido', 'Órgano'],
+                                    correcta: 2
+                                },
+                                {
+                                    tipo: 'boolean',
+                                    pregunta: 'El ADN contiene la información genética',
+                                    correcta: 'true'
+                                },
+                                {
+                                    tipo: 'multiple',
+                                    pregunta: '¿Qué proceso realizan las plantas para producir su alimento?',
+                                    opciones: ['Respiración', 'Fotosíntesis', 'Fermentación', 'Digestión'],
+                                    correcta: 2
+                                },
+                                {
+                                    tipo: 'boolean',
+                                    pregunta: 'Los hongos son plantas',
+                                    correcta: 'false'
+                                }
+                            ]
+                        },
+                        {
+                            nombre: 'Física',
+                            preguntas: [
+                                {
+                                    tipo: 'multiple',
+                                    pregunta: '¿Cuál es la velocidad de la luz en el vacío?',
+                                    opciones: ['300,000 km/s', '150,000 km/s', '500,000 km/s', '100,000 km/s'],
+                                    correcta: 1
+                                },
+                                {
+                                    tipo: 'boolean',
+                                    pregunta: 'La gravedad es una fuerza de atracción',
+                                    correcta: 'true'
+                                },
+                                {
+                                    tipo: 'multiple',
+                                    pregunta: '¿Quién formuló la teoría de la relatividad?',
+                                    opciones: ['Isaac Newton', 'Albert Einstein', 'Galileo Galilei', 'Stephen Hawking'],
+                                    correcta: 2
+                                },
+                                {
+                                    tipo: 'boolean',
+                                    pregunta: 'El sonido viaja más rápido que la luz',
+                                    correcta: 'false'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ];
+
+            guardarDatosLocalStorage();
+        }
+
+        // ========== ANIMACIONES CSS ADICIONALES ==========
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(400px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html> 
