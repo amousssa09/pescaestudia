@@ -558,6 +558,9 @@
                         </div>
                     </div>
 
+                    <!-- Añadido: placeholder oculto para evitar errores por referencias a 'preguntaEditor' -->
+                    <div id="preguntaEditor" class="hidden" style="display:none;"></div>
+
                     <div class="form-group flex mt-20">
                         <button class="btn btn-success" onclick="guardarTemario()">💾 Guardar Temario</button>
                         <button class="btn btn-danger" onclick="eliminarTemario()">🗑 Eliminar Temario</button>
@@ -656,7 +659,7 @@
 
             <div class="action-buttons">
                 <button class="btn btn-success" id="castButton" onclick="lanzarCana()">🎣 Lanzar Caña</button>
-                <button class="btn btn-secondary" onclick="pausarJuego()">⏸ Pausar</button>
+                <button class="btn btn-secondary" onclick="pausarJuego(event)">⏸ Pausar</button>
                 <button class="btn btn-danger" onclick="abandonarJuego()">🏠 Abandonar</button>
             </div>
 
@@ -1304,16 +1307,46 @@
             document.getElementById('questionText').textContent = pregunta.pregunta;
             const container = document.getElementById('answersContainer');
 
+            // Normalizar y adjuntar meta de la respuesta correcta en el objeto de la pregunta
             if (pregunta.tipo === 'multiple') {
+                const opcionesCount = Array.isArray(pregunta.opciones) ? pregunta.opciones.length : 0;
+                let correctIndex = 0;
+
+                // Manejar distintos formatos: number 1-based, number 0-based, string '1' o '0'
+                if (typeof pregunta.correcta === 'number') {
+                    if (pregunta.correcta >= 1 && pregunta.correcta <= opcionesCount) {
+                        correctIndex = pregunta.correcta - 1; // 1-based -> 0-based
+                    } else if (pregunta.correcta >= 0 && pregunta.correcta < opcionesCount) {
+                        correctIndex = pregunta.correcta; // ya 0-based
+                    }
+                } else {
+                    const parsed = parseInt(pregunta.correcta, 10);
+                    if (!isNaN(parsed)) {
+                        if (parsed >= 1 && parsed <= opcionesCount) {
+                            correctIndex = parsed - 1;
+                        } else if (parsed >= 0 && parsed < opcionesCount) {
+                            correctIndex = parsed;
+                        }
+                    }
+                }
+
+                // Garantía: limitar al rango válido
+                if (correctIndex < 0 || correctIndex >= opcionesCount) correctIndex = 0;
+
+                currentGame.currentQuestion._correctIndex = correctIndex;
+
                 container.innerHTML = pregunta.opciones.map((op, i) => `
-                    <div class="answer-option" onclick="responderPregunta(${i + 1})">
+                    <div class="answer-option" data-index="${i}" onclick="responderPregunta(${i})">
                         ${i + 1}. ${op}
                     </div>
                 `).join('');
             } else {
+                const correctVal = String(pregunta.correcta).toLowerCase() === 'true' ? 'true' : 'false';
+                currentGame.currentQuestion._correctValue = correctVal;
+
                 container.innerHTML = `
-                    <div class="answer-option" onclick="responderPregunta('true')">Verdadero</div>
-                    <div class="answer-option" onclick="responderPregunta('false')">Falso</div>
+                    <div class="answer-option" data-value="true" onclick="responderPregunta('true')">Verdadero</div>
+                    <div class="answer-option" data-value="false" onclick="responderPregunta('false')">Falso</div>
                 `;
             }
 
@@ -1324,43 +1357,47 @@
             const pregunta = currentGame.currentQuestion;
             if (!pregunta) return;
 
-            // Normalizar para comparaciones robustas
-            const tipo = pregunta.tipo;
-            const correctaVal = tipo === 'multiple' ? Number(pregunta.correcta) : String(pregunta.correcta);
-            const respuestaVal = tipo === 'multiple' ? Number(respuesta) : String(respuesta);
-
-            const correcta = correctaVal.toString() === respuestaVal.toString();
-
-            // Marcar opciones: siempre resaltar la correcta y, si aplica, la incorrecta seleccionada
             const opciones = document.querySelectorAll('.answer-option');
-            opciones.forEach((op, i) => {
-                op.style.pointerEvents = 'none';
-                if (tipo === 'multiple') {
-                    if (i + 1 === correctaVal) {
+            let correcta = false;
+
+            if (pregunta.tipo === 'multiple') {
+                const selectedIndex = Number(respuesta);
+                const correctIndex = Number(pregunta._correctIndex);
+
+                opciones.forEach(op => {
+                    op.style.pointerEvents = 'none';
+                    const idx = parseInt(op.getAttribute('data-index'), 10);
+                    if (idx === correctIndex) {
                         op.classList.add('correct');
                     }
-                    if (i + 1 === respuestaVal && i + 1 !== correctaVal) {
+                    if (idx === selectedIndex && idx !== correctIndex) {
                         op.classList.add('incorrect');
                     }
-                } else {
-                    const isTrue = op.textContent.includes('Verdadero');
-                    if ((isTrue && correctaVal === 'true') || (!isTrue && correctaVal === 'false')) {
+                });
+
+                correcta = selectedIndex === correctIndex;
+            } else {
+                const selectedVal = String(respuesta).toLowerCase();
+                const correctVal = String(pregunta._correctValue).toLowerCase();
+
+                opciones.forEach(op => {
+                    op.style.pointerEvents = 'none';
+                    const val = op.getAttribute('data-value');
+                    if (val === correctVal) {
                         op.classList.add('correct');
                     }
-                    if ((isTrue && respuestaVal === 'true') || (!isTrue && respuestaVal === 'false')) {
-                        // marcar incorrecto sólo si no es la correcta
-                        if (!((isTrue && correctaVal === 'true') || (!isTrue && correctaVal === 'false'))) {
-                            op.classList.add('incorrect');
-                        }
+                    if (val === selectedVal && val !== correctVal) {
+                        op.classList.add('incorrect');
                     }
-                }
-            });
+                });
+
+                correcta = selectedVal === correctVal;
+            }
 
             setTimeout(() => {
                 document.getElementById('questionModal').classList.remove('active');
                 
                 if (correcta) {
-                    // Respuesta correcta: contabilizar y decidir entre pez o cofre
                     gameData.playerStats.totalCorrect++;
 
                     // 30% probabilidad de cofre al acertar, 70% pez
@@ -1537,10 +1574,13 @@
         }
 
         // ========== CONTROL DE JUEGO ==========
-        function pausarJuego() {
+        function pausarJuego(e) {
+            // e may be undefined if called programmatically; manejar con seguridad
             currentGame.paused = !currentGame.paused;
-            const btn = event.target;
-            btn.textContent = currentGame.paused ? '▶️ Reanudar' : '⏸ Pausar';
+            const btn = e && e.target ? e.target : document.querySelector('.action-buttons .btn.btn-secondary');
+            if (btn) {
+                btn.textContent = currentGame.paused ? '▶️ Reanudar' : '⏸ Pausar';
+            }
         }
 
         function abandonarJuego() {
