@@ -1287,12 +1287,8 @@
             rod.classList.add('casting');
 
             setTimeout(() => {
-                // 70% pregunta, 30% cofre
-                if (Math.random() < 0.7) {
-                    mostrarPregunta();
-                } else {
-                    encontrarCofre();
-                }
+                // Siempre mostrar pregunta al lanzar; cofres sólo al responder correctamente
+                mostrarPregunta();
                 
                 rod.classList.remove('casting');
                 button.disabled = false;
@@ -1326,24 +1322,36 @@
 
         function responderPregunta(respuesta) {
             const pregunta = currentGame.currentQuestion;
-            const correcta = pregunta.correcta.toString() === respuesta.toString();
+            if (!pregunta) return;
 
-            // Marcar respuesta
+            // Normalizar para comparaciones robustas
+            const tipo = pregunta.tipo;
+            const correctaVal = tipo === 'multiple' ? Number(pregunta.correcta) : String(pregunta.correcta);
+            const respuestaVal = tipo === 'multiple' ? Number(respuesta) : String(respuesta);
+
+            const correcta = correctaVal.toString() === respuestaVal.toString();
+
+            // Marcar opciones: siempre resaltar la correcta y, si aplica, la incorrecta seleccionada
             const opciones = document.querySelectorAll('.answer-option');
             opciones.forEach((op, i) => {
                 op.style.pointerEvents = 'none';
-                if (pregunta.tipo === 'multiple') {
-                    if (i + 1 === pregunta.correcta) {
+                if (tipo === 'multiple') {
+                    if (i + 1 === correctaVal) {
                         op.classList.add('correct');
-                    } else if (i + 1 === respuesta) {
+                    }
+                    if (i + 1 === respuestaVal && i + 1 !== correctaVal) {
                         op.classList.add('incorrect');
                     }
                 } else {
                     const isTrue = op.textContent.includes('Verdadero');
-                    if ((isTrue && pregunta.correcta === 'true') || (!isTrue && pregunta.correcta === 'false')) {
+                    if ((isTrue && correctaVal === 'true') || (!isTrue && correctaVal === 'false')) {
                         op.classList.add('correct');
-                    } else if ((isTrue && respuesta === 'true') || (!isTrue && respuesta === 'false')) {
-                        op.classList.add('incorrect');
+                    }
+                    if ((isTrue && respuestaVal === 'true') || (!isTrue && respuestaVal === 'false')) {
+                        // marcar incorrecto sólo si no es la correcta
+                        if (!((isTrue && correctaVal === 'true') || (!isTrue && correctaVal === 'false'))) {
+                            op.classList.add('incorrect');
+                        }
                     }
                 }
             });
@@ -1352,12 +1360,19 @@
                 document.getElementById('questionModal').classList.remove('active');
                 
                 if (correcta) {
-                    pescarPez();
+                    // Respuesta correcta: contabilizar y decidir entre pez o cofre
                     gameData.playerStats.totalCorrect++;
+
+                    // 30% probabilidad de cofre al acertar, 70% pez
+                    if (Math.random() < 0.3) {
+                        encontrarCofre();
+                    } else {
+                        pescarPez();
+                    }
                 } else {
                     gameData.playerStats.totalIncorrect++;
                 }
-                
+
                 guardarDatosLocalStorage();
             }, 1500);
         }
@@ -1921,6 +1936,4 @@
         document.head.appendChild(style);
     </script>
 </body>
-
-</html> 
-
+</html>
