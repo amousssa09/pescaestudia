@@ -1333,11 +1333,25 @@
                 // Garantía: limitar al rango válido
                 if (correctIndex < 0 || correctIndex >= opcionesCount) correctIndex = 0;
 
-                currentGame.currentQuestion._correctIndex = correctIndex;
+                // Crear un arreglo de índices y mezclarlo (Fisher-Yates)
+                const indices = [];
+                for (let i = 0; i < opcionesCount; i++) indices.push(i);
+                for (let i = indices.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [indices[i], indices[j]] = [indices[j], indices[i]];
+                }
 
-                container.innerHTML = pregunta.opciones.map((op, i) => `
-                    <div class="answer-option" data-index="${i}" onclick="responderPregunta(${i})">
-                        ${i + 1}. ${op}
+                // Calcular el índice mostrado donde está la opción correcta
+                const correctDisplayIndex = indices.indexOf(correctIndex);
+
+                // Guardar metadata en la pregunta actual
+                currentGame.currentQuestion._shuffledIndices = indices;
+                currentGame.currentQuestion._correctIndexDisplay = correctDisplayIndex;
+
+                // Renderizar en el orden mezclado: displayIndex -> originalIndex = indices[displayIndex]
+                container.innerHTML = indices.map((origIdx, displayIdx) => `
+                    <div class="answer-option" data-index="${displayIdx}" data-orig="${origIdx}" onclick="responderPregunta(${displayIdx})">
+                        ${displayIdx + 1}. ${pregunta.opciones[origIdx]}
                     </div>
                 `).join('');
             } else {
@@ -1361,21 +1375,21 @@
             let correcta = false;
 
             if (pregunta.tipo === 'multiple') {
-                const selectedIndex = Number(respuesta);
-                const correctIndex = Number(pregunta._correctIndex);
+                const selectedDisplayIndex = Number(respuesta);
+                const correctDisplayIndex = Number(pregunta._correctIndexDisplay);
 
                 opciones.forEach(op => {
                     op.style.pointerEvents = 'none';
-                    const idx = parseInt(op.getAttribute('data-index'), 10);
-                    if (idx === correctIndex) {
+                    const displayIdx = parseInt(op.getAttribute('data-index'), 10);
+                    if (displayIdx === correctDisplayIndex) {
                         op.classList.add('correct');
                     }
-                    if (idx === selectedIndex && idx !== correctIndex) {
+                    if (displayIdx === selectedDisplayIndex && displayIdx !== correctDisplayIndex) {
                         op.classList.add('incorrect');
                     }
                 });
 
-                correcta = selectedIndex === correctIndex;
+                correcta = selectedDisplayIndex === correctDisplayIndex;
             } else {
                 const selectedVal = String(respuesta).toLowerCase();
                 const correctVal = String(pregunta._correctValue).toLowerCase();
