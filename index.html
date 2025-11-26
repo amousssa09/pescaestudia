@@ -839,6 +839,8 @@
             puntoIndex: -1,
             preguntaIndex: -1
         };
+        // Añadido: orden de selección de puntos por el usuario (preserva el orden de clicks)
+        let selectedPointOrder = [];
 
         // ========== TIPOS DE PECES ==========
         const fishTypes = [
@@ -1169,35 +1171,59 @@
             });
         }
 
+        // ======================
+        // Modificar cargarPuntosTemario para registrar orden de selección
         function cargarPuntosTemario() {
             const temarioIndex = document.getElementById('temarioSelect').value;
             const container = document.getElementById('puntosCheckboxes');
             
             if (!temarioIndex) {
                 container.innerHTML = '<p style="color: #7F8C8D;">Primero selecciona un temario</p>';
+                selectedPointOrder = [];
                 return;
             }
 
             const puntos = gameData.temarios[temarioIndex].puntos;
             if (puntos.length === 0) {
                 container.innerHTML = '<p style="color: #7F8C8D;">Este temario no tiene puntos</p>';
+                selectedPointOrder = [];
                 return;
             }
 
+            // Renderizar checkboxes con onchange para mantener orden de selección
             container.innerHTML = puntos.map((p, i) => `
                 <div class="checkbox-item">
-                    <input type="checkbox" id="punto_${i}" value="${i}" checked>
+                    <input type="checkbox" id="punto_${i}" value="${i}" checked onchange="togglePuntoSelection(${i}, this)">
                     <label for="punto_${i}">${p.nombre} (${p.preguntas.length} preguntas)</label>
                 </div>
             `).join('');
+
+            // Inicializar orden por defecto respetando el orden visual si están todos marcados
+            selectedPointOrder = puntos.map((_, i) => i);
         }
 
+        // Nuevo: manejar selección/orden de puntos
+        function togglePuntoSelection(index, checkbox) {
+            if (checkbox.checked) {
+                // agregar al final si no está presente (respeta orden de selección)
+                if (!selectedPointOrder.includes(index)) selectedPointOrder.push(index);
+            } else {
+                // remover si se desmarca
+                selectedPointOrder = selectedPointOrder.filter(i => i !== index);
+            }
+        }
+
+        // Sincronizar al marcar/desmarcar todos
         function seleccionarTodosPuntos() {
             document.querySelectorAll('#puntosCheckboxes input[type="checkbox"]').forEach(cb => cb.checked = true);
+            // reconstruir orden en el orden visual actual
+            selectedPointOrder = Array.from(document.querySelectorAll('#puntosCheckboxes input[type="checkbox"]'))
+                .map(cb => parseInt(cb.value, 10));
         }
 
         function deseleccionarTodosPuntos() {
             document.querySelectorAll('#puntosCheckboxes input[type="checkbox"]').forEach(cb => cb.checked = false);
+            selectedPointOrder = [];
         }
 
         function cambiarModoRonda() {
@@ -1219,32 +1245,36 @@
                 return;
             }
 
-            const puntosSeleccionados = [];
-            document.querySelectorAll('#puntosCheckboxes input[type="checkbox"]:checked').forEach(cb => {
-                puntosSeleccionados.push(parseInt(cb.value));
-            });
+            // usar el orden de selección guardado; si vacío, deriva del DOM (por seguridad)
+            let puntosSeleccionados = selectedPointOrder && selectedPointOrder.length > 0
+                ? selectedPointOrder.slice()
+                : Array.from(document.querySelectorAll('#puntosCheckboxes input[type="checkbox"]:checked')).map(cb => parseInt(cb.value));
 
             if (puntosSeleccionados.length === 0) {
                 alert('⚠️ Por favor selecciona al menos un punto');
                 return;
             }
 
-            // Recopilar preguntas
-            const preguntas = [];
+            // Construir playlist lineal: para cada punto en el orden seleccionado, anexar sus preguntas en orden
+            const playlist = [];
             puntosSeleccionados.forEach(pIndex => {
                 const punto = gameData.temarios[temarioIndex].puntos[pIndex];
-                preguntas.push(...punto.preguntas);
+                if (Array.isArray(punto.preguntas)) {
+                    punto.preguntas.forEach(q => playlist.push(q));
+                }
             });
 
-            if (preguntas.length === 0) {
+            if (playlist.length === 0) {
                 alert('⚠️ Los puntos seleccionados no tienen preguntas');
                 return;
             }
 
-            // Configurar juego
+            // Configurar juego (mantener lo existente)
             currentGame.mode = document.getElementById('modoRonda').value;
             currentGame.difficulty = document.getElementById('dificultad').value;
-            currentGame.questions = preguntas;
+            // guardar playlist y puntero (en vez de preguntas aleatorias)
+            currentGame.playlist = playlist;
+            currentGame.playlistIndex = 0;
             currentGame.player = { name: 'TÚ', money: 0, fish: 0, chests: 0 };
             currentGame.active = true;
             currentGame.paused = false;
@@ -1298,29 +1328,41 @@
             }, 1500);
         }
 
+        // ======================
+        // MECÁNICA DE PREGUNTA: usar playlist secuencial en lugar de elección aleatoria
         function mostrarPregunta() {
-            if (currentGame.questions.length === 0) return;
+            // Preferir playlist (secuencial por puntos). fallback si no existe.
+            if (Array.isArray(currentGame.playlist) && currentGame.playlist.length > 0) {
+                const idx = typeof currentGame.playlistIndex === 'number' ? currentGame.playlistIndex : 0;
+                const pregunta = currentGame.playlist[idx];
+                // avanzar el puntero cíclicamente
+                currentGame.playlistIndex = (idx + 1) % currentGame.playlist.length;
+                currentGame.currentQuestion = pregunta;
+            } else {
+                // fallback al comportamiento anterior (aleatorio)
+                if (!currentGame.questions || currentGame.questions.length === 0) return;
+                const pregunta = currentGame.questions[Math.floor(Math.random() * currentGame.questions.length)];
+                currentGame.currentQuestion = pregunta;
+            }
 
-            const pregunta = currentGame.questions[Math.floor(Math.random() * currentGame.questions.length)];
-            currentGame.currentQuestion = pregunta;
-
-            document.getElementById('questionText').textContent = pregunta.pregunta;
+            // ahora renderizar la pregunta actual como ya hacía el código anterior
+            document.getElementById('questionText').textContent = currentGame.currentQuestion.pregunta;
             const container = document.getElementById('answersContainer');
 
             // Normalizar y adjuntar meta de la respuesta correcta en el objeto de la pregunta
-            if (pregunta.tipo === 'multiple') {
-                const opcionesCount = Array.isArray(pregunta.opciones) ? pregunta.opciones.length : 0;
+            if (currentGame.currentQuestion.tipo === 'multiple') {
+                const opcionesCount = Array.isArray(currentGame.currentQuestion.opciones) ? currentGame.currentQuestion.opciones.length : 0;
                 let correctIndex = 0;
 
                 // Manejar distintos formatos: number 1-based, number 0-based, string '1' o '0'
-                if (typeof pregunta.correcta === 'number') {
-                    if (pregunta.correcta >= 1 && pregunta.correcta <= opcionesCount) {
-                        correctIndex = pregunta.correcta - 1; // 1-based -> 0-based
-                    } else if (pregunta.correcta >= 0 && pregunta.correcta < opcionesCount) {
-                        correctIndex = pregunta.correcta; // ya 0-based
+                if (typeof currentGame.currentQuestion.correcta === 'number') {
+                    if (currentGame.currentQuestion.correcta >= 1 && currentGame.currentQuestion.correcta <= opcionesCount) {
+                        correctIndex = currentGame.currentQuestion.correcta - 1; // 1-based -> 0-based
+                    } else if (currentGame.currentQuestion.correcta >= 0 && currentGame.currentQuestion.correcta < opcionesCount) {
+                        correctIndex = currentGame.currentQuestion.correcta; // ya 0-based
                     }
                 } else {
-                    const parsed = parseInt(pregunta.correcta, 10);
+                    const parsed = parseInt(currentGame.currentQuestion.correcta, 10);
                     if (!isNaN(parsed)) {
                         if (parsed >= 1 && parsed <= opcionesCount) {
                             correctIndex = parsed - 1;
@@ -1351,11 +1393,11 @@
                 // Renderizar en el orden mezclado: displayIndex -> originalIndex = indices[displayIndex]
                 container.innerHTML = indices.map((origIdx, displayIdx) => `
                     <div class="answer-option" data-index="${displayIdx}" data-orig="${origIdx}" onclick="responderPregunta(${displayIdx})">
-                        ${displayIdx + 1}. ${pregunta.opciones[origIdx]}
+                        ${displayIdx + 1}. ${currentGame.currentQuestion.opciones[origIdx]}
                     </div>
                 `).join('');
             } else {
-                const correctVal = String(pregunta.correcta).toLowerCase() === 'true' ? 'true' : 'false';
+                const correctVal = String(currentGame.currentQuestion.correcta).toLowerCase() === 'true' ? 'true' : 'false';
                 currentGame.currentQuestion._correctValue = correctVal;
 
                 container.innerHTML = `
