@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PescaEstudio - Aprende Pescando</title>
+    <title>🎣 Pesca de Conocimiento</title>
     <style>
-        /* ========== ESTILOS GENERALES - Paleta Pixel Art Retro ========== */
+        /* ==================== ESTILOS GENERALES ==================== */
         * {
             margin: 0;
             padding: 0;
@@ -14,10 +14,23 @@
 
         body {
             font-family: 'Courier New', monospace;
-            background: linear-gradient(to bottom, #87CEEB 0%, #4A90E2 100%);
-            color: #2C3E50;
+            background: #2c3e50;
+            color: #ecf0f1;
             overflow-x: hidden;
             image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        /* Paleta de colores retro */
+        :root {
+            --color-primary: #3498db;
+            --color-success: #2ecc71;
+            --color-danger: #e74c3c;
+            --color-warning: #f39c12;
+            --color-dark: #1a252f;
+            --color-light: #ecf0f1;
+            --color-ocean: #006994;
+            --color-sand: #f4d03f;
         }
 
         .container {
@@ -26,57 +39,38 @@
             padding: 20px;
         }
 
-        /* ========== BOTONES ========== */
+        /* ==================== BOTONES RETRO ==================== */
         .btn {
             padding: 12px 24px;
-            border: 3px solid #2C3E50;
-            background: #3498DB;
+            border: 4px solid #000;
+            background: var(--color-primary);
             color: white;
+            font-family: 'Courier New', monospace;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 4px 4px 0 #2C3E50;
-            transition: all 0.1s;
             text-transform: uppercase;
-            font-family: 'Courier New', monospace;
+            box-shadow: 4px 4px 0 #000;
+            transition: all 0.1s;
+            margin: 5px;
         }
 
         .btn:hover {
-            background: #2980B9;
             transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0 #2C3E50;
+            box-shadow: 2px 2px 0 #000;
         }
 
         .btn:active {
             transform: translate(4px, 4px);
-            box-shadow: 0 0 0 #2C3E50;
+            box-shadow: 0 0 0 #000;
         }
 
-        .btn-secondary {
-            background: #95A5A6;
-        }
+        .btn-success { background: var(--color-success); }
+        .btn-danger { background: var(--color-danger); }
+        .btn-warning { background: var(--color-warning); }
+        .btn-small { padding: 8px 16px; font-size: 14px; }
 
-        .btn-secondary:hover {
-            background: #7F8C8D;
-        }
-
-        .btn-danger {
-            background: #E74C3C;
-        }
-
-        .btn-danger:hover {
-            background: #C0392B;
-        }
-
-        .btn-success {
-            background: #2ECC71;
-        }
-
-        .btn-success:hover {
-            background: #27AE60;
-        }
-
-        /* ========== PANTALLAS ========== */
+        /* ==================== PANTALLAS ==================== */
         .screen {
             display: none;
             animation: fadeIn 0.3s;
@@ -91,17 +85,17 @@
             to { opacity: 1; }
         }
 
-        /* ========== MENÚ PRINCIPAL ========== */
-        #mainMenu {
+        /* ==================== MENÚ PRINCIPAL ==================== */
+        .main-menu {
             text-align: center;
-            padding-top: 50px;
+            padding: 50px 20px;
         }
 
-        .logo {
-            font-size: 64px;
-            text-shadow: 4px 4px 0 #2C3E50;
-            color: #FFD700;
-            margin-bottom: 20px;
+        .game-title {
+            font-size: 48px;
+            color: var(--color-warning);
+            text-shadow: 4px 4px 0 #000;
+            margin-bottom: 10px;
             animation: bounce 2s infinite;
         }
 
@@ -111,123 +105,46 @@
         }
 
         .menu-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-            margin-top: 40px;
+            margin-top: 50px;
         }
 
-        .menu-buttons .btn {
-            width: 300px;
-            font-size: 20px;
-        }
-
-        /* ========== GESTIÓN DE TEMARIOS ========== */
-        .panel {
-            background: white;
-            border: 4px solid #2C3E50;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 6px 6px 0 #2C3E50;
-        }
-
-        .panel-header {
-            border-bottom: 3px solid #2C3E50;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .temario-item {
-            background: #ECF0F1;
-            border: 2px solid #2C3E50;
-            padding: 15px;
-            margin: 10px 0;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .temario-item:hover {
-            background: #BDC3C7;
-            transform: translateX(5px);
-        }
-
-        .temario-item.selected {
-            background: #3498DB;
-            color: white;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #2C3E50;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            margin: 5px 0;
-        }
-
-        .form-group {
-            margin: 15px 0;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        /* ========== JUEGO DE PESCA ========== */
-        #gameScreen {
+        /* ==================== ÁREA DE JUEGO ==================== */
+        .game-area {
+            background: linear-gradient(to bottom, #87ceeb 0%, #006994 100%);
+            min-height: 500px;
+            border: 8px solid #000;
             position: relative;
+            overflow: hidden;
         }
 
         .game-header {
-            background: white;
-            border: 4px solid #2C3E50;
+            background: rgba(0, 0, 0, 0.8);
             padding: 15px;
-            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 4px 4px 0 #2C3E50;
+            border-bottom: 4px solid #000;
         }
 
-        .player-stats, .bot-stats {
+        .player-stats {
             display: flex;
             gap: 20px;
-        }
-
-        .stat {
+            font-size: 18px;
             font-weight: bold;
         }
 
-        .stat-value {
-            color: #3498DB;
-            font-size: 20px;
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        .ocean {
-            position: relative;
-            height: 400px;
-            background: linear-gradient(to bottom, #4A90E2 0%, #2C5F8D 100%);
-            border: 4px solid #2C3E50;
-            overflow: hidden;
-            box-shadow: 6px 6px 0 #2C3E50;
-        }
-
-        .wave {
-            position: absolute;
+        /* Canvas de pesca */
+        .fishing-canvas {
             width: 100%;
-            height: 30px;
-            background: rgba(255, 255, 255, 0.3);
-            animation: wave 3s infinite linear;
-        }
-
-        @keyframes wave {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
+            height: 400px;
+            position: relative;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="%23006994" width="100" height="100"/><circle cx="20" cy="20" r="2" fill="%2387ceeb" opacity="0.3"/><circle cx="60" cy="50" r="3" fill="%2387ceeb" opacity="0.2"/><circle cx="80" cy="80" r="2" fill="%2387ceeb" opacity="0.3"/></svg>');
         }
 
         .fishing-rod {
@@ -235,58 +152,26 @@
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 10px;
-            height: 0;
-            background: #8B4513;
-            transition: height 0.5s;
+            width: 200px;
+            height: 200px;
+            transition: all 0.3s;
         }
 
-        .fishing-rod.casting {
-            height: 300px;
-        }
-
-        .bait {
+        .hook {
             position: absolute;
-            bottom: -20px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 20px;
-            height: 20px;
-            background: #FFD700;
-            border-radius: 50%;
-            opacity: 0;
-            transition: all 0.5s;
+            font-size: 40px;
+            animation: float 2s ease-in-out infinite;
         }
 
-        .fishing-rod.casting .bait {
-            opacity: 1;
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-20px); }
         }
 
-        .fish-caught {
-            position: absolute;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%) scale(0);
-            font-size: 48px;
-            animation: catchFish 1s forwards;
-        }
-
-        @keyframes catchFish {
-            0% { transform: translateX(-50%) translateY(200px) scale(0); }
-            50% { transform: translateX(-50%) translateY(0) scale(1.5); }
-            100% { transform: translateX(-50%) translateY(0) scale(1); }
-        }
-
-        .action-buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .action-buttons .btn {
-            margin: 0 10px;
-        }
-
-        /* ========== MODAL DE PREGUNTAS ========== */
+        /* ==================== MODAL DE PREGUNTAS ==================== */
         .modal {
             display: none;
             position: fixed;
@@ -294,7 +179,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -305,737 +190,960 @@
         }
 
         .modal-content {
-            background: white;
-            border: 4px solid #2C3E50;
+            background: var(--color-dark);
+            border: 8px solid #000;
             padding: 30px;
             max-width: 600px;
             width: 90%;
-            box-shadow: 8px 8px 0 #2C3E50;
+            box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);
         }
 
         .question-text {
             font-size: 20px;
             margin-bottom: 20px;
-            font-weight: bold;
+            color: var(--color-warning);
         }
 
-        .answer-option {
-            background: #ECF0F1;
-            border: 2px solid #2C3E50;
-            padding: 15px;
-            margin: 10px 0;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .answer-option:hover {
-            background: #BDC3C7;
-            transform: translateX(5px);
-        }
-
-        .answer-option.correct {
-            background: #2ECC71;
-            color: white;
-        }
-
-        .answer-option.incorrect {
-            background: #E74C3C;
-            color: white;
-        }
-
-        /* ========== PROGRESO Y LOGROS ========== */
-        .achievement {
-            background: #F39C12;
-            border: 3px solid #2C3E50;
-            padding: 10px;
-            margin: 10px 0;
+        .options {
             display: flex;
-            align-items: center;
-            gap: 15px;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .achievement-icon {
-            font-size: 32px;
-        }
-
-        .achievement.unlocked {
-            background: #FFD700;
-        }
-
-        .achievement.locked {
-            opacity: 0.5;
-            background: #95A5A6;
-        }
-
-        /* ========== TABLA DE RESULTADOS ========== */
-        table {
+        .option-btn {
             width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        th, td {
-            border: 2px solid #2C3E50;
-            padding: 12px;
             text-align: left;
-        }
-
-        th {
-            background: #3498DB;
+            padding: 15px;
+            background: #34495e;
+            border: 4px solid #000;
             color: white;
-            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
         }
 
-        tr:nth-child(even) {
-            background: #ECF0F1;
+        .option-btn:hover {
+            background: #2c3e50;
         }
 
-        tr:nth-child(odd) {
-            background: white;
+        .option-btn.correct {
+            background: var(--color-success);
+            animation: pulse 0.5s;
         }
 
-        tr.winner {
-            background: #FFD700 !important;
-            font-weight: bold;
+        .option-btn.incorrect {
+            background: var(--color-danger);
+            animation: shake 0.5s;
         }
 
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 768px) {
-            .btn {
-                font-size: 14px;
-                padding: 10px 20px;
-            }
-
-            .menu-buttons .btn {
-                width: 250px;
-                font-size: 18px;
-            }
-
-            .game-header {
-                flex-direction: column;
-                gap: 15px;
-            }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
-        /* ========== UTILIDADES ========== */
-        .text-center {
-            text-align: center;
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
 
-        .mt-20 {
+        /* ==================== PANEL DE BOTS ==================== */
+        .bots-panel {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            margin-top: 20px;
+            border: 4px solid #000;
+        }
+
+        .bot-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 5px;
+            border: 2px solid #000;
+        }
+
+        /* ==================== GESTIÓN DE TEMARIOS ==================== */
+        .temarios-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
             margin-top: 20px;
         }
 
-        .mb-20 {
-            margin-bottom: 20px;
+        .temario-card {
+            background: #34495e;
+            border: 4px solid #000;
+            padding: 20px;
+            box-shadow: 4px 4px 0 #000;
         }
 
-        .flex {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+        .temario-card h3 {
+            color: var(--color-warning);
+            margin-bottom: 10px;
         }
 
-        .flex-center {
-            justify-content: center;
-            align-items: center;
+        .form-group {
+            margin-bottom: 15px;
         }
 
-        .hidden {
-            display: none;
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
         }
 
-        /* ========== ANIMACIÓN DE COFRE ========== */
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 4px solid #000;
+            background: #2c3e50;
+            color: white;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* ==================== RESULTADO DE PESCA ==================== */
+        .catch-result {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .fish-sprite {
+            font-size: 80px;
+            animation: fishJump 0.5s;
+        }
+
+        @keyframes fishJump {
+            0% { transform: translateY(100px) scale(0); }
+            50% { transform: translateY(-20px) scale(1.2); }
+            100% { transform: translateY(0) scale(1); }
+        }
+
+        .chest-sprite {
+            font-size: 80px;
+            animation: chestOpen 0.5s;
+        }
+
         @keyframes chestOpen {
-            0% { transform: scale(1) rotate(0deg); }
-            25% { transform: scale(1.2) rotate(-10deg); }
-            50% { transform: scale(1.3) rotate(10deg); }
-            75% { transform: scale(1.2) rotate(-5deg); }
+            0% { transform: scale(0) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(10deg); }
             100% { transform: scale(1) rotate(0deg); }
         }
 
-        .chest-animation {
-            animation: chestOpen 0.5s ease-in-out;
+        /* ==================== CONFIGURACIÓN DE PARTIDA ==================== */
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
 
-        /* ========== CONFIGURACIÓN DE PARTIDA ========== */
-        .checkbox-group {
-            max-height: 200px;
-            overflow-y: auto;
-            border: 2px solid #2C3E50;
-            padding: 10px;
-            background: #ECF0F1;
-        }
-
-        .checkbox-item {
-            padding: 5px;
-            margin: 5px 0;
-        }
-
-        .checkbox-item input {
-            width: auto;
-            margin-right: 10px;
-        }
-
-        /* ========== TIMER ========== */
-        .timer {
-            font-size: 32px;
-            font-weight: bold;
-            color: #E74C3C;
-            text-align: center;
+        .config-section {
+            background: #34495e;
             padding: 20px;
-            background: white;
-            border: 4px solid #2C3E50;
-            margin: 20px 0;
-            box-shadow: 4px 4px 0 #2C3E50;
+            border: 4px solid #000;
+        }
+
+        /* ==================== ESTADÍSTICAS ==================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            background: #34495e;
+            padding: 20px;
+            border: 4px solid #000;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            color: var(--color-warning);
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* ==================== LOGROS ==================== */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .achievement {
+            background: #34495e;
+            border: 4px solid #000;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .achievement.unlocked {
+            background: var(--color-success);
+            animation: unlockAchievement 0.5s;
+        }
+
+        @keyframes unlockAchievement {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .achievement-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 32px;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .question-text {
+                font-size: 16px;
+            }
+        }
+
+        /* ==================== NOTIFICACIONES ==================== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: var(--color-success);
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            z-index: 2000;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(400px); }
+            to { transform: translateX(0); }
+        }
+
+        /* ==================== RANKING ==================== */
+        .ranking-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .ranking-table th,
+        .ranking-table td {
+            padding: 15px;
+            text-align: left;
+            border: 2px solid #000;
+        }
+
+        .ranking-table th {
+            background: var(--color-warning);
+            color: #000;
+        }
+
+        .ranking-table tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .ranking-table .rank-1 {
+            background: gold;
+            color: #000;
+        }
+
+        .ranking-table .rank-2 {
+            background: silver;
+            color: #000;
+        }
+
+        .ranking-table .rank-3 {
+            background: #cd7f32;
+            color: #000;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- ========== PANTALLA: MENÚ PRINCIPAL ========== -->
-        <div id="mainMenu" class="screen active">
-            <div class="logo">🎣 PESCAESTUDIO 🎣</div>
-            <p style="font-size: 18px; margin-bottom: 20px;">¡Aprende pescando peces de conocimiento!</p>
+    <!-- ==================== MENÚ PRINCIPAL ==================== -->
+    <div id="mainMenu" class="screen active">
+        <div class="container main-menu">
+            <h1 class="game-title">🎣 PESCA DE CONOCIMIENTO</h1>
+            <p style="font-size: 18px; margin-top: 20px;">¡Aprende pescando! Responde preguntas y captura peces valiosos</p>
             <div class="menu-buttons">
-                <button class="btn" onclick="showScreen('configScreen')">🎮 JUGAR</button>
-                <button class="btn" onclick="showScreen('temasScreen')">📚 GESTIONAR TEMARIOS</button>
-                <button class="btn" onclick="showScreen('progressScreen')">📊 PROGRESO</button>
-                <button class="btn btn-secondary" onclick="showScreen('achievementsScreen')">🏆 LOGROS</button>
+                <button class="btn btn-success" onclick="showScreen('gameConfig')">🎮 JUGAR</button>
+                <button class="btn btn-warning" onclick="showScreen('temariosScreen')">📚 GESTIONAR TEMARIOS</button>
+                <button class="btn btn-primary" onclick="showScreen('progressScreen')">📊 PROGRESO</button>
+                <button class="btn" onclick="showScreen('achievementsScreen')">🏆 LOGROS</button>
             </div>
         </div>
+    </div>
 
-        <!-- ========== PANTALLA: GESTIÓN DE TEMARIOS ========== -->
-        <div id="temasScreen" class="screen">
-            <div class="panel">
-                <div class="panel-header">📚 Gestión de Temarios</div>
-                
-                <div class="form-group">
-                    <button class="btn btn-success" onclick="crearTemario()">➕ Nuevo Temario</button>
-                    <button class="btn btn-secondary" onclick="exportarTemarios()">💾 Exportar Todo</button>
-                    <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📂 Importar</button>
-                    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importarTemarios(event)">
-                </div>
-
-                <div id="temariosList"></div>
-
-                <div id="temarioEditor" class="hidden">
-                    <h3>Editor de Temario</h3>
+    <!-- ==================== CONFIGURACIÓN DE PARTIDA ==================== -->
+    <div id="gameConfig" class="screen">
+        <div class="container">
+            <h2 style="text-align: center; color: var(--color-warning); margin-bottom: 30px;">⚙️ CONFIGURAR PARTIDA</h2>
+            
+            <div class="config-grid">
+                <div class="config-section">
+                    <h3>📚 Seleccionar Temario</h3>
                     <div class="form-group">
-                        <label>Nombre del Temario:</label>
-                        <input type="text" id="temarioNombre" placeholder="Ej: Historia Universal">
+                        <label>Temario:</label>
+                        <select id="selectedTemario" onchange="loadPuntosForGame()">
+                            <option value="">-- Seleccionar --</option>
+                        </select>
                     </div>
-
                     <div class="form-group">
-                        <button class="btn btn-success" onclick="agregarPunto()">➕ Nuevo Punto</button>
-                    </div>
-
-                    <div id="puntosList"></div>
-
-                    <div id="puntoEditor" class="hidden">
-                        <h4>Editor de Punto</h4>
-                        <div class="form-group">
-                            <label>Nombre del Punto:</label>
-                            <input type="text" id="puntoNombre" placeholder="Ej: Edad Media">
-                        </div>
-
-                        <!-- NUEVO: Importar preguntas por JSON (archivo o portapapeles) -->
-                        <div class="form-group">
-                            <label>Importar preguntas (.json):</label>
-                            <input type="file" id="importPreguntasFile" accept=".json" onchange="importarPreguntasJSON(event)">
-                        </div>
-                        <div class="form-group">
-                            <label>Pegar preguntas JSON:</label>
-                            <textarea id="preguntasJSONPaste" rows="5" placeholder='Pega aquí el array JSON de preguntas'></textarea>
-                            <button class="btn btn-success mt-10" onclick="importarPreguntasDesdeTexto()">Importar desde texto</button>
-                        </div>
-
-                        <div id="preguntasList"></div>
-
-                        <div class="form-group flex mt-20">
-                            <button class="btn btn-success" onclick="guardarPunto()">💾 Guardar Punto</button>
-                            <button class="btn btn-secondary" onclick="cerrarPuntoEditor()">✖ Cancelar</button>
-                        </div>
-                    </div>
-
-                    <!-- Añadido: placeholder oculto para evitar errores por referencias a 'preguntaEditor' -->
-                    <div id="preguntaEditor" class="hidden" style="display:none;"></div>
-
-                    <div class="form-group flex mt-20">
-                        <button class="btn btn-success" onclick="guardarTemario()">💾 Guardar Temario</button>
-                        <button class="btn btn-danger" onclick="eliminarTemario()">🗑 Eliminar Temario</button>
-                        <button class="btn btn-secondary" onclick="cerrarTemarioEditor()">✖ Cancelar</button>
+                        <label>Puntos a estudiar:</label>
+                        <div id="puntosCheckboxes" style="max-height: 200px; overflow-y: auto;"></div>
                     </div>
                 </div>
 
-                <div class="form-group mt-20">
-                    <button class="btn" onclick="showScreen('mainMenu')">🏠 Volver al Menú</button>
+                <div class="config-section">
+                    <h3>⏱️ Modo de Juego</h3>
+                    <div class="form-group">
+                        <label>Modo:</label>
+                        <select id="gameMode">
+                            <option value="time">Por Tiempo</option>
+                            <option value="money">Por Dinero</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="timeModeConfig">
+                        <label>Duración (minutos):</label>
+                        <input type="number" id="gameDuration" value="5" min="1" max="60">
+                    </div>
+                    <div class="form-group" id="moneyModeConfig" style="display: none;">
+                        <label>Objetivo de dinero:</label>
+                        <input type="number" id="moneyGoal" value="1000" min="100" step="100">
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h3>🤖 Configuración de Bots</h3>
+                    <div class="form-group">
+                        <label>Número de bots:</label>
+                        <input type="number" id="numBots" value="3" min="0" max="5">
+                    </div>
+                    <div class="form-group">
+                        <label>Dificultad:</label>
+                        <select id="difficulty">
+                            <option value="easy">Fácil</option>
+                            <option value="medium">Medio</option>
+                            <option value="hard">Difícil</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- ========== PANTALLA: CONFIGURACIÓN DE PARTIDA ========== -->
-        <div id="configScreen" class="screen">
-            <div class="panel">
-                <div class="panel-header">⚙️ Configuración de Partida</div>
-
-                <div class="form-group">
-                    <label>Seleccionar Temario:</label>
-                    <select id="temarioSelect" onchange="cargarPuntosTemario()">
-                        <option value="">-- Selecciona un temario --</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Seleccionar Puntos a Estudiar:</label>
-                    <div class="checkbox-group" id="puntosCheckboxes">
-                        <p style="color: #7F8C8D;">Primero selecciona un temario</p>
-                    </div>
-                    <button class="btn btn-secondary" onclick="seleccionarTodosPuntos()">✓ Todos</button>
-                    <button class="btn btn-secondary" onclick="deseleccionarTodosPuntos()">✗ Ninguno</button>
-                </div>
-
-                <div class="form-group">
-                    <label>Modo de Ronda:</label>
-                    <select id="modoRonda" onchange="cambiarModoRonda()">
-                        <option value="tiempo">Por Tiempo</option>
-                        <option value="dinero">Por Objetivo de Dinero</option>
-                    </select>
-                </div>
-
-                <div class="form-group" id="tiempoConfig">
-                    <label>Duración (minutos):</label>
-                    <input type="number" id="duracionMinutos" min="1" max="60" value="5">
-                </div>
-
-                <div class="form-group hidden" id="dineroConfig">
-                    <label>Objetivo de Dinero:</label>
-                    <input type="number" id="objetivoDinero" min="100" max="10000" value="1000" step="100">
-                </div>
-
-                <div class="form-group">
-                    <label>Número de Bots:</label>
-                    <input type="number" id="numBots" min="0" max="5" value="3">
-                </div>
-
-                <div class="form-group">
-                    <label>Dificultad:</label>
-                    <select id="dificultad">
-                        <option value="facil">Fácil (más tiempo, bots lentos)</option>
-                        <option value="normal" selected>Normal</option>
-                        <option value="dificil">Difícil (menos tiempo, bots rápidos)</option>
-                    </select>
-                </div>
-
-                <div class="form-group flex">
-                    <button class="btn btn-success" onclick="iniciarJuego()">🎣 ¡Comenzar a Pescar!</button>
-                    <button class="btn btn-secondary" onclick="showScreen('mainMenu')">🏠 Volver</button>
-                </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-success" onclick="startGame()">🎯 INICIAR PARTIDA</button>
+                <button class="btn btn-danger" onclick="showScreen('mainMenu')">❌ CANCELAR</button>
             </div>
         </div>
+    </div>
 
-        <!-- ========== PANTALLA: JUEGO ========== -->
-        <div id="gameScreen" class="screen">
+    <!-- ==================== PANTALLA DE JUEGO ==================== -->
+    <div id="gameScreen" class="screen">
+        <div class="game-area">
             <div class="game-header">
                 <div class="player-stats">
-                    <div class="stat">💰 Dinero: <span class="stat-value" id="playerMoney">0</span></div>
-                    <div class="stat">🐟 Peces: <span class="stat-value" id="playerFish">0</span></div>
-                    <div class="stat">📦 Cofres: <span class="stat-value" id="playerChests">0</span></div>
+                    <div class="stat-item">💰 <span id="playerMoney">0</span></div>
+                    <div class="stat-item">🐟 <span id="fishCaught">0</span></div>
+                    <div class="stat-item">⏱️ <span id="gameTimer">5:00</span></div>
                 </div>
-                <div class="timer" id="gameTimer">05:00</div>
-                <div class="bot-stats">
-                    <div class="stat">🤖 Bots: <span class="stat-value" id="botsCount">0</span></div>
-                </div>
+                <button class="btn btn-small btn-danger" onclick="endGame()">Terminar Partida</button>
             </div>
 
-            <div class="ocean" id="ocean">
-                <div class="wave" style="top: 20px;"></div>
-                <div class="wave" style="top: 60px; animation-delay: 1s;"></div>
-                <div class="wave" style="top: 100px; animation-delay: 2s;"></div>
-                <div class="fishing-rod" id="fishingRod">
-                    <div class="bait"></div>
+            <div class="fishing-canvas">
+                <div class="fishing-rod">🎣</div>
+                <div class="hook">🪝</div>
+                <div style="text-align: center; padding-top: 180px;">
+                    <button class="btn btn-warning" id="castButton" onclick="castHook()">🎣 LANZAR CAÑA</button>
                 </div>
             </div>
 
-            <div class="action-buttons">
-                <button class="btn btn-success" id="castButton" onclick="lanzarCana()">🎣 Lanzar Caña</button>
-                <button class="btn btn-secondary" onclick="pausarJuego(event)">⏸ Pausar</button>
-                <button class="btn btn-danger" onclick="abandonarJuego()">🏠 Abandonar</button>
-            </div>
-
-            <div class="panel mt-20">
-                <div class="panel-header">🏆 Clasificación</div>
-                <table id="rankingTable">
-                    <thead>
-                        <tr>
-                            <th>Posición</th>
-                            <th>Jugador</th>
-                            <th>💰 Dinero</th>
-                            <th>🐟 Peces</th>
-                        </tr>
-                    </thead>
-                    <tbody id="rankingBody">
-                    </tbody>
-                </table>
+            <div class="bots-panel">
+                <h3>🤖 Competidores:</h3>
+                <div id="botsContainer"></div>
             </div>
         </div>
+    </div>
 
-        <!-- ========== PANTALLA: RESULTADOS ========== -->
-        <div id="resultsScreen" class="screen">
-            <div class="panel">
-                <div class="panel-header text-center">🏆 ¡PARTIDA FINALIZADA! 🏆</div>
+    <!-- ==================== MODAL DE PREGUNTAS ==================== -->
+    <div id="questionModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color: var(--color-warning); margin-bottom: 20px;">❓ PREGUNTA</h3>
+            <p class="question-text" id="questionText"></p>
+            <div class="options" id="optionsContainer"></div>
+        </div>
+    </div>
 
-                <div id="resultsSummary" class="text-center" style="font-size: 24px; margin: 30px 0;">
+    <!-- ==================== MODAL DE RESULTADO ==================== -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content catch-result">
+            <div id="resultContent"></div>
+            <button class="btn btn-success" onclick="closeResultModal()" style="margin-top: 20px;">Continuar</button>
+        </div>
+    </div>
+
+    <!-- ==================== PANTALLA DE RESULTADOS FINALES ==================== -->
+    <div id="endGameScreen" class="screen">
+        <div class="container">
+            <h2 style="text-align: center; color: var(--color-warning); margin-bottom: 30px;">🏁 FIN DE LA PARTIDA</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="finalMoney">0</div>
+                    <div class="stat-label">💰 Dinero Total</div>
                 </div>
-
-                <table id="finalRanking">
-                    <thead>
-                        <tr>
-                            <th>Posición</th>
-                            <th>Jugador</th>
-                            <th>💰 Dinero</th>
-                            <th>🐟 Peces</th>
-                            <th>📦 Cofres</th>
-                        </tr>
-                    </thead>
-                    <tbody id="finalRankingBody">
-                    </tbody>
-                </table>
-
-                <div class="form-group flex flex-center mt-20">
-                    <button class="btn btn-success" onclick="showScreen('configScreen')">🔄 Jugar de Nuevo</button>
-                    <button class="btn" onclick="showScreen('mainMenu')">🏠 Menú Principal</button>
+                <div class="stat-box">
+                    <div class="stat-value" id="finalFish">0</div>
+                    <div class="stat-label">🐟 Peces Pescados</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="finalChests">0</div>
+                    <div class="stat-label">📦 Cofres Abiertos</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="finalCorrect">0</div>
+                    <div class="stat-label">✅ Respuestas Correctas</div>
                 </div>
             </div>
-        </div>
 
-        <!-- ========== PANTALLA: PROGRESO ========== -->
-        <div id="progressScreen" class="screen">
-            <div class="panel">
-                <div class="panel-header">📊 Progreso del Jugador</div>
+            <h3 style="margin-top: 30px; color: var(--color-warning);">🏆 RANKING FINAL</h3>
+            <table class="ranking-table" id="finalRanking"></table>
 
-                <div id="statsDisplay">
-                    <h3>Estadísticas Totales</h3>
-                    <table>
-                        <tr>
-                            <td><strong>💰 Dinero Total Acumulado:</strong></td>
-                            <td id="totalMoney">0</td>
-                        </tr>
-                        <tr>
-                            <td><strong>🐟 Peces Pescados:</strong></td>
-                            <td id="totalFish">0</td>
-                        </tr>
-                        <tr>
-                            <td><strong>📦 Cofres Abiertos:</strong></td>
-                            <td id="totalChests">0</td>
-                        </tr>
-                        <tr>
-                            <td><strong>✅ Preguntas Correctas:</strong></td>
-                            <td id="totalCorrect">0</td>
-                        </tr>
-                        <tr>
-                            <td><strong>❌ Preguntas Incorrectas:</strong></td>
-                            <td id="totalIncorrect">0</td>
-                        </tr>
-                        <tr>
-                            <td><strong>🎮 Partidas Jugadas:</strong></td>
-                            <td id="totalGames">0</td>
-                        </tr>
-                        <tr>
-                            <td><strong>🏆 Victorias:</strong></td>
-                            <td id="totalWins">0</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="form-group flex mt-20">
-                    <button class="btn btn-success" onclick="guardarProgreso()">💾 Guardar Progreso (Exportar JSON)</button>
-                    <button class="btn btn-secondary" onclick="document.getElementById('loadProgressFile').click()">📂 Cargar Progreso (Importar JSON)</button>
-                    <input type="file" id="loadProgressFile" accept=".json" style="display:none" onchange="cargarProgreso(event)">
-                    <button class="btn btn-danger" onclick="resetearProgreso()">🗑 Resetear Progreso</button>
-                </div>
-
-                <div class="form-group mt-20">
-                    <button class="btn" onclick="showScreen('mainMenu')">🏠 Volver al Menú</button>
-                </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-success" onclick="showScreen('mainMenu')">🏠 MENÚ PRINCIPAL</button>
+                <button class="btn btn-primary" onclick="showScreen('gameConfig')">🔄 NUEVA PARTIDA</button>
             </div>
         </div>
+    </div>
 
-        <!-- ========== PANTALLA: LOGROS ========== -->
-        <div id="achievementsScreen" class="screen">
-            <div class="panel">
-                <div class="panel-header">🏆 Logros</div>
+    <!-- ==================== GESTIÓN DE TEMARIOS ==================== -->
+    <div id="temariosScreen" class="screen">
+        <div class="container">
+            <h2 style="text-align: center; color: var(--color-warning); margin-bottom: 30px;">📚 GESTIÓN DE TEMARIOS</h2>
+            
+            <div style="text-align: center; margin-bottom: 20px;">
+                <button class="btn btn-success" onclick="showCreateTemarioForm()">➕ NUEVO TEMARIO</button>
+                <button class="btn btn-primary" onclick="exportTemarios()">💾 EXPORTAR TODO</button>
+                <button class="btn btn-warning" onclick="document.getElementById('importTemarios').click()">📁 IMPORTAR</button>
+                <input type="file" id="importTemarios" accept=".json" style="display: none;" onchange="importTemarios(event)">
+                <button class="btn btn-danger" onclick="showScreen('mainMenu')">🔙 VOLVER</button>
+            </div>
 
-                <div id="achievementsList"></div>
+            <div id="createTemarioForm" style="display: none; background: #34495e; padding: 20px; border: 4px solid #000; margin-bottom: 20px;">
+                <h3>Crear Nuevo Temario</h3>
+                <div class="form-group">
+                    <label>Nombre del Temario:</label>
+                    <input type="text" id="newTemarioName">
+                </div>
+                <div class="form-group">
+                    <label>Descripción:</label>
+                    <textarea id="newTemarioDesc"></textarea>
+                </div>
+                <button class="btn btn-success" onclick="createTemario()">Crear</button>
+                <button class="btn btn-danger" onclick="hideCreateTemarioForm()">Cancelar</button>
+            </div>
 
-                <div class="form-group mt-20">
-                    <button class="btn" onclick="showScreen('mainMenu')">🏠 Volver al Menú</button>
+            <div class="temarios-list" id="temariosList"></div>
+        </div>
+    </div>
+
+    <!-- ==================== EDITOR DE PUNTOS ==================== -->
+    <div id="puntosEditor" class="screen">
+        <div class="container">
+            <h2 style="text-align: center; color: var(--color-warning); margin-bottom: 30px;" id="editorTitle">EDITAR TEMARIO</h2>
+            
+            <div style="text-align: center; margin-bottom: 20px;">
+                <button class="btn btn-success" onclick="showCreatePuntoForm()">➕ NUEVO PUNTO</button>
+                <button class="btn btn-danger" onclick="backToTemarios()">🔙 VOLVER</button>
+            </div>
+
+            <div id="createPuntoForm" style="display: none; background: #34495e; padding: 20px; border: 4px solid #000; margin-bottom: 20px;">
+                <h3>Agregar Punto</h3>
+                <div class="form-group">
+                    <label>Nombre del Punto:</label>
+                    <input type="text" id="newPuntoName">
+                </div>
+                <button class="btn btn-success" onclick="createPunto()">Agregar</button>
+                <button class="btn btn-danger" onclick="hideCreatePuntoForm()">Cancelar</button>
+            </div>
+
+            <div id="puntosList"></div>
+        </div>
+    </div>
+
+    <!-- ==================== EDITOR DE PREGUNTAS ==================== -->
+    <div id="preguntasEditor" class="screen">
+        <div class="container">
+            <h2 style="text-align: center; color: var(--color-warning); margin-bottom: 30px;" id="preguntasTitle">EDITAR PREGUNTAS</h2>
+            
+            <div style="text-align: center; margin-bottom: 20px;">
+                <button class="btn btn-success" onclick="document.getElementById('importPreguntasJSON').click()">📁 IMPORTAR JSON</button>
+                <button class="btn btn-warning" onclick="showPasteQuestionsForm()">📋 PEGAR PREGUNTAS</button>
+                <button class="btn btn-primary" onclick="exportPreguntasJSON()">💾 EXPORTAR JSON</button>
+                <button class="btn" onclick="showJSONStructure()">❓ VER ESTRUCTURA JSON</button>
+                <button class="btn btn-danger" onclick="backToPuntos()">🔙 VOLVER</button>
+                <input type="file" id="importPreguntasJSON" accept=".json" style="display: none;" onchange="importPreguntasJSON(event)">
+            </div>
+
+            <!-- Formulario para pegar preguntas -->
+            <div id="pasteQuestionsForm" style="display: none; background: #34495e; padding: 20px; border: 4px solid #000; margin-bottom: 20px;">
+                <h3>📋 Pegar Preguntas</h3>
+                <p style="margin-bottom: 10px;">Pega tus preguntas en formato texto. Formatos aceptados:</p>
+                <p style="font-size: 12px; color: var(--color-warning); margin-bottom: 15px;">
+                    <strong>Opción múltiple:</strong> Pregunta? | A) opción1 | B) opción2 | C) opción3 | D) opción4 | Correcta: A<br>
+                    <strong>Verdadero/Falso:</strong> Pregunta? | V/F | Correcta: V (o F)
+                </p>
+                <div class="form-group">
+                    <label>Pega aquí tus preguntas (una por línea):</label>
+                    <textarea id="pasteQuestionsText" rows="15" placeholder="Ejemplo:
+¿Cuál es la capital de Francia? | A) Londres | B) París | C) Madrid | D) Roma | Correcta: B
+La Tierra es plana | V/F | Correcta: F"></textarea>
+                </div>
+                <button class="btn btn-success" onclick="processPastedQuestions()">✅ IMPORTAR PREGUNTAS</button>
+                <button class="btn btn-danger" onclick="hidePasteQuestionsForm()">❌ CANCELAR</button>
+            </div>
+
+            <!-- Modal para mostrar estructura JSON -->
+            <div id="jsonStructureModal" class="modal">
+                <div class="modal-content" style="max-width: 800px;">
+                    <h3 style="color: var(--color-warning); margin-bottom: 20px;">📖 ESTRUCTURA JSON PARA PREGUNTAS</h3>
+                    <div style="background: #1a252f; padding: 20px; border: 2px solid #000; overflow-x: auto;">
+                        <pre style="color: #2ecc71; font-size: 12px; margin: 0;">[
+  {
+    "tipo": "multiple",
+    "texto": "¿Cuál es la capital de Francia?",
+    "opciones": ["Londres", "París", "Madrid", "Roma"],
+    "correcta": 1
+  },
+  {
+    "tipo": "truefalse",
+    "texto": "La Tierra es plana",
+    "correcta": false
+  }
+]</pre>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 14px;">
+                        <strong>Notas:</strong><br>
+                        • <strong>tipo:</strong> "multiple" o "truefalse"<br>
+                        • <strong>opciones:</strong> Array con 4 opciones (solo para "multiple")<br>
+                        • <strong>correcta:</strong> Índice 0-3 para "multiple", true/false para "truefalse"
+                    </p>
+                    <button class="btn btn-success" onclick="closeJSONStructureModal()">ENTENDIDO</button>
                 </div>
             </div>
-        </div>
 
-        <!-- ========== MODAL: PREGUNTA ========== -->
-        <div id="questionModal" class="modal">
-            <div class="modal-content">
-                <div class="question-text" id="questionText"></div>
-                <div id="answersContainer"></div>
+            <div id="preguntasList"></div>
+        </div>
+    </div>
+
+    <!-- ==================== PROGRESO ==================== -->
+    <div id="progressScreen" class="screen">
+        <div class="container">
+            <h2 style="text-align: center; color: var(--color-warning); margin-bottom: 30px;">📊 PROGRESO DEL JUGADOR</h2>
+            
+            <div style="text-align: center; margin-bottom: 30px;">
+                <button class="btn btn-success" onclick="saveProgress()">💾 GUARDAR PROGRESO</button>
+                <button class="btn btn-primary" onclick="document.getElementById('loadProgressFile').click()">📁 CARGAR PROGRESO</button>
+                <input type="file" id="loadProgressFile" accept=".json" style="display: none;" onchange="loadProgress(event)">
+                <button class="btn btn-danger" onclick="showScreen('mainMenu')">🔙 VOLVER</button>
             </div>
-        </div>
 
-        <!-- ========== MODAL: COFRE ========== -->
-        <div id="chestModal" class="modal">
-            <div class="modal-content chest-animation">
-                <div class="text-center">
-                    <div style="font-size: 64px;">📦</div>
-                    <h2 id="chestTitle">¡Cofre Encontrado!</h2>
-                    <p id="chestMessage" style="font-size: 20px; margin: 20px 0;"></p>
-                    <button class="btn btn-success" onclick="cerrarCofre()">Continuar</button>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="totalMoney">0</div>
+                    <div class="stat-label">💰 Dinero Total</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="totalFish">0</div>
+                    <div class="stat-label">🐟 Peces Totales</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="totalChests">0</div>
+                    <div class="stat-label">📦 Cofres Totales</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="totalQuestions">0</div>
+                    <div class="stat-label">✅ Preguntas Correctas</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="totalGames">0</div>
+                    <div class="stat-label">🎮 Partidas Jugadas</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="winRate">0%</div>
+                    <div class="stat-label">🏆 Ratio de Victoria</div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- ==================== LOGROS ==================== -->
+    <div id="achievementsScreen" class="screen">
+        <div class="container">
+            <h2 style="text-align: center; color: var(--color-warning); margin-bottom: 30px;">🏆 LOGROS</h2>
+            
+            <div style="text-align: center; margin-bottom: 30px;">
+                <button class="btn btn-danger" onclick="showScreen('mainMenu')">🔙 VOLVER</button>
+            </div>
+
+            <div class="achievements-grid" id="achievementsList"></div>
+        </div>
+    </div>
+
     <script>
-        // ========== DATOS GLOBALES DEL JUEGO ==========
-        let gameData = {
-            temarios: [],
-            playerStats: {
-                totalMoney: 0,
-                totalFish: 0,
-                totalChests: 0,
-                totalCorrect: 0,
-                totalIncorrect: 0,
-                totalGames: 0,
-                totalWins: 0
-            },
-            achievements: [
-                { id: 'first_fish', name: 'Primer Pez', desc: 'Pesca tu primer pez', icon: '🐟', unlocked: false },
-                { id: 'rare_fish', name: 'Pez Legendario', desc: 'Pesca un pez legendario', icon: '🐠', unlocked: false },
-                { id: 'chest_opener', name: 'Buscatesoros', desc: 'Abre tu primer cofre', icon: '📦', unlocked: false },
-                { id: 'hundred_questions', name: 'Estudioso', desc: 'Responde 100 preguntas correctas', icon: '📚', unlocked: false },
-                { id: 'first_win', name: 'Primera Victoria', desc: 'Gana tu primera partida', icon: '🏆', unlocked: false },
-                { id: 'millionaire', name: 'Millonario', desc: 'Acumula 1000 de dinero en total', icon: '💰', unlocked: false }
-            ]
+        // ==================== DATOS GLOBALES ====================
+        
+        // Base de datos de temarios
+        let temarios = [];
+        
+        // Estadísticas del jugador
+        let playerStats = {
+            totalMoney: 0,
+            totalFish: 0,
+            totalChests: 0,
+            totalCorrectAnswers: 0,
+            totalGames: 0,
+            gamesWon: 0,
+            achievements: []
         };
 
-        // Estado actual del juego
+        // Definición de logros
+        const achievementDefinitions = [
+            { id: 'first_fish', name: 'Primer Pez', icon: '🐟', desc: 'Pesca tu primer pez', condition: () => playerStats.totalFish >= 1 },
+            { id: 'fish_10', name: 'Pescador Novato', icon: '🎣', desc: 'Pesca 10 peces', condition: () => playerStats.totalFish >= 10 },
+            { id: 'fish_50', name: 'Pescador Experto', icon: '🏆', desc: 'Pesca 50 peces', condition: () => playerStats.totalFish >= 50 },
+            { id: 'fish_100', name: 'Maestro Pescador', icon: '👑', desc: 'Pesca 100 peces', condition: () => playerStats.totalFish >= 100 },
+            { id: 'first_chest', name: 'Cazatesoros', icon: '📦', desc: 'Abre tu primer cofre', condition: () => playerStats.totalChests >= 1 },
+            { id: 'money_1000', name: 'Rico', icon: '💰', desc: 'Acumula 1000 de dinero', condition: () => playerStats.totalMoney >= 1000 },
+            { id: 'money_5000', name: 'Millonario', icon: '💎', desc: 'Acumula 5000 de dinero', condition: () => playerStats.totalMoney >= 5000 },
+            { id: 'correct_100', name: 'Erudito', icon: '📚', desc: 'Responde 100 preguntas correctas', condition: () => playerStats.totalCorrectAnswers >= 100 },
+            { id: 'first_win', name: 'Primera Victoria', icon: '🥇', desc: 'Gana tu primera partida', condition: () => playerStats.gamesWon >= 1 },
+            { id: 'win_10', name: 'Imparable', icon: '⭐', desc: 'Gana 10 partidas', condition: () => playerStats.gamesWon >= 10 }
+        ];
+
+        // Variables de juego activo
         let currentGame = {
             active: false,
-            paused: false,
-            timer: null,
-            timeLeft: 0,
-            mode: 'tiempo',
-            targetMoney: 0,
-            player: { name: 'TÚ', money: 0, fish: 0, chests: 0 },
-            bots: [],
+            temario: null,
+            selectedPuntos: [],
             questions: [],
-            currentQuestion: null,
-            difficulty: 'normal'
+            mode: 'time',
+            duration: 300, // segundos
+            moneyGoal: 1000,
+            timer: null,
+            timeRemaining: 0,
+            player: {
+                money: 0,
+                fishCaught: 0,
+                chestsOpened: 0,
+                correctAnswers: 0
+            },
+            bots: [],
+            currentQuestion: null
         };
 
-        // Editor temporal
-        let editor = {
-            temarioIndex: -1,
-            puntoIndex: -1,
-            preguntaIndex: -1
-        };
-        // Añadido: orden de selección de puntos por el usuario (preserva el orden de clicks)
-        let selectedPointOrder = [];
+        // Variables de edición
+        let editingTemarioId = null;
+        let editingPuntoId = null;
 
-        // ========== TIPOS DE PECES ==========
+        // Tipos de peces con probabilidades y valores
         const fishTypes = [
-            { name: 'Pez Común', emoji: '🐟', rarity: 'común', minValue: 10, maxValue: 30, weight: 60 },
-            { name: 'Pez Raro', emoji: '🐠', rarity: 'raro', minValue: 40, maxValue: 80, weight: 25 },
-            { name: 'Pez Épico', emoji: '🦈', rarity: 'épico', minValue: 90, maxValue: 150, weight: 10 },
-            { name: 'Pez Legendario', emoji: '🐋', rarity: 'legendario', minValue: 200, maxValue: 500, weight: 5 }
+            { name: 'Sardina', emoji: '🐟', rarity: 'común', minValue: 10, maxValue: 30, weight: 50 },
+            { name: 'Trucha', emoji: '🐠', rarity: 'común', minValue: 20, maxValue: 50, weight: 30 },
+            { name: 'Salmón', emoji: '🎣', rarity: 'poco común', minValue: 40, maxValue: 80, weight: 15 },
+            { name: 'Atún', emoji: '🐡', rarity: 'raro', minValue: 70, maxValue: 120, weight: 8 },
+            { name: 'Pez Espada', emoji: '🗡️', rarity: 'épico', minValue: 100, maxValue: 200, weight: 4 },
+            { name: 'Tiburón', emoji: '🦈', rarity: 'legendario', minValue: 200, maxValue: 400, weight: 2 },
+            { name: 'Ballena', emoji: '🐋', rarity: 'mítico', minValue: 400, maxValue: 800, weight: 1 }
         ];
 
-        // ========== TIPOS DE COFRES ==========
+        // Tipos de cofres
         const chestTypes = [
-            { type: 'bonus', name: 'Cofre de Bonus', effect: '+50 dinero', value: 50, emoji: '💰' },
-            { type: 'penalty', name: 'Cofre Maldito', effect: '-30 dinero', value: -30, emoji: '💀' },
-            { type: 'multiplier', name: 'Cofre Dorado', effect: 'x2 próximo pez', value: 2, emoji: '✨' },
-            { type: 'mega', name: 'Cofre Mega', effect: '+100 dinero', value: 100, emoji: '🎁' }
+            { name: 'Cofre de Madera', emoji: '📦', type: 'bonus', value: 50 },
+            { name: 'Cofre de Plata', emoji: '💼', type: 'bonus', value: 100 },
+            { name: 'Cofre de Oro', emoji: '🎁', type: 'bonus', value: 200 },
+            { name: 'Cofre Maldito', emoji: '☠️', type: 'penalty', value: -50 }
         ];
 
-        // ========== INICIALIZACIÓN ==========
+        // ==================== INICIALIZACIÓN ====================
+        
         window.onload = function() {
-            cargarDatosLocalStorage();
-            cargarDatosEjemplo();
-            actualizarStatsDisplay();
-            actualizarLogros();
+            loadFromLocalStorage();
+            loadTemariosList();
+            updateProgressScreen();
+            updateAchievementsScreen();
+            
+            // Cambiar modo de juego
+            document.getElementById('gameMode').addEventListener('change', function() {
+                if (this.value === 'time') {
+                    document.getElementById('timeModeConfig').style.display = 'block';
+                    document.getElementById('moneyModeConfig').style.display = 'none';
+                } else {
+                    document.getElementById('timeModeConfig').style.display = 'none';
+                    document.getElementById('moneyModeConfig').style.display = 'block';
+                }
+            });
+
+            // Cargar temarios de ejemplo si no hay ninguno
+            if (temarios.length === 0) {
+                loadExampleTemarios();
+            }
         };
 
-        // ========== GESTIÓN DE PANTALLAS ==========
+        // ==================== GESTIÓN DE PANTALLAS ====================
+        
         function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
             document.getElementById(screenId).classList.add('active');
 
-            // Actualizar datos según la pantalla
-            if (screenId === 'temasScreen') {
-                mostrarTemarios();
-            } else if (screenId === 'configScreen') {
-                cargarTemarioSelect();
+            // Actualizar datos al mostrar ciertas pantallas
+            if (screenId === 'temariosScreen') {
+                loadTemariosList();
             } else if (screenId === 'progressScreen') {
-                actualizarStatsDisplay();
+                updateProgressScreen();
             } else if (screenId === 'achievementsScreen') {
-                actualizarLogros();
+                updateAchievementsScreen();
+            } else if (screenId === 'gameConfig') {
+                loadTemariosForGame();
             }
         }
 
-        // ========== GESTIÓN DE TEMARIOS ==========
-        function mostrarTemarios() {
+        // ==================== NOTIFICACIONES ====================
+        
+        function showNotification(message, duration = 3000) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, duration);
+        }
+
+        // ==================== GESTIÓN DE TEMARIOS ====================
+        
+        function showCreateTemarioForm() {
+            document.getElementById('createTemarioForm').style.display = 'block';
+        }
+
+        function hideCreateTemarioForm() {
+            document.getElementById('createTemarioForm').style.display = 'none';
+            document.getElementById('newTemarioName').value = '';
+            document.getElementById('newTemarioDesc').value = '';
+        }
+
+        function createTemario() {
+            const name = document.getElementById('newTemarioName').value.trim();
+            const desc = document.getElementById('newTemarioDesc').value.trim();
+
+            if (!name) {
+                alert('Por favor, ingresa un nombre para el temario');
+                return;
+            }
+
+            const newTemario = {
+                id: Date.now(),
+                name: name,
+                description: desc,
+                puntos: []
+            };
+
+            temarios.push(newTemario);
+            saveToLocalStorage();
+            loadTemariosList();
+            hideCreateTemarioForm();
+            showNotification('✅ Temario creado exitosamente');
+        }
+
+        function loadTemariosList() {
             const container = document.getElementById('temariosList');
-            if (gameData.temarios.length === 0) {
-                container.innerHTML = '<p style="color: #7F8C8D;">No hay temarios creados. ¡Crea tu primer temario!</p>';
+            container.innerHTML = '';
+
+            if (temarios.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 40px;">No hay temarios creados. ¡Crea uno nuevo!</p>';
                 return;
             }
 
-            container.innerHTML = gameData.temarios.map((t, i) => `
-                <div class="temario-item" onclick="editarTemario(${i})">
-                    <strong>📖 ${t.nombre}</strong>
-                    <div style="font-size: 12px; color: #7F8C8D; margin-top: 5px;">
-                        ${t.puntos.length} punto(s) | ${t.puntos.reduce((sum, p) => sum + p.preguntas.length, 0)} pregunta(s)
+            temarios.forEach(temario => {
+                const card = document.createElement('div');
+                card.className = 'temario-card';
+                
+                const totalPreguntas = temario.puntos.reduce((sum, punto) => sum + punto.preguntas.length, 0);
+                
+                card.innerHTML = `
+                    <h3>${temario.name}</h3>
+                    <p style="margin-bottom: 10px;">${temario.description || 'Sin descripción'}</p>
+                    <p style="color: var(--color-warning);">📝 ${temario.puntos.length} puntos | ❓ ${totalPreguntas} preguntas</p>
+                    <div style="margin-top: 15px;">
+                        <button class="btn btn-small btn-primary" onclick="editTemario(${temario.id})">✏️ Editar</button>
+                        <button class="btn btn-small btn-warning" onclick="exportSingleTemario(${temario.id})">💾 Exportar</button>
+                        <button class="btn btn-small btn-danger" onclick="deleteTemario(${temario.id})">🗑️ Eliminar</button>
                     </div>
-                </div>
-            `).join('');
+                `;
+                container.appendChild(card);
+            });
         }
 
-        function crearTemario() {
-            editor.temarioIndex = -1;
-            editor.puntoIndex = -1;
-            editor.preguntaIndex = -1;
-            
-            document.getElementById('temarioNombre').value = '';
-            document.getElementById('puntosList').innerHTML = '';
-            document.getElementById('temarioEditor').classList.remove('hidden');
-            document.getElementById('puntoEditor').classList.add('hidden');
-            document.getElementById('preguntaEditor').classList.add('hidden');
+        function editTemario(temarioId) {
+            editingTemarioId = temarioId;
+            const temario = temarios.find(t => t.id === temarioId);
+            if (!temario) return;
+
+            document.getElementById('editorTitle').textContent = `📚 EDITAR TEMARIO: ${temario.name}`;
+            loadPuntosList();
+            showScreen('puntosEditor');
         }
 
-        function editarTemario(index) {
-            editor.temarioIndex = index;
-            const temario = gameData.temarios[index];
-            
-            document.getElementById('temarioNombre').value = temario.nombre;
-            mostrarPuntos();
-            document.getElementById('temarioEditor').classList.remove('hidden');
-            document.getElementById('puntoEditor').classList.add('hidden');
-            document.getElementById('preguntaEditor').classList.add('hidden');
-        }
-
-        function guardarTemario() {
-            const nombre = document.getElementById('temarioNombre').value.trim();
-            if (!nombre) {
-                alert('⚠️ Por favor ingresa un nombre para el temario');
+        function deleteTemario(temarioId) {
+            if (!confirm('¿Estás seguro de que quieres eliminar este temario? Esta acción no se puede deshacer.')) {
                 return;
             }
 
-            if (editor.temarioIndex === -1) {
-                gameData.temarios.push({ nombre, puntos: [] });
-            } else {
-                gameData.temarios[editor.temarioIndex].nombre = nombre;
+            temarios = temarios.filter(t => t.id !== temarioId);
+            saveToLocalStorage();
+            loadTemariosList();
+            showNotification('🗑️ Temario eliminado');
+        }
+
+        // ==================== GESTIÓN DE PUNTOS ====================
+        
+        function showCreatePuntoForm() {
+            document.getElementById('createPuntoForm').style.display = 'block';
+        }
+
+        function hideCreatePuntoForm() {
+            document.getElementById('createPuntoForm').style.display = 'none';
+            document.getElementById('newPuntoName').value = '';
+        }
+
+        function createPunto() {
+            const name = document.getElementById('newPuntoName').value.trim();
+
+            if (!name) {
+                alert('Por favor, ingresa un nombre para el punto');
+                return;
             }
 
-            guardarDatosLocalStorage();
-            cerrarTemarioEditor();
-            mostrarTemarios();
-            alert('✅ Temario guardado correctamente');
+            const temario = temarios.find(t => t.id === editingTemarioId);
+            if (!temario) return;
+
+            const newPunto = {
+                id: Date.now(),
+                name: name,
+                preguntas: []
+            };
+
+            temario.puntos.push(newPunto);
+            saveToLocalStorage();
+            loadPuntosList();
+            hideCreatePuntoForm();
+            showNotification('✅ Punto creado exitosamente');
         }
 
-        function eliminarTemario() {
-            if (editor.temarioIndex === -1) return;
-            if (!confirm('¿Estás seguro de eliminar este temario?')) return;
-
-            gameData.temarios.splice(editor.temarioIndex, 1);
-            guardarDatosLocalStorage();
-            cerrarTemarioEditor();
-            mostrarTemarios();
-            alert('🗑 Temario eliminado');
-        }
-
-        function cerrarTemarioEditor() {
-            document.getElementById('temarioEditor').classList.add('hidden');
-            editor.temarioIndex = -1;
-            editor.puntoIndex = -1;
-            editor.preguntaIndex = -1;
-        }
-
-        // ========== GESTIÓN DE PUNTOS ==========
-        function mostrarPuntos() {
-            if (editor.temarioIndex === -1) return;
-            const puntos = gameData.temarios[editor.temarioIndex].puntos;
+        function loadPuntosList() {
             const container = document.getElementById('puntosList');
+            container.innerHTML = '';
 
-            if (puntos.length === 0) {
-                container.innerHTML = '<p style="color: #7F8C8D;">No hay puntos creados.</p>';
+            const temario = temarios.find(t => t.id === editingTemarioId);
+            if (!temario) return;
+
+            if (temario.puntos.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 40px;">No hay puntos creados. ¡Crea uno nuevo!</p>';
                 return;
             }
 
-            container.innerHTML = puntos.map((p, i) => `
-                <div class="temario-item" onclick="editarPunto(${i})">
-                    <strong>📌 ${p.nombre}</strong>
-                    <div style="font-size: 12px; color: #7F8C8D; margin-top: 5px;">
-                        ${p.preguntas.length} pregunta(s)
+            temario.puntos.forEach(punto => {
+                const card = document.createElement('div');
+                card.className = 'temario-card';
+                card.innerHTML = `
+                    <h3>${punto.name}</h3>
+                    <p style="color: var(--color-warning);">❓ ${punto.preguntas.length} preguntas</p>
+                    <div style="margin-top: 15px;">
+                        <button class="btn btn-small btn-primary" onclick="editPunto(${punto.id})">✏️ Editar Preguntas</button>
+                        <button class="btn btn-small btn-danger" onclick="deletePunto(${punto.id})">🗑️ Eliminar</button>
                     </div>
-                    <button class="btn btn-danger btn-sm" onclick="event.stopPropagation(); eliminarPunto(${i})" style="padding: 5px 10px; margin-top: 5px;">🗑 Eliminar</button>
-                </div>
-            `).join('');
+                `;
+                container.appendChild(card);
+            });
         }
 
-        function agregarPunto() {
-            editor.puntoIndex = -1;
-            editor.preguntaIndex = -1;
-            
-            document.getElementById('puntoNombre').value = '';
-            document.getElementById('preguntasList').innerHTML = '';
-            document.getElementById('puntoEditor').classList.remove('hidden');
-            document.getElementById('preguntaEditor').classList.add('hidden');
+        function editPunto(puntoId) {
+            editingPuntoId = puntoId;
+            const temario = temarios.find(t => t.id === editingTemarioId);
+            if (!temario) return;
+
+            const punto = temario.puntos.find(p => p.id === puntoId);
+            if (!punto) return;
+
+            document.getElementById('preguntasTitle').textContent = `❓ EDITAR PREGUNTAS: ${punto.name}`;
+            loadPreguntasList();
+            showScreen('preguntasEditor');
         }
 
-        function editarPunto(index) {
-            editor.puntoIndex = index;
-            const punto = gameData.temarios[editor.temarioIndex].puntos[index];
-            
-            document.getElementById('puntoNombre').value = punto.nombre;
-            mostrarPreguntas();
-            document.getElementById('puntoEditor').classList.remove('hidden');
-            document.getElementById('preguntaEditor').classList.add('hidden');
-        }
-
-        function guardarPunto() {
-            const nombre = document.getElementById('puntoNombre').value.trim();
-            if (!nombre) {
-                alert('⚠️ Por favor ingresa un nombre para el punto');
+        function deletePunto(puntoId) {
+            if (!confirm('¿Estás seguro de que quieres eliminar este punto? Esta acción no se puede deshacer.')) {
                 return;
             }
 
-            if (editor.puntoIndex === -1) {
-                gameData.temarios[editor.temarioIndex].puntos.push({ nombre, preguntas: [] });
-            } else {
-                gameData.temarios[editor.temarioIndex].puntos[editor.puntoIndex].nombre = nombre;
-            }
+            const temario = temarios.find(t => t.id === editingTemarioId);
+            if (!temario) return;
 
-            guardarDatosLocalStorage();
-            cerrarPuntoEditor();
-            mostrarPuntos();
+            temario.puntos = temario.puntos.filter(p => p.id !== puntoId);
+            saveToLocalStorage();
+            loadPuntosList();
+            showNotification('🗑️ Punto eliminado');
         }
 
-        function eliminarPunto(index) {
-            if (!confirm('¿Eliminar este punto?')) return;
-            gameData.temarios[editor.temarioIndex].puntos.splice(index, 1);
-            guardarDatosLocalStorage();
-            mostrarPuntos();
+        function backToTemarios() {
+            editingTemarioId = null;
+            showScreen('temariosScreen');
         }
 
-        function cerrarPuntoEditor() {
-            document.getElementById('puntoEditor').classList.add('hidden');
-            editor.puntoIndex = -1;
-            editor.preguntaIndex = -1;
+        // ==================== GESTIÓN DE PREGUNTAS ====================
+        
+        function showJSONStructure() {
+            document.getElementById('jsonStructureModal').classList.add('active');
         }
 
-        // ========== IMPORTAR PREGUNTAS POR JSON ==========
-        function importarPreguntasJSON(event) {
+        function closeJSONStructureModal() {
+            document.getElementById('jsonStructureModal').classList.remove('active');
+        }
+
+        function showPasteQuestionsForm() {
+            document.getElementById('pasteQuestionsForm').style.display = 'block';
+        }
+
+        function hidePasteQuestionsForm() {
+            document.getElementById('pasteQuestionsForm').style.display = 'none';
+            document.getElementById('pasteQuestionsText').value = '';
+        }
+
+        function importPreguntasJSON(event) {
             const file = event.target.files[0];
             if (!file) return;
 
@@ -1043,764 +1151,786 @@
             reader.onload = function(e) {
                 try {
                     const preguntas = JSON.parse(e.target.result);
-                    if (!Array.isArray(preguntas)) throw new Error('Formato inválido');
+                    
+                    if (!Array.isArray(preguntas)) {
+                        throw new Error('El archivo debe contener un array de preguntas');
+                    }
 
-                    // Validar formato básico
-                    preguntas.forEach(p => {
-                        if (!p.tipo || !p.pregunta || typeof p.correcta === 'undefined') {
-                            throw new Error('Pregunta inválida');
+                    // Validar estructura de cada pregunta
+                    for (const pregunta of preguntas) {
+                        if (!pregunta.tipo || !pregunta.texto) {
+                            throw new Error('Cada pregunta debe tener "tipo" y "texto"');
                         }
-                        if (p.tipo === 'multiple' && (!Array.isArray(p.opciones) || p.opciones.length !== 4)) {
-                            throw new Error('Pregunta múltiple inválida');
+                        if (pregunta.tipo === 'multiple') {
+                            if (!Array.isArray(pregunta.opciones) || pregunta.opciones.length !== 4) {
+                                throw new Error('Las preguntas de opción múltiple deben tener exactamente 4 opciones');
+                            }
+                            if (typeof pregunta.correcta !== 'number' || pregunta.correcta < 0 || pregunta.correcta > 3) {
+                                throw new Error('El índice de respuesta correcta debe ser 0, 1, 2 o 3');
+                            }
+                        } else if (pregunta.tipo === 'truefalse') {
+                            if (typeof pregunta.correcta !== 'boolean') {
+                                throw new Error('Las preguntas V/F deben tener correcta como true o false');
+                            }
+                        } else {
+                            throw new Error('Tipo de pregunta inválido: ' + pregunta.tipo);
                         }
-                    });
+                    }
 
                     // Añadir preguntas al punto actual
-                    if (editor.temarioIndex === -1 || editor.puntoIndex === -1) {
-                        alert('Selecciona un punto antes de importar preguntas');
-                        return;
-                    }
-                    gameData.temarios[editor.temarioIndex].puntos[editor.puntoIndex].preguntas.push(...preguntas);
-                    guardarDatosLocalStorage();
-                    mostrarPreguntas();
-                    alert('✅ Preguntas importadas correctamente');
-                } catch (err) {
-                    alert('❌ Error al importar: ' + err.message);
+                    const temario = temarios.find(t => t.id === editingTemarioId);
+                    if (!temario) return;
+
+                    const punto = temario.puntos.find(p => p.id === editingPuntoId);
+                    if (!punto) return;
+
+                    preguntas.forEach(pregunta => {
+                        pregunta.id = Date.now() + Math.random();
+                        punto.preguntas.push(pregunta);
+                    });
+
+                    saveToLocalStorage();
+                    loadPreguntasList();
+                    showNotification(`✅ ${preguntas.length} preguntas importadas exitosamente`);
+                } catch (error) {
+                    alert('Error al importar preguntas: ' + error.message);
                 }
             };
             reader.readAsText(file);
             event.target.value = '';
         }
 
-        // ========== IMPORTAR PREGUNTAS POR JSON DESDE TEXTO ==========
-        function importarPreguntasDesdeTexto() {
-            const texto = document.getElementById('preguntasJSONPaste').value.trim();
-            if (!texto) {
-                alert('Pega el código JSON antes de importar');
-                return;
-            }
-            try {
-                const preguntas = JSON.parse(texto);
-                if (!Array.isArray(preguntas)) throw new Error('Formato inválido');
+        function exportPreguntasJSON() {
+            const temario = temarios.find(t => t.id === editingTemarioId);
+            if (!temario) return;
 
-                preguntas.forEach(p => {
-                    if (!p.tipo || !p.pregunta || typeof p.correcta === 'undefined') {
-                        throw new Error('Pregunta inválida');
-                    }
-                    if (p.tipo === 'multiple' && (!Array.isArray(p.opciones) || p.opciones.length !== 4)) {
-                        throw new Error('Pregunta múltiple inválida');
-                    }
-                });
+            const punto = temario.puntos.find(p => p.id === editingPuntoId);
+            if (!punto) return;
 
-                if (editor.temarioIndex === -1 || editor.puntoIndex === -1) {
-                    alert('Selecciona un punto antes de importar preguntas');
-                    return;
-                }
-                gameData.temarios[editor.temarioIndex].puntos[editor.puntoIndex].preguntas.push(...preguntas);
-                guardarDatosLocalStorage();
-                mostrarPreguntas();
-                document.getElementById('preguntasJSONPaste').value = '';
-                alert('✅ Preguntas importadas correctamente');
-            } catch (err) {
-                alert('❌ Error al importar: ' + err.message);
-            }
-        }
+            // Exportar preguntas sin IDs (para que sean más limpias)
+            const preguntasExport = punto.preguntas.map(p => {
+                const { id, ...preguntaSinId } = p;
+                return preguntaSinId;
+            });
 
-        // ========== GESTIÓN DE PREGUNTAS ==========
-
-        // Solo mostrar preguntas, eliminar edición/creación manual
-        function mostrarPreguntas() {
-            if (editor.temarioIndex === -1 || editor.puntoIndex === -1) return;
-            const preguntas = gameData.temarios[editor.temarioIndex].puntos[editor.puntoIndex].preguntas;
-            const container = document.getElementById('preguntasList');
-
-            if (preguntas.length === 0) {
-                container.innerHTML = '<p style="color: #7F8C8D;">No hay preguntas creadas.</p>';
-                return;
-            }
-
-            container.innerHTML = preguntas.map((p, i) => `
-                <div class="temario-item">
-                    <strong>${p.tipo === 'multiple' ? '📝' : '✔️'} ${p.pregunta.substring(0, 60)}${p.pregunta.length > 60 ? '...' : ''}</strong>
-                </div>
-            `).join('');
-        }
-
-        // ========== IMPORTAR/EXPORTAR TEMARIOS ==========
-        function exportarTemarios() {
-            const dataStr = JSON.stringify(gameData.temarios, null, 2);
+            const dataStr = JSON.stringify(preguntasExport, null, 2);
             const dataBlob = new Blob([dataStr], { type: 'application/json' });
             const url = URL.createObjectURL(dataBlob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'pescaestudio_temarios.json';
+            link.download = `preguntas_${punto.name.replace(/\s+/g, '_')}.json`;
             link.click();
-            URL.revokeObjectURL(url);
-            alert('✅ Temarios exportados correctamente');
+            showNotification('💾 Preguntas exportadas exitosamente');
         }
 
-        function importarTemarios(event) {
+        function processPastedQuestions() {
+            const text = document.getElementById('pasteQuestionsText').value.trim();
+            if (!text) {
+                alert('Por favor, pega las preguntas');
+                return;
+            }
+
+            const lines = text.split('\n').filter(line => line.trim());
+            const preguntas = [];
+            let errores = [];
+
+            lines.forEach((line, index) => {
+                try {
+                    const parts = line.split('|').map(p => p.trim());
+                    
+                    if (parts.length < 3) {
+                        throw new Error(`Línea ${index + 1}: Formato incorrecto`);
+                    }
+
+                    const texto = parts[0];
+                    
+                    // Detectar si es V/F
+                    if (parts[1].toUpperCase() === 'V/F' || parts[1].toUpperCase() === 'VF') {
+                        // Pregunta Verdadero/Falso
+                        const correctaPart = parts[2];
+                        const correctaMatch = correctaPart.match(/Correcta:\s*(V|F|Verdadero|Falso|True|False)/i);
+                        
+                        if (!correctaMatch) {
+                            throw new Error(`Línea ${index + 1}: No se encontró respuesta correcta (V o F)`);
+                        }
+
+                        const correcta = correctaMatch[1].toUpperCase().startsWith('V') || 
+                                       correctaMatch[1].toUpperCase().startsWith('T');
+
+                        preguntas.push({
+                            id: Date.now() + Math.random(),
+                            tipo: 'truefalse',
+                            texto: texto,
+                            correcta: correcta
+                        });
+                    } else {
+                        // Pregunta Opción Múltiple
+                        if (parts.length < 6) {
+                            throw new Error(`Línea ${index + 1}: Pregunta de opción múltiple incompleta (necesita 4 opciones + respuesta)`);
+                        }
+
+                        const opciones = [
+                            parts[1].replace(/^[A-D]\)\s*/, ''),
+                            parts[2].replace(/^[A-D]\)\s*/, ''),
+                            parts[3].replace(/^[A-D]\)\s*/, ''),
+                            parts[4].replace(/^[A-D]\)\s*/, '')
+                        ];
+
+                        const correctaPart = parts[5];
+                        const correctaMatch = correctaPart.match(/Correcta:\s*([A-D])/i);
+                        
+                        if (!correctaMatch) {
+                            throw new Error(`Línea ${index + 1}: No se encontró respuesta correcta (A, B, C o D)`);
+                        }
+
+                        const correcta = correctaMatch[1].toUpperCase().charCodeAt(0) - 'A'.charCodeAt(0);
+
+                        preguntas.push({
+                            id: Date.now() + Math.random(),
+                            tipo: 'multiple',
+                            texto: texto,
+                            opciones: opciones,
+                            correcta: correcta
+                        });
+                    }
+                } catch (error) {
+                    errores.push(error.message);
+                }
+            });
+
+            if (errores.length > 0) {
+                alert('Errores encontrados:\n' + errores.join('\n'));
+                return;
+            }
+
+            if (preguntas.length === 0) {
+                alert('No se encontraron preguntas válidas');
+                return;
+            }
+
+            // Añadir preguntas al punto actual
+            const temario = temarios.find(t => t.id === editingTemarioId);
+            if (!temario) return;
+
+            const punto = temario.puntos.find(p => p.id === editingPuntoId);
+            if (!punto) return;
+
+            punto.preguntas.push(...preguntas);
+            saveToLocalStorage();
+            loadPreguntasList();
+            hidePasteQuestionsForm();
+            showNotification(`✅ ${preguntas.length} preguntas importadas exitosamente`);
+        }
+
+        function loadPreguntasList() {
+            const container = document.getElementById('preguntasList');
+            container.innerHTML = '';
+
+            const temario = temarios.find(t => t.id === editingTemarioId);
+            if (!temario) return;
+
+            const punto = temario.puntos.find(p => p.id === editingPuntoId);
+            if (!punto) return;
+
+            if (punto.preguntas.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 40px;">No hay preguntas creadas. ¡Crea una nueva!</p>';
+                return;
+            }
+
+            punto.preguntas.forEach((pregunta, index) => {
+                const card = document.createElement('div');
+                card.className = 'temario-card';
+                
+                let opcionesHTML = '';
+                if (pregunta.tipo === 'multiple') {
+                    opcionesHTML = `
+                        <p style="margin-top: 10px;"><strong>Opciones:</strong></p>
+                        <ul style="margin-left: 20px;">
+                            ${pregunta.opciones.map((op, i) => `
+                                <li style="${i === pregunta.correcta ? 'color: var(--color-success); font-weight: bold;' : ''}">${op}</li>
+                            `).join('')}
+                        </ul>
+                    `;
+                } else {
+                    opcionesHTML = `<p style="margin-top: 10px; color: var(--color-success); font-weight: bold;">Respuesta: ${pregunta.correcta ? 'Verdadero' : 'Falso'}</p>`;
+                }
+
+                card.innerHTML = `
+                    <h3>Pregunta ${index + 1} <span style="font-size: 14px; color: var(--color-warning);">(${pregunta.tipo === 'multiple' ? 'Opción Múltiple' : 'Verdadero/Falso'})</span></h3>
+                    <p style="margin: 10px 0;">${pregunta.texto}</p>
+                    ${opcionesHTML}
+                    <div style="margin-top: 15px;">
+                        <button class="btn btn-small btn-danger" onclick="deletePregunta(${pregunta.id})">🗑️ Eliminar</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function deletePregunta(preguntaId) {
+            if (!confirm('¿Estás seguro de que quieres eliminar esta pregunta?')) {
+                return;
+            }
+
+            const temario = temarios.find(t => t.id === editingTemarioId);
+            if (!temario) return;
+
+            const punto = temario.puntos.find(p => p.id === editingPuntoId);
+            if (!punto) return;
+
+            punto.preguntas = punto.preguntas.filter(p => p.id !== preguntaId);
+            saveToLocalStorage();
+            loadPreguntasList();
+            showNotification('🗑️ Pregunta eliminada');
+        }
+
+        function backToPuntos() {
+            editingPuntoId = null;
+            showScreen('puntosEditor');
+        }
+
+        // ==================== IMPORTAR/EXPORTAR ====================
+        
+        function exportTemarios() {
+            const dataStr = JSON.stringify(temarios, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'temarios_pesca_conocimiento.json';
+            link.click();
+            showNotification('💾 Temarios exportados exitosamente');
+        }
+
+        function exportSingleTemario(temarioId) {
+            const temario = temarios.find(t => t.id === temarioId);
+            if (!temario) return;
+
+            const dataStr = JSON.stringify([temario], null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `temario_${temario.name.replace(/\s+/g, '_')}.json`;
+            link.click();
+            showNotification('💾 Temario exportado exitosamente');
+        }
+
+        function importTemarios(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    const imported = JSON.parse(e.target.result);
-                    if (!Array.isArray(imported)) {
-                        throw new Error('Formato inválido');
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    if (!Array.isArray(importedData)) {
+                        throw new Error('Formato de archivo inválido');
                     }
-                    gameData.temarios = imported;
-                    guardarDatosLocalStorage();
-                    mostrarTemarios();
-                    alert('✅ Temarios importados correctamente');
-                } catch (err) {
-                    alert('❌ Error al importar: archivo no válido');
+
+                    // Validar estructura
+                    for (const temario of importedData) {
+                        if (!temario.name || !Array.isArray(temario.puntos)) {
+                            throw new Error('Estructura de temario inválida');
+                        }
+                    }
+
+                    // Añadir temarios importados (con IDs nuevos para evitar conflictos)
+                    importedData.forEach(temario => {
+                        temario.id = Date.now() + Math.random();
+                        temario.puntos.forEach(punto => {
+                            punto.id = Date.now() + Math.random();
+                            punto.preguntas.forEach(pregunta => {
+                                pregunta.id = Date.now() + Math.random();
+                            });
+                        });
+                        temarios.push(temario);
+                    });
+
+                    saveToLocalStorage();
+                    loadTemariosList();
+                    showNotification('✅ Temarios importados exitosamente');
+                } catch (error) {
+                    alert('Error al importar: ' + error.message);
                 }
             };
             reader.readAsText(file);
             event.target.value = '';
         }
 
-        // ========== CONFIGURACIÓN DE PARTIDA ==========
-        function cargarTemarioSelect() {
-            const select = document.getElementById('temarioSelect');
-            select.innerHTML = '<option value="">-- Selecciona un temario --</option>';
-            gameData.temarios.forEach((t, i) => {
-                select.innerHTML += `<option value="${i}">${t.nombre}</option>`;
+        // ==================== CONFIGURACIÓN DE PARTIDA ====================
+        
+        function loadTemariosForGame() {
+            const select = document.getElementById('selectedTemario');
+            select.innerHTML = '<option value="">-- Seleccionar --</option>';
+
+            temarios.forEach(temario => {
+                const option = document.createElement('option');
+                option.value = temario.id;
+                option.textContent = temario.name;
+                select.appendChild(option);
             });
         }
 
-        // ======================
-        // Modificar cargarPuntosTemario para registrar orden de selección
-        function cargarPuntosTemario() {
-            const temarioIndex = document.getElementById('temarioSelect').value;
+        function loadPuntosForGame() {
+            const temarioId = parseInt(document.getElementById('selectedTemario').value);
             const container = document.getElementById('puntosCheckboxes');
-            
-            if (!temarioIndex) {
-                container.innerHTML = '<p style="color: #7F8C8D;">Primero selecciona un temario</p>';
-                selectedPointOrder = [];
+            container.innerHTML = '';
+
+            if (!temarioId) return;
+
+            const temario = temarios.find(t => t.id === temarioId);
+            if (!temario) return;
+
+            if (temario.puntos.length === 0) {
+                container.innerHTML = '<p>Este temario no tiene puntos</p>';
                 return;
             }
 
-            const puntos = gameData.temarios[temarioIndex].puntos;
-            if (puntos.length === 0) {
-                container.innerHTML = '<p style="color: #7F8C8D;">Este temario no tiene puntos</p>';
-                selectedPointOrder = [];
+            const allCheckbox = document.createElement('div');
+            allCheckbox.innerHTML = `
+                <label style="display: flex; align-items: center; gap: 10px; padding: 5px;">
+                    <input type="checkbox" id="puntoAll" onchange="toggleAllPuntos()">
+                    <strong>Todos los puntos</strong>
+                </label>
+            `;
+            container.appendChild(allCheckbox);
+
+            temario.puntos.forEach(punto => {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <label style="display: flex; align-items: center; gap: 10px; padding: 5px;">
+                        <input type="checkbox" class="punto-checkbox" value="${punto.id}">
+                        ${punto.name} (${punto.preguntas.length} preguntas)
+                    </label>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function toggleAllPuntos() {
+            const allChecked = document.getElementById('puntoAll').checked;
+            document.querySelectorAll('.punto-checkbox').forEach(cb => {
+                cb.checked = allChecked;
+            });
+        }
+
+        // ==================== INICIO DE PARTIDA ====================
+        
+        function startGame() {
+            const temarioId = parseInt(document.getElementById('selectedTemario').value);
+            if (!temarioId) {
+                alert('Por favor, selecciona un temario');
                 return;
             }
 
-            // Renderizar checkboxes con onchange para mantener orden de selección
-            container.innerHTML = puntos.map((p, i) => `
-                <div class="checkbox-item">
-                    <input type="checkbox" id="punto_${i}" value="${i}" checked onchange="togglePuntoSelection(${i}, this)">
-                    <label for="punto_${i}">${p.nombre} (${p.preguntas.length} preguntas)</label>
-                </div>
-            `).join('');
+            const temario = temarios.find(t => t.id === temarioId);
+            if (!temario) return;
 
-            // Inicializar orden por defecto respetando el orden visual si están todos marcados
-            selectedPointOrder = puntos.map((_, i) => i);
-        }
+            const selectedPuntos = Array.from(document.querySelectorAll('.punto-checkbox:checked'))
+                .map(cb => parseInt(cb.value));
 
-        // Nuevo: manejar selección/orden de puntos
-        function togglePuntoSelection(index, checkbox) {
-            if (checkbox.checked) {
-                // agregar al final si no está presente (respeta orden de selección)
-                if (!selectedPointOrder.includes(index)) selectedPointOrder.push(index);
-            } else {
-                // remover si se desmarca
-                selectedPointOrder = selectedPointOrder.filter(i => i !== index);
-            }
-        }
-
-        // Sincronizar al marcar/desmarcar todos
-        function seleccionarTodosPuntos() {
-            document.querySelectorAll('#puntosCheckboxes input[type="checkbox"]').forEach(cb => cb.checked = true);
-            // reconstruir orden en el orden visual actual
-            selectedPointOrder = Array.from(document.querySelectorAll('#puntosCheckboxes input[type="checkbox"]'))
-                .map(cb => parseInt(cb.value, 10));
-        }
-
-        function deseleccionarTodosPuntos() {
-            document.querySelectorAll('#puntosCheckboxes input[type="checkbox"]').forEach(cb => cb.checked = false);
-            selectedPointOrder = [];
-        }
-
-        function cambiarModoRonda() {
-            const modo = document.getElementById('modoRonda').value;
-            if (modo === 'tiempo') {
-                document.getElementById('tiempoConfig').classList.remove('hidden');
-                document.getElementById('dineroConfig').classList.add('hidden');
-            } else {
-                document.getElementById('tiempoConfig').classList.add('hidden');
-                document.getElementById('dineroConfig').classList.remove('hidden');
-            }
-        }
-
-        // ========== INICIAR JUEGO ==========
-        function iniciarJuego() {
-            const temarioIndex = document.getElementById('temarioSelect').value;
-            if (!temarioIndex) {
-                alert('⚠️ Por favor selecciona un temario');
+            if (selectedPuntos.length === 0) {
+                alert('Por favor, selecciona al menos un punto');
                 return;
             }
 
-            // usar el orden de selección guardado; si vacío, deriva del DOM (por seguridad)
-            let puntosSeleccionados = selectedPointOrder && selectedPointOrder.length > 0
-                ? selectedPointOrder.slice()
-                : Array.from(document.querySelectorAll('#puntosCheckboxes input[type="checkbox"]:checked')).map(cb => parseInt(cb.value));
-
-            if (puntosSeleccionados.length === 0) {
-                alert('⚠️ Por favor selecciona al menos un punto');
-                return;
-            }
-
-            // Construir playlist lineal: para cada punto en el orden seleccionado, anexar sus preguntas en orden
-            const playlist = [];
-            puntosSeleccionados.forEach(pIndex => {
-                const punto = gameData.temarios[temarioIndex].puntos[pIndex];
-                if (Array.isArray(punto.preguntas)) {
-                    punto.preguntas.forEach(q => playlist.push(q));
+            // Recopilar todas las preguntas de los puntos seleccionados
+            const questions = [];
+            selectedPuntos.forEach(puntoId => {
+                const punto = temario.puntos.find(p => p.id === puntoId);
+                if (punto) {
+                    questions.push(...punto.preguntas);
                 }
             });
 
-            if (playlist.length === 0) {
-                alert('⚠️ Los puntos seleccionados no tienen preguntas');
+            if (questions.length === 0) {
+                alert('Los puntos seleccionados no tienen preguntas');
                 return;
             }
 
-            // Configurar juego (mantener lo existente)
-            currentGame.mode = document.getElementById('modoRonda').value;
-            currentGame.difficulty = document.getElementById('dificultad').value;
-            // guardar playlist y puntero (en vez de preguntas aleatorias)
-            currentGame.playlist = playlist;
-            currentGame.playlistIndex = 0;
-            currentGame.player = { name: 'TÚ', money: 0, fish: 0, chests: 0 };
-            currentGame.active = true;
-            currentGame.paused = false;
-            currentGame.multiplier = 1;
+            // Configurar juego
+            currentGame = {
+                active: true,
+                temario: temario,
+                selectedPuntos: selectedPuntos,
+                questions: questions,
+                mode: document.getElementById('gameMode').value,
+                duration: parseInt(document.getElementById('gameDuration').value) * 60,
+                moneyGoal: parseInt(document.getElementById('moneyGoal').value),
+                timer: null,
+                timeRemaining: 0,
+                player: {
+                    money: 0,
+                    fishCaught: 0,
+                    chestsOpened: 0,
+                    correctAnswers: 0
+                },
+                bots: [],
+                currentQuestion: null
+            };
 
-            // Configurar tiempo o dinero
-            if (currentGame.mode === 'tiempo') {
-                const minutos = parseInt(document.getElementById('duracionMinutos').value);
-                currentGame.timeLeft = minutos * 60;
-            } else {
-                currentGame.targetMoney = parseInt(document.getElementById('objetivoDinero').value);
+            // Configurar tiempo
+            if (currentGame.mode === 'time') {
+                currentGame.timeRemaining = currentGame.duration;
             }
 
             // Crear bots
             const numBots = parseInt(document.getElementById('numBots').value);
-            currentGame.bots = [];
-            const botNames = ['🤖 Bot Alpha', '🤖 Bot Beta', '🤖 Bot Gamma', '🤖 Bot Delta', '🤖 Bot Omega'];
+            const difficulty = document.getElementById('difficulty').value;
+            const botNames = ['RoboFish', 'NerdBot', 'PescaIA', 'CerebroBot', 'QuizMaster'];
+            
             for (let i = 0; i < numBots; i++) {
                 currentGame.bots.push({
-                    name: botNames[i],
+                    name: botNames[i % botNames.length] + (i >= botNames.length ? i + 1 : ''),
                     money: 0,
-                    fish: 0,
-                    chests: 0
+                    fishCaught: 0,
+                    difficulty: difficulty
                 });
             }
 
+            // Iniciar interfaz de juego
+            updateGameUI();
             showScreen('gameScreen');
-            actualizarUI();
-            iniciarTimer();
-            iniciarBotsAI();
 
-            document.getElementById('botsCount').textContent = numBots;
-        }
-
-        // ========== MECÁNICA DE PESCA ==========
-        function lanzarCana() {
-            if (!currentGame.active || currentGame.paused) return;
-
-            const rod = document.getElementById('fishingRod');
-            const button = document.getElementById('castButton');
-            
-            button.disabled = true;
-            rod.classList.add('casting');
-
-            setTimeout(() => {
-                // Siempre mostrar pregunta al lanzar; cofres sólo al responder correctamente
-                mostrarPregunta();
-                
-                rod.classList.remove('casting');
-                button.disabled = false;
-            }, 1500);
-        }
-
-        // ======================
-        // MECÁNICA DE PREGUNTA: usar playlist secuencial en lugar de elección aleatoria
-        function mostrarPregunta() {
-            // Preferir playlist (secuencial por puntos). fallback si no existe.
-            if (Array.isArray(currentGame.playlist) && currentGame.playlist.length > 0) {
-                const idx = typeof currentGame.playlistIndex === 'number' ? currentGame.playlistIndex : 0;
-                const pregunta = currentGame.playlist[idx];
-                // avanzar el puntero cíclicamente
-                currentGame.playlistIndex = (idx + 1) % currentGame.playlist.length;
-                currentGame.currentQuestion = pregunta;
-            } else {
-                // fallback al comportamiento anterior (aleatorio)
-                if (!currentGame.questions || currentGame.questions.length === 0) return;
-                const pregunta = currentGame.questions[Math.floor(Math.random() * currentGame.questions.length)];
-                currentGame.currentQuestion = pregunta;
+            // Iniciar timer si es modo tiempo
+            if (currentGame.mode === 'time') {
+                startGameTimer();
             }
 
-            // ahora renderizar la pregunta actual como ya hacía el código anterior
-            document.getElementById('questionText').textContent = currentGame.currentQuestion.pregunta;
-            const container = document.getElementById('answersContainer');
+            // Simular actividad de bots
+            startBotsSimulation();
+        }
 
-            // Normalizar y adjuntar meta de la respuesta correcta en el objeto de la pregunta
-            if (currentGame.currentQuestion.tipo === 'multiple') {
-                const opcionesCount = Array.isArray(currentGame.currentQuestion.opciones) ? currentGame.currentQuestion.opciones.length : 0;
-                let correctIndex = 0;
+        function updateGameUI() {
+            document.getElementById('playerMoney').textContent = currentGame.player.money;
+            document.getElementById('fishCaught').textContent = currentGame.player.fishCaught;
+            
+            if (currentGame.mode === 'time') {
+                const minutes = Math.floor(currentGame.timeRemaining / 60);
+                const seconds = currentGame.timeRemaining % 60;
+                document.getElementById('gameTimer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            } else {
+                document.getElementById('gameTimer').textContent = `${currentGame.player.money}/${currentGame.moneyGoal}`;
+            }
 
-                // Manejar distintos formatos: number 1-based, number 0-based, string '1' o '0'
-                if (typeof currentGame.currentQuestion.correcta === 'number') {
-                    if (currentGame.currentQuestion.correcta >= 1 && currentGame.currentQuestion.correcta <= opcionesCount) {
-                        correctIndex = currentGame.currentQuestion.correcta - 1; // 1-based -> 0-based
-                    } else if (currentGame.currentQuestion.correcta >= 0 && currentGame.currentQuestion.correcta < opcionesCount) {
-                        correctIndex = currentGame.currentQuestion.correcta; // ya 0-based
-                    }
-                } else {
-                    const parsed = parseInt(currentGame.currentQuestion.correcta, 10);
-                    if (!isNaN(parsed)) {
-                        if (parsed >= 1 && parsed <= opcionesCount) {
-                            correctIndex = parsed - 1;
-                        } else if (parsed >= 0 && parsed < opcionesCount) {
-                            correctIndex = parsed;
+            // Actualizar panel de bots
+            const botsContainer = document.getElementById('botsContainer');
+            botsContainer.innerHTML = '';
+            currentGame.bots.forEach(bot => {
+                const botDiv = document.createElement('div');
+                botDiv.className = 'bot-item';
+                botDiv.innerHTML = `
+                    <span>🤖 ${bot.name}</span>
+                    <span>💰 ${bot.money} | 🐟 ${bot.fishCaught}</span>
+                `;
+                botsContainer.appendChild(botDiv);
+            });
+        }
+
+        function startGameTimer() {
+            currentGame.timer = setInterval(() => {
+                currentGame.timeRemaining--;
+                updateGameUI();
+
+                if (currentGame.timeRemaining <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function startBotsSimulation() {
+            // Los bots pescan cada cierto tiempo
+            setInterval(() => {
+                if (!currentGame.active) return;
+
+                currentGame.bots.forEach(bot => {
+                    // Probabilidad basada en dificultad
+                    let successChance = 0.3; // fácil
+                    if (bot.difficulty === 'medium') successChance = 0.5;
+                    if (bot.difficulty === 'hard') successChance = 0.7;
+
+                    if (Math.random() < successChance) {
+                        const fish = getRandomFish();
+                        const value = Math.floor(Math.random() * (fish.maxValue - fish.minValue + 1)) + fish.minValue;
+                        bot.money += value;
+                        bot.fishCaught++;
+                        updateGameUI();
+
+                        // Verificar si el bot ganó
+                        if (currentGame.mode === 'money' && bot.money >= currentGame.moneyGoal) {
+                            endGame();
                         }
                     }
-                }
+                });
+            }, 5000); // Los bots intentan pescar cada 5 segundos
+        }
 
-                // Garantía: limitar al rango válido
-                if (correctIndex < 0 || correctIndex >= opcionesCount) correctIndex = 0;
+        // ==================== MECÁNICA DE PESCA ====================
+        
+        function castHook() {
+            // Probabilidad de cofre (10%)
+            if (Math.random() < 0.1) {
+                const chest = chestTypes[Math.floor(Math.random() * chestTypes.length)];
+                showChestResult(chest);
+                return;
+            }
 
-                // Crear un arreglo de índices y mezclarlo (Fisher-Yates)
-                const indices = [];
-                for (let i = 0; i < opcionesCount; i++) indices.push(i);
-                for (let i = indices.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [indices[i], indices[j]] = [indices[j], indices[i]];
-                }
+            // Mostrar pregunta
+            const question = getRandomQuestion();
+            if (!question) {
+                alert('No hay más preguntas disponibles');
+                return;
+            }
 
-                // Calcular el índice mostrado donde está la opción correcta
-                const correctDisplayIndex = indices.indexOf(correctIndex);
+            currentGame.currentQuestion = question;
+            showQuestion(question);
+        }
 
-                // Guardar metadata en la pregunta actual
-                currentGame.currentQuestion._shuffledIndices = indices;
-                currentGame.currentQuestion._correctIndexDisplay = correctDisplayIndex;
+        function getRandomQuestion() {
+            if (currentGame.questions.length === 0) return null;
+            const index = Math.floor(Math.random() * currentGame.questions.length);
+            return currentGame.questions[index];
+        }
 
-                // Renderizar en el orden mezclado: displayIndex -> originalIndex = indices[displayIndex]
-                container.innerHTML = indices.map((origIdx, displayIdx) => `
-                    <div class="answer-option" data-index="${displayIdx}" data-orig="${origIdx}" onclick="responderPregunta(${displayIdx})">
-                        ${displayIdx + 1}. ${currentGame.currentQuestion.opciones[origIdx]}
-                    </div>
-                `).join('');
+        function showQuestion(question) {
+            document.getElementById('questionText').textContent = question.texto;
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            if (question.tipo === 'multiple') {
+                question.opciones.forEach((opcion, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = opcion;
+                    btn.onclick = () => checkAnswer(index);
+                    optionsContainer.appendChild(btn);
+                });
             } else {
-                const correctVal = String(currentGame.currentQuestion.correcta).toLowerCase() === 'true' ? 'true' : 'false';
-                currentGame.currentQuestion._correctValue = correctVal;
-
-                container.innerHTML = `
-                    <div class="answer-option" data-value="true" onclick="responderPregunta('true')">Verdadero</div>
-                    <div class="answer-option" data-value="false" onclick="responderPregunta('false')">Falso</div>
-                `;
+                ['Verdadero', 'Falso'].forEach((opcion, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = opcion;
+                    btn.onclick = () => checkAnswer(index === 0);
+                    optionsContainer.appendChild(btn);
+                });
             }
 
             document.getElementById('questionModal').classList.add('active');
         }
 
-        function responderPregunta(respuesta) {
-            const pregunta = currentGame.currentQuestion;
-            if (!pregunta) return;
+        function checkAnswer(answer) {
+            const question = currentGame.currentQuestion;
+            const isCorrect = (question.correcta === answer);
 
-            const opciones = document.querySelectorAll('.answer-option');
-            let correcta = false;
-
-            if (pregunta.tipo === 'multiple') {
-                const selectedDisplayIndex = Number(respuesta);
-                const correctDisplayIndex = Number(pregunta._correctIndexDisplay);
-
-                opciones.forEach(op => {
-                    op.style.pointerEvents = 'none';
-                    const displayIdx = parseInt(op.getAttribute('data-index'), 10);
-                    if (displayIdx === correctDisplayIndex) {
-                        op.classList.add('correct');
+            // Mostrar feedback visual
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach((btn, index) => {
+                if (question.tipo === 'multiple') {
+                    if (index === question.correcta) {
+                        btn.classList.add('correct');
+                    } else if (index === answer && !isCorrect) {
+                        btn.classList.add('incorrect');
                     }
-                    if (displayIdx === selectedDisplayIndex && displayIdx !== correctDisplayIndex) {
-                        op.classList.add('incorrect');
+                } else {
+                    if ((index === 0 && question.correcta === true) || (index === 1 && question.correcta === false)) {
+                        btn.classList.add('correct');
+                    } else if ((index === 0 && answer === true && !isCorrect) || (index === 1 && answer === false && !isCorrect)) {
+                        btn.classList.add('incorrect');
                     }
-                });
-
-                correcta = selectedDisplayIndex === correctDisplayIndex;
-            } else {
-                const selectedVal = String(respuesta).toLowerCase();
-                const correctVal = String(pregunta._correctValue).toLowerCase();
-
-                opciones.forEach(op => {
-                    op.style.pointerEvents = 'none';
-                    const val = op.getAttribute('data-value');
-                    if (val === correctVal) {
-                        op.classList.add('correct');
-                    }
-                    if (val === selectedVal && val !== correctVal) {
-                        op.classList.add('incorrect');
-                    }
-                });
-
-                correcta = selectedVal === correctVal;
-            }
+                }
+                btn.disabled = true;
+            });
 
             setTimeout(() => {
                 document.getElementById('questionModal').classList.remove('active');
                 
-                if (correcta) {
-                    gameData.playerStats.totalCorrect++;
-
-                    // 30% probabilidad de cofre al acertar, 70% pez
-                    if (Math.random() < 0.3) {
-                        encontrarCofre();
-                    } else {
-                        pescarPez();
-                    }
+                if (isCorrect) {
+                    currentGame.player.correctAnswers++;
+                    const fish = getRandomFish();
+                    showFishResult(fish);
                 } else {
-                    gameData.playerStats.totalIncorrect++;
+                    showNotification('❌ Respuesta incorrecta. ¡Inténtalo de nuevo!', 2000);
                 }
-
-                guardarDatosLocalStorage();
             }, 1500);
         }
 
-        function pescarPez() {
-            // Seleccionar pez según rareza
-            const rand = Math.random() * 100;
-            let accumulated = 0;
-            let selectedFish = fishTypes[0];
+        function getRandomFish() {
+            const totalWeight = fishTypes.reduce((sum, fish) => sum + fish.weight, 0);
+            let random = Math.random() * totalWeight;
 
-            for (let fish of fishTypes) {
-                accumulated += fish.weight;
-                if (rand <= accumulated) {
-                    selectedFish = fish;
-                    break;
+            for (const fish of fishTypes) {
+                random -= fish.weight;
+                if (random <= 0) {
+                    return fish;
                 }
             }
 
-            const value = Math.floor(Math.random() * (selectedFish.maxValue - selectedFish.minValue + 1)) + selectedFish.minValue;
-            const finalValue = Math.floor(value * currentGame.multiplier);
-            
-            currentGame.player.money += finalValue;
-            currentGame.player.fish++;
-            gameData.playerStats.totalMoney += finalValue;
-            gameData.playerStats.totalFish++;
-
-            // Resetear multiplicador
-            currentGame.multiplier = 1;
-
-            // Animación
-            const ocean = document.getElementById('ocean');
-            const fishElement = document.createElement('div');
-            fishElement.className = 'fish-caught';
-            fishElement.innerHTML = `${selectedFish.emoji}<br><span style="font-size: 20px;">+${finalValue}💰</span>`;
-            ocean.appendChild(fishElement);
-
-            setTimeout(() => fishElement.remove(), 1000);
-
-            actualizarUI();
-            verificarLogros();
-            verificarFinJuego();
+            return fishTypes[0];
         }
 
-        function encontrarCofre() {
-            const chest = chestTypes[Math.floor(Math.random() * chestTypes.length)];
-            
-            document.getElementById('chestTitle').textContent = `¡${chest.name}!`;
-            document.getElementById('chestMessage').textContent = chest.effect;
-            
-            currentGame.player.chests++;
-            gameData.playerStats.totalChests++;
+        function showFishResult(fish) {
+            const value = Math.floor(Math.random() * (fish.maxValue - fish.minValue + 1)) + fish.minValue;
+            currentGame.player.money += value;
+            currentGame.player.fishCaught++;
 
-            switch (chest.type) {
-                case 'bonus':
-                case 'mega':
-                    currentGame.player.money += chest.value;
-                    gameData.playerStats.totalMoney += chest.value;
-                    break;
-                case 'penalty':
-                    currentGame.player.money = Math.max(0, currentGame.player.money + chest.value);
-                    break;
-                case 'multiplier':
-                    currentGame.multiplier = chest.value;
-                    document.getElementById('chestMessage').textContent += ' (siguiente pez)';
-                    break;
+            document.getElementById('resultContent').innerHTML = `
+                <div class="fish-sprite">${fish.emoji}</div>
+                <h3 style="color: var(--color-success);">¡HAS PESCADO!</h3>
+                <p style="font-size: 24px; margin: 10px 0;">${fish.name}</p>
+                <p style="color: var(--color-warning);">Rareza: ${fish.rarity}</p>
+                <p style="font-size: 20px; margin-top: 10px;">💰 +${value}</p>
+            `;
+
+            document.getElementById('resultModal').classList.add('active');
+            updateGameUI();
+            updateAchievements();
+
+            // Verificar victoria por dinero
+            if (currentGame.mode === 'money' && currentGame.player.money >= currentGame.moneyGoal) {
+                setTimeout(() => {
+                    closeResultModal();
+                    endGame();
+                }, 2000);
+            }
+        }
+
+        function showChestResult(chest) {
+            currentGame.player.chestsOpened++;
+            currentGame.player.money += chest.value;
+
+            document.getElementById('resultContent').innerHTML = `
+                <div class="chest-sprite">${chest.emoji}</div>
+                <h3 style="color: ${chest.type === 'bonus' ? 'var(--color-success)' : 'var(--color-danger)'};">
+                    ${chest.type === 'bonus' ? '¡COFRE ENCONTRADO!' : '¡COFRE MALDITO!'}
+                </h3>
+                <p style="font-size: 24px; margin: 10px 0;">${chest.name}</p>
+                <p style="font-size: 20px; margin-top: 10px;">
+                    💰 ${chest.value > 0 ? '+' : ''}${chest.value}
+                </p>
+            `;
+
+            document.getElementById('resultModal').classList.add('active');
+            updateGameUI();
+            updateAchievements();
+        }
+
+        function closeResultModal() {
+            document.getElementById('resultModal').classList.remove('active');
+        }
+
+        // ==================== FIN DE PARTIDA ====================
+        
+        function endGame() {
+            currentGame.active = false;
+            if (currentGame.timer) {
+                clearInterval(currentGame.timer);
             }
 
-            document.getElementById('chestModal').classList.add('active');
-            actualizarUI();
-            verificarLogros();
+            // Actualizar estadísticas del jugador
+            playerStats.totalMoney += currentGame.player.money;
+            playerStats.totalFish += currentGame.player.fishCaught;
+            playerStats.totalChests += currentGame.player.chestsOpened;
+            playerStats.totalCorrectAnswers += currentGame.player.correctAnswers;
+            playerStats.totalGames++;
+
+            // Crear ranking final
+            const ranking = [
+                { name: 'TÚ', money: currentGame.player.money, fish: currentGame.player.fishCaught, isPlayer: true },
+                ...currentGame.bots.map(bot => ({ name: bot.name, money: bot.money, fish: bot.fishCaught, isPlayer: false }))
+            ].sort((a, b) => b.money - a.money);
+
+            // Verificar si el jugador ganó
+            if (ranking[0].isPlayer) {
+                playerStats.gamesWon++;
+                showNotification('🏆 ¡FELICIDADES! ¡HAS GANADO!', 5000);
+            }
+
+            // Mostrar estadísticas finales
+            document.getElementById('finalMoney').textContent = currentGame.player.money;
+            document.getElementById('finalFish').textContent = currentGame.player.fishCaught;
+            document.getElementById('finalChests').textContent = currentGame.player.chestsOpened;
+            document.getElementById('finalCorrect').textContent = currentGame.player.correctAnswers;
+
+            // Mostrar ranking
+            const rankingTable = document.getElementById('finalRanking');
+            rankingTable.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Posición</th>
+                        <th>Nombre</th>
+                        <th>💰 Dinero</th>
+                        <th>🐟 Peces</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${ranking.map((player, index) => `
+                        <tr class="${index < 3 ? 'rank-' + (index + 1) : ''}">
+                            <td>${index + 1}</td>
+                            <td><strong>${player.name}</strong></td>
+                            <td>${player.money}</td>
+                            <td>${player.fish}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+
+            saveToLocalStorage();
+            updateAchievements();
+            showScreen('endGameScreen');
         }
 
-        function cerrarCofre() {
-            document.getElementById('chestModal').classList.remove('active');
-            verificarFinJuego();
-        }
-
-        // ========== BOTS AI ==========
-        function iniciarBotsAI() {
-            if (currentGame.bots.length === 0) return;
-
-            const speed = currentGame.difficulty === 'facil' ? 8000 : currentGame.difficulty === 'normal' ? 5000 : 3000;
-
-            currentGame.botsInterval = setInterval(() => {
-                if (!currentGame.active || currentGame.paused) return;
-
-                currentGame.bots.forEach(bot => {
-                    // 80% éxito para bots
-                    if (Math.random() < 0.8) {
-                        const fish = fishTypes[Math.floor(Math.random() * fishTypes.length)];
-                        const value = Math.floor(Math.random() * (fish.maxValue - fish.minValue + 1)) + fish.minValue;
-                        bot.money += value;
-                        bot.fish++;
-                    }
-
-                    // 20% encuentran cofre
-                    if (Math.random() < 0.2) {
-                        const chest = chestTypes[Math.floor(Math.random() * chestTypes.length)];
-                        bot.chests++;
-                        if (chest.type === 'bonus' || chest.type === 'mega') {
-                            bot.money += chest.value;
-                        } else if (chest.type === 'penalty') {
-                            bot.money = Math.max(0, bot.money + chest.value);
-                        }
-                    }
-                });
-
-                actualizarRanking();
-            }, speed);
-        }
-
-        // ========== TIMER ==========
-        function iniciarTimer() {
-            if (currentGame.mode !== 'tiempo') return;
-
-            currentGame.timer = setInterval(() => {
-                if (currentGame.paused) return;
-
-                currentGame.timeLeft--;
-                actualizarTimerDisplay();
-
-                if (currentGame.timeLeft <= 0) {
-                    finalizarJuego();
+        // ==================== LOGROS ====================
+        
+        function updateAchievements() {
+            achievementDefinitions.forEach(achievement => {
+                if (!playerStats.achievements.includes(achievement.id) && achievement.condition()) {
+                    playerStats.achievements.push(achievement.id);
+                    showNotification(`🏆 ¡Logro desbloqueado: ${achievement.name}!`, 5000);
+                    saveToLocalStorage();
                 }
-            }, 1000);
+            });
         }
 
-        function actualizarTimerDisplay() {
-            if (currentGame.mode !== 'tiempo') {
-                document.getElementById('gameTimer').textContent = `💰 Objetivo: ${currentGame.targetMoney}`;
-                return;
-            }
-
-            const minutos = Math.floor(currentGame.timeLeft / 60);
-            const segundos = currentGame.timeLeft % 60;
-            document.getElementById('gameTimer').textContent = 
-                `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
-        }
-
-        // ========== ACTUALIZAR UI ==========
-        function actualizarUI() {
-            document.getElementById('playerMoney').textContent = currentGame.player.money;
-            document.getElementById('playerFish').textContent = currentGame.player.fish;
-            document.getElementById('playerChests').textContent = currentGame.player.chests;
-            actualizarTimerDisplay();
-            actualizarRanking();
-        }
-
-        function actualizarRanking() {
-            const todos = [currentGame.player, ...currentGame.bots];
-            todos.sort((a, b) => b.money - a.money);
-
-            const tbody = document.getElementById('rankingBody');
-            tbody.innerHTML = todos.map((p, i) => `
-                <tr ${p.name === 'TÚ' ? 'class="winner"' : ''}>
-                    <td>${i + 1}º</td>
-                    <td>${p.name}</td>
-                    <td>${p.money}</td>
-                    <td>${p.fish}</td>
-                </tr>
-            `).join('');
-        }
-
-        // ========== CONTROL DE JUEGO ==========
-        function pausarJuego(e) {
-            // e may be undefined if called programmatically; manejar con seguridad
-            currentGame.paused = !currentGame.paused;
-            const btn = e && e.target ? e.target : document.querySelector('.action-buttons .btn.btn-secondary');
-            if (btn) {
-                btn.textContent = currentGame.paused ? '▶️ Reanudar' : '⏸ Pausar';
-            }
-        }
-
-        function abandonarJuego() {
-            if (!confirm('¿Seguro que quieres abandonar la partida?')) return;
-            
-            currentGame.active = false;
-            clearInterval(currentGame.timer);
-            clearInterval(currentGame.botsInterval);
-            showScreen('mainMenu');
-        }
-
-        function verificarFinJuego() {
-            if (currentGame.mode === 'dinero' && currentGame.player.money >= currentGame.targetMoney) {
-                finalizarJuego();
-            }
-        }
-
-        function finalizarJuego() {
-            currentGame.active = false;
-            clearInterval(currentGame.timer);
-            clearInterval(currentGame.botsInterval);
-
-            // Calcular resultados
-            const todos = [currentGame.player, ...currentGame.bots];
-            todos.sort((a, b) => b.money - a.money);
-
-            const ganador = todos[0];
-            const posicionJugador = todos.findIndex(p => p.name === 'TÚ') + 1;
-
-            // Actualizar estadísticas
-            gameData.playerStats.totalGames++;
-            if (ganador.name === 'TÚ') {
-                gameData.playerStats.totalWins++;
-            }
-            guardarDatosLocalStorage();
-
-            // Mostrar resultados
-            const summary = document.getElementById('resultsSummary');
-            if (ganador.name === 'TÚ') {
-                summary.innerHTML = '🎉 ¡VICTORIA! 🎉<br>¡Has ganado la partida!';
-            } else {
-                summary.innerHTML = `📊 Posición Final: ${posicionJugador}º<br>${ganador.name} ha ganado`;
-            }
-
-            const tbody = document.getElementById('finalRankingBody');
-            tbody.innerHTML = todos.map((p, i) => `
-                <tr ${i === 0 ? 'class="winner"' : ''}>
-                    <td>${i + 1}º ${i === 0 ? '🏆' : ''}</td>
-                    <td>${p.name}</td>
-                    <td>${p.money}</td>
-                    <td>${p.fish}</td>
-                    <td>${p.chests}</td>
-                </tr>
-            `).join('');
-
-            verificarLogros();
-            showScreen('resultsScreen');
-        }
-
-        // ========== LOGROS ==========
-        function verificarLogros() {
-            const achievements = gameData.achievements;
-
-            // Primer pez
-            if (!achievements[0].unlocked && gameData.playerStats.totalFish >= 1) {
-                achievements[0].unlocked = true;
-                mostrarNotificacionLogro(achievements[0]);
-            }
-
-            // Pez legendario
-            if (!achievements[1].unlocked && currentGame.player.fish > 0) {
-                // Verificar si pescó legendario (simplificado)
-                if (Math.random() < 0.1) achievements[1].unlocked = true;
-            }
-
-            // Primer cofre
-            if (!achievements[2].unlocked && gameData.playerStats.totalChests >= 1) {
-                achievements[2].unlocked = true;
-                mostrarNotificacionLogro(achievements[2]);
-            }
-
-            // 100 preguntas correctas
-            if (!achievements[3].unlocked && gameData.playerStats.totalCorrect >= 100) {
-                achievements[3].unlocked = true;
-                mostrarNotificacionLogro(achievements[3]);
-            }
-
-            // Primera victoria
-            if (!achievements[4].unlocked && gameData.playerStats.totalWins >= 1) {
-                achievements[4].unlocked = true;
-                mostrarNotificacionLogro(achievements[4]);
-            }
-
-            // Millonario
-            if (!achievements[5].unlocked && gameData.playerStats.totalMoney >= 1000) {
-                achievements[5].unlocked = true;
-                mostrarNotificacionLogro(achievements[5]);
-            }
-
-            guardarDatosLocalStorage();
-        }
-
-        function mostrarNotificacionLogro(logro) {
-            // Crear notificación temporal
-            const notif = document.createElement('div');
-            notif.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #FFD700;
-                border: 4px solid #2C3E50;
-                padding: 20px;
-                box-shadow: 6px 6px 0 #2C3E50;
-                z-index: 9999;
-                animation: slideIn 0.5s;
-                max-width: 300px;
-            `;
-            notif.innerHTML = `
-                <div style="font-size: 32px; text-align: center;">${logro.icon}</div>
-                <div style="font-weight: bold; text-align: center; margin: 10px 0;">¡LOGRO DESBLOQUEADO!</div>
-                <div style="text-align: center;">${logro.name}</div>
-                <div style="font-size: 12px; color: #7F8C8D; text-align: center; margin-top: 5px;">${logro.desc}</div>
-            `;
-            document.body.appendChild(notif);
-
-            setTimeout(() => {
-                notif.style.animation = 'slideOut 0.5s';
-                setTimeout(() => notif.remove(), 500);
-            }, 3000);
-        }
-
-        function actualizarLogros() {
+        function updateAchievementsScreen() {
             const container = document.getElementById('achievementsList');
-            container.innerHTML = gameData.achievements.map(a => `
-                <div class="achievement ${a.unlocked ? 'unlocked' : 'locked'}">
-                    <div class="achievement-icon">${a.icon}</div>
-                    <div>
-                        <strong>${a.name}</strong>
-                        <div style="font-size: 12px; color: #7F8C8D;">${a.desc}</div>
-                        ${a.unlocked ? '<div style="color: #27AE60; font-weight: bold; margin-top: 5px;">✓ DESBLOQUEADO</div>' : ''}
-                    </div>
-                </div>
-            `).join('');
+            container.innerHTML = '';
+
+            achievementDefinitions.forEach(achievement => {
+                const unlocked = playerStats.achievements.includes(achievement.id);
+                const div = document.createElement('div');
+                div.className = 'achievement' + (unlocked ? ' unlocked' : '');
+                div.innerHTML = `
+                    <div class="achievement-icon">${unlocked ? achievement.icon : '🔒'}</div>
+                    <div style="font-size: 14px; font-weight: bold;">${achievement.name}</div>
+                    <div style="font-size: 12px; margin-top: 5px;">${achievement.desc}</div>
+                `;
+                container.appendChild(div);
+            });
         }
 
-        // ========== PROGRESO ==========
-        function actualizarStatsDisplay() {
-            const stats = gameData.playerStats;
-            document.getElementById('totalMoney').textContent = stats.totalMoney;
-            document.getElementById('totalFish').textContent = stats.totalFish;
-            document.getElementById('totalChests').textContent = stats.totalChests;
-            document.getElementById('totalCorrect').textContent = stats.totalCorrect;
-            document.getElementById('totalIncorrect').textContent = stats.totalIncorrect;
-            document.getElementById('totalGames').textContent = stats.totalGames;
-            document.getElementById('totalWins').textContent = stats.totalWins;
+        // ==================== PROGRESO ====================
+        
+        function updateProgressScreen() {
+            document.getElementById('totalMoney').textContent = playerStats.totalMoney;
+            document.getElementById('totalFish').textContent = playerStats.totalFish;
+            document.getElementById('totalChests').textContent = playerStats.totalChests;
+            document.getElementById('totalQuestions').textContent = playerStats.totalCorrectAnswers;
+            document.getElementById('totalGames').textContent = playerStats.totalGames;
+            
+            const winRate = playerStats.totalGames > 0 
+                ? Math.round((playerStats.gamesWon / playerStats.totalGames) * 100) 
+                : 0;
+            document.getElementById('winRate').textContent = winRate + '%';
         }
 
-        function guardarProgreso() {
+        function saveProgress() {
             const progressData = {
                 version: '1.0',
-                fecha: new Date().toISOString(),
-                temarios: gameData.temarios,
-                playerStats: gameData.playerStats,
-                achievements: gameData.achievements
+                timestamp: new Date().toISOString(),
+                temarios: temarios,
+                playerStats: playerStats
             };
 
             const dataStr = JSON.stringify(progressData, null, 2);
@@ -1808,13 +1938,12 @@
             const url = URL.createObjectURL(dataBlob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'pescaestudio_progreso.json';
+            link.download = 'progreso_pesca_conocimiento.json';
             link.click();
-            URL.revokeObjectURL(url);
-            alert('✅ Progreso guardado correctamente');
+            showNotification('💾 Progreso guardado exitosamente');
         }
 
-        function cargarProgreso(event) {
+        function loadProgress(event) {
             const file = event.target.files[0];
             if (!file) return;
 
@@ -1824,189 +1953,176 @@
                     const data = JSON.parse(e.target.result);
                     
                     if (!data.version || !data.temarios || !data.playerStats) {
-                        throw new Error('Formato inválido');
+                        throw new Error('Formato de archivo inválido');
                     }
 
-                    gameData.temarios = data.temarios || [];
-                    gameData.playerStats = data.playerStats || {
-                        totalMoney: 0,
-                        totalFish: 0,
-                        totalChests: 0,
-                        totalCorrect: 0,
-                        totalIncorrect: 0,
-                        totalGames: 0,
-                        totalWins: 0
-                    };
-                    gameData.achievements = data.achievements || gameData.achievements;
+                    temarios = data.temarios;
+                    playerStats = data.playerStats;
 
-                    guardarDatosLocalStorage();
-                    actualizarStatsDisplay();
-                    alert('✅ Progreso cargado correctamente');
-                } catch (err) {
-                    alert('❌ Error al cargar progreso: archivo no válido');
+                    saveToLocalStorage();
+                    updateProgressScreen();
+                    updateAchievementsScreen();
+                    loadTemariosList();
+                    showNotification('✅ Progreso cargado exitosamente');
+                } catch (error) {
+                    alert('Error al cargar progreso: ' + error.message);
                 }
             };
             reader.readAsText(file);
             event.target.value = '';
         }
 
-        function resetearProgreso() {
-            if (!confirm('¿Seguro que quieres resetear todo tu progreso? Esta acción no se puede deshacer.')) return;
-
-            gameData.playerStats = {
-                totalMoney: 0,
-                totalFish: 0,
-                totalChests: 0,
-                totalCorrect: 0,
-                totalIncorrect: 0,
-                totalGames: 0,
-                totalWins: 0
-            };
-            gameData.achievements.forEach(a => a.unlocked = false);
-
-            guardarDatosLocalStorage();
-            actualizarStatsDisplay();
-            actualizarLogros();
-            alert('🗑 Progreso reseteado');
+        // ==================== ALMACENAMIENTO LOCAL ====================
+        
+        function saveToLocalStorage() {
+            localStorage.setItem('pesca_temarios', JSON.stringify(temarios));
+            localStorage.setItem('pesca_stats', JSON.stringify(playerStats));
         }
 
-        // ========== LOCALSTORAGE ==========
-        function guardarDatosLocalStorage() {
-            localStorage.setItem('pescaestudio_data', JSON.stringify(gameData));
-        }
+        function loadFromLocalStorage() {
+            const savedTemarios = localStorage.getItem('pesca_temarios');
+            const savedStats = localStorage.getItem('pesca_stats');
 
-        function cargarDatosLocalStorage() {
-            const saved = localStorage.getItem('pescaestudio_data');
-            if (saved) {
+            if (savedTemarios) {
                 try {
-                    const data = JSON.parse(saved);
-                    gameData.temarios = data.temarios || [];
-                    gameData.playerStats = data.playerStats || gameData.playerStats;
-                    gameData.achievements = data.achievements || gameData.achievements;
-                } catch (err) {
-                    console.error('Error cargando datos:', err);
+                    temarios = JSON.parse(savedTemarios);
+                } catch (e) {
+                    console.error('Error al cargar temarios:', e);
+                }
+            }
+
+            if (savedStats) {
+                try {
+                    playerStats = JSON.parse(savedStats);
+                } catch (e) {
+                    console.error('Error al cargar estadísticas:', e);
                 }
             }
         }
 
-        // ========== DATOS DE EJEMPLO ==========
-        function cargarDatosEjemplo() {
-            if (gameData.temarios.length > 0) return; // Ya hay datos
-
-            gameData.temarios = [
+        // ==================== DATOS DE EJEMPLO ====================
+        
+        function loadExampleTemarios() {
+            temarios = [
                 {
-                    nombre: 'Historia Universal',
+                    id: 1,
+                    name: "Historia Universal",
+                    description: "Temario básico de historia mundial",
                     puntos: [
                         {
-                            nombre: 'Edad Media',
+                            id: 11,
+                            name: "Edad Antigua",
                             preguntas: [
                                 {
-                                    tipo: 'multiple',
-                                    pregunta: '¿En qué año cayó el Imperio Romano de Occidente?',
-                                    opciones: ['476 d.C.', '1453 d.C.', '330 d.C.', '800 d.C.'],
+                                    id: 111,
+                                    tipo: "multiple",
+                                    texto: "¿En qué año cayó el Imperio Romano de Occidente?",
+                                    opciones: ["476 d.C.", "410 d.C.", "500 d.C.", "395 d.C."],
+                                    correcta: 0
+                                },
+                                {
+                                    id: 112,
+                                    tipo: "truefalse",
+                                    texto: "Cleopatra fue la última reina del Antiguo Egipto",
+                                    correcta: true
+                                },
+                                {
+                                    id: 113,
+                                    tipo: "multiple",
+                                    texto: "¿Quién fue el primer emperador de Roma?",
+                                    opciones: ["Julio César", "Augusto", "Nerón", "Trajano"],
                                     correcta: 1
                                 },
                                 {
-                                    tipo: 'boolean',
-                                    pregunta: 'La Edad Media comenzó con la caída de Roma',
-                                    correcta: 'true'
-                                },
-                                {
-                                    tipo: 'multiple',
-                                    pregunta: '¿Quién fue coronado emperador en el año 800?',
-                                    opciones: ['Napoleón', 'Carlomagno', 'Julio César', 'Constantino'],
-                                    correcta: 2
-                                },
-                                {
-                                    tipo: 'boolean',
-                                    pregunta: 'El feudalismo fue el sistema económico predominante en la Edad Media',
-                                    correcta: 'true'
+                                    id: 114,
+                                    tipo: "truefalse",
+                                    texto: "Las pirámides de Giza fueron construidas por esclavos",
+                                    correcta: false
                                 }
                             ]
                         },
                         {
-                            nombre: 'Edad Moderna',
+                            id: 12,
+                            name: "Edad Media",
                             preguntas: [
                                 {
-                                    tipo: 'multiple',
-                                    pregunta: '¿En qué año descubrió Colón América?',
-                                    opciones: ['1492', '1500', '1453', '1520'],
+                                    id: 121,
+                                    tipo: "multiple",
+                                    texto: "¿En qué año comenzaron las Cruzadas?",
+                                    opciones: ["1066", "1095", "1215", "1348"],
                                     correcta: 1
                                 },
                                 {
-                                    tipo: 'boolean',
-                                    pregunta: 'La Revolución Francesa ocurrió en el siglo XVIII',
-                                    correcta: 'true'
+                                    id: 122,
+                                    tipo: "truefalse",
+                                    texto: "La peste negra mató aproximadamente a un tercio de la población europea",
+                                    correcta: true
                                 },
                                 {
-                                    tipo: 'multiple',
-                                    pregunta: '¿Quién inventó la imprenta moderna?',
-                                    opciones: ['Leonardo da Vinci', 'Johannes Gutenberg', 'Isaac Newton', 'Galileo Galilei'],
+                                    id: 123,
+                                    tipo: "multiple",
+                                    texto: "¿Quién escribió 'La Divina Comedia'?",
+                                    opciones: ["Petrarca", "Boccaccio", "Dante Alighieri", "Chaucer"],
                                     correcta: 2
-                                },
-                                {
-                                    tipo: 'boolean',
-                                    pregunta: 'El Renacimiento se originó en Italia',
-                                    correcta: 'true'
                                 }
                             ]
                         }
                     ]
                 },
                 {
-                    nombre: 'Ciencias Naturales',
+                    id: 2,
+                    name: "Ciencias Naturales",
+                    description: "Conocimientos básicos de biología y química",
                     puntos: [
                         {
-                            nombre: 'Biología',
+                            id: 21,
+                            name: "Biología Celular",
                             preguntas: [
                                 {
-                                    tipo: 'multiple',
-                                    pregunta: '¿Cuál es la unidad básica de la vida?',
-                                    opciones: ['Átomo', 'Célula', 'Tejido', 'Órgano'],
-                                    correcta: 2
+                                    id: 211,
+                                    tipo: "multiple",
+                                    texto: "¿Cuál es la función principal de las mitocondrias?",
+                                    opciones: ["Síntesis de proteínas", "Producción de energía", "Fotosíntesis", "Digestión celular"],
+                                    correcta: 1
                                 },
                                 {
-                                    tipo: 'boolean',
-                                    pregunta: 'El ADN contiene la información genética',
-                                    correcta: 'true'
+                                    id: 212,
+                                    tipo: "truefalse",
+                                    texto: "Las células vegetales tienen pared celular pero las animales no",
+                                    correcta: true
                                 },
                                 {
-                                    tipo: 'multiple',
-                                    pregunta: '¿Qué proceso realizan las plantas para producir su alimento?',
-                                    opciones: ['Respiración', 'Fotosíntesis', 'Fermentación', 'Digestión'],
-                                    correcta: 2
-                                },
-                                {
-                                    tipo: 'boolean',
-                                    pregunta: 'Los hongos son plantas',
-                                    correcta: 'false'
+                                    id: 213,
+                                    tipo: "multiple",
+                                    texto: "¿Qué orgánulo contiene el material genético?",
+                                    opciones: ["Núcleo", "Retículo endoplasmático", "Aparato de Golgi", "Lisosoma"],
+                                    correcta: 0
                                 }
                             ]
                         },
                         {
-                            nombre: 'Física',
+                            id: 22,
+                            name: "Química Básica",
                             preguntas: [
                                 {
-                                    tipo: 'multiple',
-                                    pregunta: '¿Cuál es la velocidad de la luz en el vacío?',
-                                    opciones: ['300,000 km/s', '150,000 km/s', '500,000 km/s', '100,000 km/s'],
+                                    id: 221,
+                                    tipo: "truefalse",
+                                    texto: "El agua está compuesta por dos átomos de hidrógeno y uno de oxígeno",
+                                    correcta: true
+                                },
+                                {
+                                    id: 222,
+                                    tipo: "multiple",
+                                    texto: "¿Cuál es el símbolo químico del oro?",
+                                    opciones: ["Go", "Au", "Ag", "Or"],
                                     correcta: 1
                                 },
                                 {
-                                    tipo: 'boolean',
-                                    pregunta: 'La gravedad es una fuerza de atracción',
-                                    correcta: 'true'
-                                },
-                                {
-                                    tipo: 'multiple',
-                                    pregunta: '¿Quién formuló la teoría de la relatividad?',
-                                    opciones: ['Isaac Newton', 'Albert Einstein', 'Galileo Galilei', 'Stephen Hawking'],
+                                    id: 223,
+                                    tipo: "multiple",
+                                    texto: "¿Qué tipo de enlace se forma cuando se comparten electrones?",
+                                    opciones: ["Iónico", "Metálico", "Covalente", "Van der Waals"],
                                     correcta: 2
-                                },
-                                {
-                                    tipo: 'boolean',
-                                    pregunta: 'El sonido viaja más rápido que la luz',
-                                    correcta: 'false'
                                 }
                             ]
                         }
@@ -2014,22 +2130,9 @@
                 }
             ];
 
-            guardarDatosLocalStorage();
+            saveToLocalStorage();
+            showNotification('✅ Temarios de ejemplo cargados');
         }
-
-        // ========== ANIMACIONES CSS ADICIONALES ==========
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(400px); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOut {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(400px); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
