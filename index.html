@@ -480,6 +480,187 @@
             background: #cd7f32;
             color: #000;
         }
+
+        /* ==================== SISTEMA DE RAREZAS ==================== */
+        .rarity-comun { color: #95a5a6; text-shadow: 0 0 5px #95a5a6; }
+        .rarity-no-comun { color: #3498db; text-shadow: 0 0 10px #3498db; }
+        .rarity-raro { color: #9b59b6; text-shadow: 0 0 15px #9b59b6; animation: pulseRare 1s infinite; }
+        .rarity-epico { color: #e67e22; text-shadow: 0 0 20px #e67e22; animation: pulseEpic 1s infinite; }
+        .rarity-legendario { color: #e74c3c; text-shadow: 0 0 25px #e74c3c; animation: pulseLegendary 0.8s infinite; }
+        .rarity-mitico { color: #f39c12; text-shadow: 0 0 30px #f39c12; animation: pulseMythic 0.6s infinite; }
+        .rarity-secreto { 
+            background: linear-gradient(45deg, #FFD700, #00FFFF, #FFD700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulseSecret 0.5s infinite, rainbow 3s linear infinite;
+        }
+
+        @keyframes pulseRare {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes pulseEpic {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.08) rotate(2deg); }
+        }
+
+        @keyframes pulseLegendary {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.12); filter: brightness(1.3); }
+        }
+
+        @keyframes pulseMythic {
+            0%, 100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+            50% { transform: scale(1.15) rotate(5deg); filter: brightness(1.5); }
+        }
+
+        @keyframes pulseSecret {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(10deg); }
+        }
+
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        /* ==================== SISTEMA DE COMBO ==================== */
+        .combo-display {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 4px solid var(--color-warning);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 999;
+            animation: comboAppear 0.3s;
+        }
+
+        .combo-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--color-warning);
+            text-align: center;
+            animation: comboCount 0.5s;
+        }
+
+        @keyframes comboAppear {
+            from { transform: translateX(300px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes comboCount {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        /* ==================== BOOSTS ACTIVOS ==================== */
+        .boosts-panel {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 4px solid var(--color-success);
+            padding: 15px;
+            border-radius: 10px;
+            z-index: 999;
+            min-width: 200px;
+        }
+
+        .boost-item {
+            background: rgba(46, 204, 113, 0.2);
+            border: 2px solid var(--color-success);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            animation: boostPulse 1s infinite;
+        }
+
+        @keyframes boostPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(46, 204, 113, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(46, 204, 113, 0.8); }
+        }
+
+        /* ==================== EFECTOS DE PESCA ==================== */
+        .fish-catch-effect {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 120px;
+            animation: fishCatch 1s;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @keyframes fishCatch {
+            0% { transform: translate(-50%, 100vh) scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.5) rotate(360deg); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(720deg); opacity: 1; }
+        }
+
+        /* ==================== PARTÍCULAS Y EFECTOS ==================== */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        .particle {
+            position: absolute;
+            font-size: 24px;
+            animation: particleFall 3s linear;
+        }
+
+        @keyframes particleFall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* ==================== COLECCIÓN DE PECES ==================== */
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .collection-fish {
+            background: #34495e;
+            border: 3px solid #000;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .collection-fish:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .collection-fish.locked {
+            opacity: 0.3;
+            filter: grayscale(100%);
+        }
+
+        .fish-emoji {
+            font-size: 40px;
+            margin-bottom: 5px;
+        }
+
+        .fish-count {
+            font-size: 12px;
+            color: var(--color-warning);
+        }
     </style>
 </head>
 <body>
@@ -492,6 +673,7 @@
                 <button class="btn btn-success" onclick="showScreen('gameConfig')">🎮 JUGAR</button>
                 <button class="btn btn-warning" onclick="showScreen('temariosScreen')">📚 GESTIONAR TEMARIOS</button>
                 <button class="btn btn-primary" onclick="showScreen('progressScreen')">📊 PROGRESO</button>
+                <button class="btn" onclick="showScreen('collectionScreen')">🐠 COLECCIÓN</button>
                 <button class="btn" onclick="showScreen('achievementsScreen')">🏆 LOGROS</button>
             </div>
         </div>
@@ -567,12 +749,29 @@
 
     <!-- ==================== PANTALLA DE JUEGO ==================== -->
     <div id="gameScreen" class="screen">
+        <!-- Panel de boosts activos -->
+        <div id="boostsPanel" class="boosts-panel" style="display: none;">
+            <h4 style="margin: 0 0 10px 0; color: var(--color-success);">⚡ BOOSTS ACTIVOS</h4>
+            <div id="boostsContainer"></div>
+        </div>
+
+        <!-- Display de combo -->
+        <div id="comboDisplay" class="combo-display" style="display: none;">
+            <div style="font-size: 14px; text-align: center; margin-bottom: 5px;">COMBO</div>
+            <div class="combo-number" id="comboNumber">0</div>
+            <div style="font-size: 12px; text-align: center; margin-top: 5px; color: var(--color-warning);">🔥 ¡RACHA!</div>
+        </div>
+
+        <!-- Contenedor de partículas -->
+        <div id="particles" class="particles"></div>
+
         <div class="game-area">
             <div class="game-header">
                 <div class="player-stats">
                     <div class="stat-item">💰 <span id="playerMoney">0</span></div>
                     <div class="stat-item">🐟 <span id="fishCaught">0</span></div>
                     <div class="stat-item">📝 <span id="questionProgress">0/0</span></div>
+                    <div class="stat-item">🔥 <span id="comboStat">x0</span></div>
                     <div class="stat-item">⏱️ <span id="gameTimer">5:00</span></div>
                 </div>
                 <button class="btn btn-small btn-danger" onclick="endGame()">Terminar Partida</button>
@@ -805,6 +1004,29 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
         </div>
     </div>
 
+    <!-- ==================== COLECCIÓN DE PECES ==================== -->
+    <div id="collectionScreen" class="screen">
+        <div class="container">
+            <h2 style="text-align: center; color: var(--color-warning); margin-bottom: 30px;">🐠 COLECCIÓN DE PECES</h2>
+            
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div class="stats-grid" style="max-width: 600px; margin: 0 auto;">
+                    <div class="stat-box">
+                        <div class="stat-value" id="uniqueFishCaught">0</div>
+                        <div class="stat-label">Especies Descubiertas</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="totalFishTypes">103</div>
+                        <div class="stat-label">Especies Totales</div>
+                    </div>
+                </div>
+                <button class="btn btn-danger" onclick="showScreen('mainMenu')" style="margin-top: 20px;">🔙 VOLVER</button>
+            </div>
+
+            <div id="fishCollection" class="collection-grid"></div>
+        </div>
+    </div>
+
     <!-- ==================== LOGROS ==================== -->
     <div id="achievementsScreen" class="screen">
         <div class="container">
@@ -864,33 +1086,244 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
                 money: 0,
                 fishCaught: 0,
                 chestsOpened: 0,
-                correctAnswers: 0
+                correctAnswers: 0,
+                combo: 0, // racha de respuestas correctas consecutivas
+                maxCombo: 0, // mejor racha
+                collection: {} // peces capturados {fishName: count}
             },
             bots: [],
-            currentQuestion: null
+            currentQuestion: null,
+            // Sistema de boosts activos
+            activeBoosts: {
+                luckMultiplier: 1,
+                moneyMultiplier: 1,
+                weightMultiplier: 1,
+                luckRemaining: 0,
+                moneyRemaining: 0,
+                weightRemaining: 0
+            }
         };
 
         // Variables de edición
         let editingTemarioId = null;
         let editingPuntoId = null;
 
-        // Tipos de peces con probabilidades y valores
+        // Tipos de peces con probabilidades y valores (sistema de rarezas mejorado)
         const fishTypes = [
-            { name: 'Sardina', emoji: '🐟', rarity: 'común', minValue: 10, maxValue: 30, weight: 50 },
-            { name: 'Trucha', emoji: '🐠', rarity: 'común', minValue: 20, maxValue: 50, weight: 30 },
-            { name: 'Salmón', emoji: '🎣', rarity: 'poco común', minValue: 40, maxValue: 80, weight: 15 },
-            { name: 'Atún', emoji: '🐡', rarity: 'raro', minValue: 70, maxValue: 120, weight: 8 },
-            { name: 'Pez Espada', emoji: '🗡️', rarity: 'épico', minValue: 100, maxValue: 200, weight: 4 },
-            { name: 'Tiburón', emoji: '🦈', rarity: 'legendario', minValue: 200, maxValue: 400, weight: 2 },
-            { name: 'Ballena', emoji: '🐋', rarity: 'mítico', minValue: 400, maxValue: 800, weight: 1 }
+            // COMÚN (50%) - 30 especies
+            { name: 'Sardina', emoji: '🐟', rarity: 'común', minValue: 10, maxValue: 25, minWeight: 0.1, maxWeight: 0.5, weight: 8, color: '#95a5a6' },
+            { name: 'Anchoa', emoji: '🐠', rarity: 'común', minValue: 15, maxValue: 30, minWeight: 0.1, maxWeight: 0.4, weight: 7, color: '#95a5a6' },
+            { name: 'Arenque', emoji: '🐡', rarity: 'común', minValue: 12, maxValue: 28, minWeight: 0.2, maxWeight: 0.6, weight: 6, color: '#95a5a6' },
+            { name: 'Caballa', emoji: '🐟', rarity: 'común', minValue: 14, maxValue: 26, minWeight: 0.2, maxWeight: 0.5, weight: 6, color: '#95a5a6' },
+            { name: 'Boquerón', emoji: '🐠', rarity: 'común', minValue: 11, maxValue: 24, minWeight: 0.1, maxWeight: 0.3, weight: 5, color: '#95a5a6' },
+            { name: 'Jurel', emoji: '🐡', rarity: 'común', minValue: 13, maxValue: 27, minWeight: 0.3, maxWeight: 0.7, weight: 5, color: '#95a5a6' },
+            { name: 'Salmonete', emoji: '🐟', rarity: 'común', minValue: 16, maxValue: 29, minWeight: 0.2, maxWeight: 0.6, weight: 4, color: '#95a5a6' },
+            { name: 'Besugo', emoji: '🐠', rarity: 'común', minValue: 15, maxValue: 28, minWeight: 0.3, maxWeight: 0.8, weight: 4, color: '#95a5a6' },
+            { name: 'Breca', emoji: '🐡', rarity: 'común', minValue: 12, maxValue: 25, minWeight: 0.2, maxWeight: 0.5, weight: 4, color: '#95a5a6' },
+            { name: 'Mojarra', emoji: '🐟', rarity: 'común', minValue: 14, maxValue: 27, minWeight: 0.2, maxWeight: 0.6, weight: 4, color: '#95a5a6' },
+            { name: 'Dorada Común', emoji: '🐠', rarity: 'común', minValue: 18, maxValue: 30, minWeight: 0.4, maxWeight: 0.9, weight: 3, color: '#95a5a6' },
+            { name: 'Corvina Común', emoji: '🐡', rarity: 'común', minValue: 17, maxValue: 29, minWeight: 0.3, maxWeight: 0.8, weight: 3, color: '#95a5a6' },
+            { name: 'Lenguado Común', emoji: '🐟', rarity: 'común', minValue: 16, maxValue: 28, minWeight: 0.3, maxWeight: 0.7, weight: 3, color: '#95a5a6' },
+            { name: 'Platija', emoji: '🐠', rarity: 'común', minValue: 15, maxValue: 27, minWeight: 0.3, maxWeight: 0.8, weight: 3, color: '#95a5a6' },
+            { name: 'Gallo', emoji: '🐡', rarity: 'común', minValue: 14, maxValue: 26, minWeight: 0.2, maxWeight: 0.6, weight: 3, color: '#95a5a6' },
+            { name: 'Faneca', emoji: '🐟', rarity: 'común', minValue: 13, maxValue: 25, minWeight: 0.2, maxWeight: 0.5, weight: 2, color: '#95a5a6' },
+            { name: 'Bacalao Pequeño', emoji: '🐠', rarity: 'común', minValue: 19, maxValue: 30, minWeight: 0.4, maxWeight: 1.0, weight: 2, color: '#95a5a6' },
+            { name: 'Merluza Pequeña', emoji: '🐡', rarity: 'común', minValue: 18, maxValue: 29, minWeight: 0.3, maxWeight: 0.9, weight: 2, color: '#95a5a6' },
+            { name: 'Lisa', emoji: '🐟', rarity: 'común', minValue: 16, maxValue: 28, minWeight: 0.3, maxWeight: 0.8, weight: 2, color: '#95a5a6' },
+            { name: 'Boga', emoji: '🐠', rarity: 'común', minValue: 15, maxValue: 27, minWeight: 0.3, maxWeight: 0.7, weight: 2, color: '#95a5a6' },
+            { name: 'Carpa Común', emoji: '🐡', rarity: 'común', minValue: 17, maxValue: 29, minWeight: 0.4, maxWeight: 1.0, weight: 2, color: '#95a5a6' },
+            { name: 'Tenca', emoji: '🐟', rarity: 'común', minValue: 14, maxValue: 26, minWeight: 0.3, maxWeight: 0.8, weight: 2, color: '#95a5a6' },
+            { name: 'Barbo', emoji: '🐠', rarity: 'común', minValue: 13, maxValue: 25, minWeight: 0.2, maxWeight: 0.6, weight: 2, color: '#95a5a6' },
+            { name: 'Gobio', emoji: '🐡', rarity: 'común', minValue: 11, maxValue: 23, minWeight: 0.1, maxWeight: 0.4, weight: 2, color: '#95a5a6' },
+            { name: 'Perca Sol', emoji: '🐟', rarity: 'común', minValue: 12, maxValue: 24, minWeight: 0.2, maxWeight: 0.5, weight: 2, color: '#95a5a6' },
+            { name: 'Espinoso', emoji: '🐠', rarity: 'común', minValue: 10, maxValue: 22, minWeight: 0.1, maxWeight: 0.3, weight: 1, color: '#95a5a6' },
+            { name: 'Cacho', emoji: '🐡', rarity: 'común', minValue: 11, maxValue: 23, minWeight: 0.1, maxWeight: 0.4, weight: 1, color: '#95a5a6' },
+            { name: 'Cachuelo', emoji: '🐟', rarity: 'común', minValue: 10, maxValue: 22, minWeight: 0.1, maxWeight: 0.3, weight: 1, color: '#95a5a6' },
+            { name: 'Fartet', emoji: '🐠', rarity: 'común', minValue: 10, maxValue: 21, minWeight: 0.05, maxWeight: 0.2, weight: 1, color: '#95a5a6' },
+            { name: 'Samarugo', emoji: '🐡', rarity: 'común', minValue: 10, maxValue: 21, minWeight: 0.05, maxWeight: 0.2, weight: 1, color: '#95a5a6' },
+            
+            // NO COMÚN (30%) - 30 especies
+            { name: 'Trucha', emoji: '🎣', rarity: 'no común', minValue: 30, maxValue: 60, minWeight: 0.5, maxWeight: 1.2, weight: 4, color: '#3498db' },
+            { name: 'Carpa Koi', emoji: '🐠', rarity: 'no común', minValue: 35, maxValue: 65, minWeight: 0.6, maxWeight: 1.5, weight: 4, color: '#3498db' },
+            { name: 'Lucio', emoji: '🐟', rarity: 'no común', minValue: 40, maxValue: 70, minWeight: 0.7, maxWeight: 1.8, weight: 3, color: '#3498db' },
+            { name: 'Rodaballo', emoji: '🐡', rarity: 'no común', minValue: 38, maxValue: 68, minWeight: 0.8, maxWeight: 2.0, weight: 3, color: '#3498db' },
+            { name: 'Lubina Común', emoji: '🎣', rarity: 'no común', minValue: 36, maxValue: 66, minWeight: 0.6, maxWeight: 1.6, weight: 3, color: '#3498db' },
+            { name: 'Dorada Real', emoji: '🐠', rarity: 'no común', minValue: 34, maxValue: 64, minWeight: 0.7, maxWeight: 1.7, weight: 3, color: '#3498db' },
+            { name: 'Merluza', emoji: '🐟', rarity: 'no común', minValue: 37, maxValue: 67, minWeight: 0.8, maxWeight: 1.9, weight: 2, color: '#3498db' },
+            { name: 'Bacalao', emoji: '🐡', rarity: 'no común', minValue: 39, maxValue: 69, minWeight: 0.9, maxWeight: 2.2, weight: 2, color: '#3498db' },
+            { name: 'Rape', emoji: '🎣', rarity: 'no común', minValue: 41, maxValue: 70, minWeight: 1.0, maxWeight: 2.5, weight: 2, color: '#3498db' },
+            { name: 'Gallineta', emoji: '🐠', rarity: 'no común', minValue: 33, maxValue: 63, minWeight: 0.6, maxWeight: 1.5, weight: 2, color: '#3498db' },
+            { name: 'Congrio', emoji: '🐟', rarity: 'no común', minValue: 35, maxValue: 65, minWeight: 0.7, maxWeight: 1.8, weight: 2, color: '#3498db' },
+            { name: 'Mero Común', emoji: '🐡', rarity: 'no común', minValue: 42, maxValue: 70, minWeight: 1.2, maxWeight: 2.8, weight: 2, color: '#3498db' },
+            { name: 'Corvina', emoji: '🎣', rarity: 'no común', minValue: 36, maxValue: 66, minWeight: 0.8, maxWeight: 1.9, weight: 2, color: '#3498db' },
+            { name: 'Sama', emoji: '🐠', rarity: 'no común', minValue: 34, maxValue: 64, minWeight: 0.7, maxWeight: 1.7, weight: 2, color: '#3498db' },
+            { name: 'Pargo', emoji: '🐟', rarity: 'no común', minValue: 35, maxValue: 65, minWeight: 0.8, maxWeight: 1.8, weight: 2, color: '#3498db' },
+            { name: 'Sargo', emoji: '🐡', rarity: 'no común', minValue: 31, maxValue: 61, minWeight: 0.6, maxWeight: 1.4, weight: 2, color: '#3498db' },
+            { name: 'Dentón', emoji: '🎣', rarity: 'no común', minValue: 38, maxValue: 68, minWeight: 0.9, maxWeight: 2.1, weight: 1, color: '#3498db' },
+            { name: 'Palometa', emoji: '🐠', rarity: 'no común', minValue: 32, maxValue: 62, minWeight: 0.7, maxWeight: 1.6, weight: 1, color: '#3498db' },
+            { name: 'Pez Limón', emoji: '🐟', rarity: 'no común', minValue: 33, maxValue: 63, minWeight: 0.6, maxWeight: 1.5, weight: 1, color: '#3498db' },
+            { name: 'Salpa', emoji: '🐡', rarity: 'no común', minValue: 30, maxValue: 60, minWeight: 0.5, maxWeight: 1.3, weight: 1, color: '#3498db' },
+            { name: 'Oblada', emoji: '🎣', rarity: 'no común', minValue: 31, maxValue: 61, minWeight: 0.6, maxWeight: 1.4, weight: 1, color: '#3498db' },
+            { name: 'Chopa', emoji: '🐠', rarity: 'no común', minValue: 32, maxValue: 62, minWeight: 0.6, maxWeight: 1.5, weight: 1, color: '#3498db' },
+            { name: 'Sargo Picudo', emoji: '🐟', rarity: 'no común', minValue: 33, maxValue: 63, minWeight: 0.7, maxWeight: 1.6, weight: 1, color: '#3498db' },
+            { name: 'Herrera', emoji: '🐡', rarity: 'no común', minValue: 30, maxValue: 60, minWeight: 0.5, maxWeight: 1.3, weight: 1, color: '#3498db' },
+            { name: 'Boca Negra', emoji: '🎣', rarity: 'no común', minValue: 34, maxValue: 64, minWeight: 0.7, maxWeight: 1.7, weight: 1, color: '#3498db' },
+            { name: 'Raspallón', emoji: '🐠', rarity: 'no común', minValue: 31, maxValue: 61, minWeight: 0.6, maxWeight: 1.4, weight: 1, color: '#3498db' },
+            { name: 'Pejerrey', emoji: '🐟', rarity: 'no común', minValue: 32, maxValue: 62, minWeight: 0.6, maxWeight: 1.5, weight: 1, color: '#3498db' },
+            { name: 'Lenguado Real', emoji: '🐡', rarity: 'no común', minValue: 35, maxValue: 65, minWeight: 0.8, maxWeight: 1.9, weight: 1, color: '#3498db' },
+            { name: 'Gallo Pedro', emoji: '🎣', rarity: 'no común', minValue: 33, maxValue: 63, minWeight: 0.7, maxWeight: 1.6, weight: 1, color: '#3498db' },
+            { name: 'Rombo', emoji: '🐠', rarity: 'no común', minValue: 36, maxValue: 66, minWeight: 0.8, maxWeight: 1.8, weight: 1, color: '#3498db' },
+            
+            // RARO (13%) - 20 especies
+            { name: 'Salmón', emoji: '🎣', rarity: 'raro', minValue: 70, maxValue: 120, minWeight: 1.5, maxWeight: 3.5, weight: 2, color: '#9b59b6' },
+            { name: 'Atún Común', emoji: '🐡', rarity: 'raro', minValue: 80, maxValue: 140, minWeight: 2.0, maxWeight: 4.0, weight: 2, color: '#9b59b6' },
+            { name: 'Lubina Gigante', emoji: '🐠', rarity: 'raro', minValue: 75, maxValue: 130, minWeight: 1.8, maxWeight: 3.8, weight: 2, color: '#9b59b6' },
+            { name: 'Esturión', emoji: '🐟', rarity: 'raro', minValue: 90, maxValue: 150, minWeight: 3.0, maxWeight: 6.0, weight: 1, color: '#9b59b6' },
+            { name: 'Pez Vela', emoji: '⛵', rarity: 'raro', minValue: 85, maxValue: 145, minWeight: 2.5, maxWeight: 5.0, weight: 1, color: '#9b59b6' },
+            { name: 'Siluro', emoji: '🐡', rarity: 'raro', minValue: 78, maxValue: 135, minWeight: 2.2, maxWeight: 4.5, weight: 1, color: '#9b59b6' },
+            { name: 'Barracuda', emoji: '🎣', rarity: 'raro', minValue: 82, maxValue: 138, minWeight: 2.3, maxWeight: 4.8, weight: 1, color: '#9b59b6' },
+            { name: 'Pez Gato Gigante', emoji: '🐠', rarity: 'raro', minValue: 76, maxValue: 132, minWeight: 2.0, maxWeight: 4.2, weight: 1, color: '#9b59b6' },
+            { name: 'Trucha Gigante', emoji: '🐟', rarity: 'raro', minValue: 72, maxValue: 125, minWeight: 1.8, maxWeight: 3.9, weight: 1, color: '#9b59b6' },
+            { name: 'Lucio Gigante', emoji: '🐡', rarity: 'raro', minValue: 74, maxValue: 128, minWeight: 1.9, maxWeight: 4.0, weight: 1, color: '#9b59b6' },
+            { name: 'Mero Gigante', emoji: '🎣', rarity: 'raro', minValue: 88, maxValue: 148, minWeight: 2.8, maxWeight: 5.5, weight: 1, color: '#9b59b6' },
+            { name: 'Pez Napoleón', emoji: '🐠', rarity: 'raro', minValue: 84, maxValue: 142, minWeight: 2.4, maxWeight: 4.9, weight: 1, color: '#9b59b6' },
+            { name: 'Pampano', emoji: '🐟', rarity: 'raro', minValue: 73, maxValue: 126, minWeight: 1.7, maxWeight: 3.7, weight: 1, color: '#9b59b6' },
+            { name: 'Wahoo', emoji: '🐡', rarity: 'raro', minValue: 79, maxValue: 136, minWeight: 2.1, maxWeight: 4.3, weight: 1, color: '#9b59b6' },
+            { name: 'Dorado Marino', emoji: '🎣', rarity: 'raro', minValue: 77, maxValue: 133, minWeight: 2.0, maxWeight: 4.1, weight: 1, color: '#9b59b6' },
+            { name: 'Pez Mantequilla', emoji: '🐠', rarity: 'raro', minValue: 71, maxValue: 124, minWeight: 1.6, maxWeight: 3.6, weight: 1, color: '#9b59b6' },
+            { name: 'Pez Loro', emoji: '🐟', rarity: 'raro', minValue: 75, maxValue: 130, minWeight: 1.8, maxWeight: 3.8, weight: 1, color: '#9b59b6' },
+            { name: 'Pez Payaso Gigante', emoji: '🐡', rarity: 'raro', minValue: 70, maxValue: 122, minWeight: 1.5, maxWeight: 3.5, weight: 1, color: '#9b59b6' },
+            { name: 'Pez Ángel Imperial', emoji: '🎣', rarity: 'raro', minValue: 72, maxValue: 125, minWeight: 1.7, maxWeight: 3.7, weight: 1, color: '#9b59b6' },
+            { name: 'Pez Cirujano Azul', emoji: '🐠', rarity: 'raro', minValue: 73, maxValue: 127, minWeight: 1.7, maxWeight: 3.8, weight: 1, color: '#9b59b6' },
+            
+            // ÉPICO (5%) - 10 especies
+            { name: 'Pez Espada', emoji: '🗡️', rarity: 'épico', minValue: 150, maxValue: 250, minWeight: 5.0, maxWeight: 12.0, weight: 1.5, color: '#e67e22' },
+            { name: 'Marlín Azul', emoji: '⚔️', rarity: 'épico', minValue: 180, maxValue: 280, minWeight: 6.0, maxWeight: 15.0, weight: 1, color: '#e67e22' },
+            { name: 'Atún Rojo Gigante', emoji: '🐡', rarity: 'épico', minValue: 200, maxValue: 300, minWeight: 8.0, maxWeight: 20.0, weight: 1, color: '#e67e22' },
+            { name: 'Pez Emperador', emoji: '👑', rarity: 'épico', minValue: 170, maxValue: 270, minWeight: 6.5, maxWeight: 16.0, weight: 0.8, color: '#e67e22' },
+            { name: 'Marlín Negro', emoji: '⚫', rarity: 'épico', minValue: 175, maxValue: 275, minWeight: 6.2, maxWeight: 14.5, weight: 0.7, color: '#e67e22' },
+            { name: 'Pez Vela Gigante', emoji: '⛵', rarity: 'épico', minValue: 165, maxValue: 265, minWeight: 5.8, maxWeight: 13.5, weight: 0.6, color: '#e67e22' },
+            { name: 'Esturión Beluga', emoji: '🐟', rarity: 'épico', minValue: 190, maxValue: 290, minWeight: 7.5, maxWeight: 18.0, weight: 0.5, color: '#e67e22' },
+            { name: 'Mero Goliat', emoji: '🎣', rarity: 'épico', minValue: 160, maxValue: 260, minWeight: 5.5, maxWeight: 13.0, weight: 0.4, color: '#e67e22' },
+            { name: 'Pez Luna Gigante', emoji: '🌙', rarity: 'épico', minValue: 155, maxValue: 255, minWeight: 5.2, maxWeight: 12.5, weight: 0.3, color: '#e67e22' },
+            { name: 'Pez Remo', emoji: '🎋', rarity: 'épico', minValue: 185, maxValue: 285, minWeight: 7.0, maxWeight: 17.0, weight: 0.2, color: '#e67e22' },
+            
+            // LEGENDARIO (1.5%) - 6 especies
+            { name: 'Tiburón Blanco', emoji: '🦈', rarity: 'legendario', minValue: 300, maxValue: 500, minWeight: 20.0, maxWeight: 50.0, weight: 0.6, color: '#e74c3c' },
+            { name: 'Ballena Azul', emoji: '🐋', rarity: 'legendario', minValue: 400, maxValue: 600, minWeight: 50.0, maxWeight: 100.0, weight: 0.3, color: '#e74c3c' },
+            { name: 'Tiburón Ballena', emoji: '🦈', rarity: 'legendario', minValue: 350, maxValue: 550, minWeight: 30.0, maxWeight: 70.0, weight: 0.25, color: '#e74c3c' },
+            { name: 'Orca', emoji: '🐳', rarity: 'legendario', minValue: 380, maxValue: 580, minWeight: 35.0, maxWeight: 80.0, weight: 0.2, color: '#e74c3c' },
+            { name: 'Cachalote', emoji: '🐋', rarity: 'legendario', minValue: 420, maxValue: 620, minWeight: 60.0, maxWeight: 120.0, weight: 0.1, color: '#e74c3c' },
+            { name: 'Tiburón Megalodon', emoji: '🦈', rarity: 'legendario', minValue: 450, maxValue: 650, minWeight: 80.0, maxWeight: 150.0, weight: 0.05, color: '#e74c3c' },
+            
+            // MÍTICO (0.4%) - 3 especies
+            { name: 'Dragón Marino', emoji: '🐉', rarity: 'mítico', minValue: 800, maxValue: 1500, minWeight: 100.0, maxWeight: 200.0, weight: 0.25, color: '#f39c12' },
+            { name: 'Kraken', emoji: '🦑', rarity: 'mítico', minValue: 1000, maxValue: 2000, minWeight: 150.0, maxWeight: 300.0, weight: 0.1, color: '#f39c12' },
+            { name: 'Hidra Marina', emoji: '🐍', rarity: 'mítico', minValue: 900, maxValue: 1800, minWeight: 120.0, maxWeight: 250.0, weight: 0.05, color: '#f39c12' },
+            
+            // SECRETO (0.1%) - 1 especies
+            { name: 'Leviatán Dorado', emoji: '👑', rarity: 'secreto', minValue: 5000, maxValue: 10000, minWeight: 500.0, maxWeight: 1000.0, weight: 0.05, color: '#FFD700' },
+            { name: 'Neptuno', emoji: '🔱', rarity: 'secreto', minValue: 8000, maxValue: 15000, minWeight: 800.0, maxWeight: 1500.0, weight: 0.03, color: '#00FFFF' },
+            { name: 'Poseidón', emoji: '⚡', rarity: 'secreto', minValue: 10000, maxValue: 20000, minWeight: 1000.0, maxWeight: 2000.0, weight: 0.02, color: '#FFD700' }
         ];
 
-        // Tipos de cofres
+        // Tipos de cofres con mecánicas especiales
         const chestTypes = [
-            { name: 'Cofre de Madera', emoji: '📦', type: 'bonus', value: 50 },
-            { name: 'Cofre de Plata', emoji: '💼', type: 'bonus', value: 100 },
-            { name: 'Cofre de Oro', emoji: '🎁', type: 'bonus', value: 200 },
-            { name: 'Cofre Maldito', emoji: '☠️', type: 'penalty', value: -50 }
+            { 
+                name: 'Cofre de Madera', 
+                emoji: '📦', 
+                type: 'bonus', 
+                bonusType: 'money',
+                value: 50,
+                weight: 40,
+                color: '#8B4513',
+                message: '¡Encontraste dinero extra!'
+            },
+            { 
+                name: 'Cofre de Plata', 
+                emoji: '💼', 
+                type: 'bonus', 
+                bonusType: 'money',
+                value: 150,
+                weight: 25,
+                color: '#C0C0C0',
+                message: '¡Gran cantidad de dinero!'
+            },
+            { 
+                name: 'Cofre de Oro', 
+                emoji: '🎁', 
+                type: 'bonus', 
+                bonusType: 'money',
+                value: 300,
+                weight: 15,
+                color: '#FFD700',
+                message: '¡Tesoro dorado encontrado!'
+            },
+            { 
+                name: 'Cofre de la Suerte', 
+                emoji: '🍀', 
+                type: 'boost', 
+                bonusType: 'luck',
+                value: 2, // multiplicador
+                duration: 5, // próximas 5 pescas
+                weight: 10,
+                color: '#2ecc71',
+                message: '¡Suerte x2 durante 5 pescas!'
+            },
+            { 
+                name: 'Cofre del Tesoro', 
+                emoji: '💎', 
+                type: 'boost', 
+                bonusType: 'money_multiplier',
+                value: 2, // multiplicador
+                duration: 5,
+                weight: 8,
+                color: '#9b59b6',
+                message: '¡Dinero x2 durante 5 pescas!'
+            },
+            { 
+                name: 'Cofre Gigante', 
+                emoji: '🎰', 
+                type: 'boost', 
+                bonusType: 'weight_multiplier',
+                value: 3, // multiplicador
+                duration: 3,
+                weight: 5,
+                color: '#e67e22',
+                message: '¡Peso x3 durante 3 pescas!'
+            },
+            { 
+                name: 'Cofre Místico', 
+                emoji: '✨', 
+                type: 'boost', 
+                bonusType: 'super_luck',
+                value: 5, // multiplicador EXTREMO
+                duration: 3,
+                weight: 2,
+                color: '#f39c12',
+                message: '¡SUERTE x5 durante 3 pescas! 🌟'
+            },
+            { 
+                name: 'Cofre Maldito', 
+                emoji: '☠️', 
+                type: 'penalty', 
+                bonusType: 'money_loss',
+                value: -100,
+                weight: 3,
+                color: '#34495e',
+                message: '¡Cofre maldito! Perdiste dinero...'
+            },
+            { 
+                name: 'Cofre del Tiempo', 
+                emoji: '⏰', 
+                type: 'boost', 
+                bonusType: 'time_bonus',
+                value: 60, // +60 segundos
+                duration: 1,
+                weight: 5,
+                color: '#3498db',
+                message: '¡+60 segundos de tiempo extra!'
+            }
         ];
 
         // ==================== INICIALIZACIÓN ====================
@@ -935,6 +1368,8 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
                 updateAchievementsScreen();
             } else if (screenId === 'gameConfig') {
                 loadTemariosForGame();
+            } else if (screenId === 'collectionScreen') {
+                updateFishCollection();
             }
         }
 
@@ -1605,10 +2040,21 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
                     money: 0,
                     fishCaught: 0,
                     chestsOpened: 0,
-                    correctAnswers: 0
+                    correctAnswers: 0,
+                    combo: 0,
+                    maxCombo: 0,
+                    collection: {}
                 },
                 bots: [],
-                currentQuestion: null
+                currentQuestion: null,
+                activeBoosts: {
+                    luckMultiplier: 1,
+                    moneyMultiplier: 1,
+                    weightMultiplier: 1,
+                    luckRemaining: 0,
+                    moneyRemaining: 0,
+                    weightRemaining: 0
+                }
             };
 
             // Configurar tiempo
@@ -1659,6 +2105,16 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
             document.getElementById('questionProgress').textContent = 
                 `${currentGame.currentQuestionIndex}/${currentGame.questions.length}`;
             
+            // Mostrar combo
+            const comboElement = document.getElementById('comboStat');
+            if (currentGame.player.combo > 0) {
+                comboElement.textContent = `x${currentGame.player.combo}`;
+                comboElement.style.color = currentGame.player.combo >= 5 ? '#f39c12' : '#e67e22';
+            } else {
+                comboElement.textContent = 'x0';
+                comboElement.style.color = '';
+            }
+            
             if (currentGame.mode === 'time') {
                 const minutes = Math.floor(currentGame.timeRemaining / 60);
                 const seconds = currentGame.timeRemaining % 60;
@@ -1666,6 +2122,9 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
             } else {
                 document.getElementById('gameTimer').textContent = `${currentGame.player.money}/${currentGame.moneyGoal}`;
             }
+
+            // Actualizar panel de boosts
+            updateBoostsPanel();
 
             // Actualizar panel de bots
             const botsContainer = document.getElementById('botsContainer');
@@ -1679,6 +2138,43 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
                 `;
                 botsContainer.appendChild(botDiv);
             });
+        }
+
+        function updateBoostsPanel() {
+            const panel = document.getElementById('boostsPanel');
+            const container = document.getElementById('boostsContainer');
+            container.innerHTML = '';
+
+            let hasBoosts = false;
+
+            if (currentGame.activeBoosts.luckRemaining > 0) {
+                hasBoosts = true;
+                container.innerHTML += `
+                    <div class="boost-item">
+                        🍀 Suerte x${currentGame.activeBoosts.luckMultiplier} (${currentGame.activeBoosts.luckRemaining} restantes)
+                    </div>
+                `;
+            }
+
+            if (currentGame.activeBoosts.moneyRemaining > 0) {
+                hasBoosts = true;
+                container.innerHTML += `
+                    <div class="boost-item">
+                        💰 Dinero x${currentGame.activeBoosts.moneyMultiplier} (${currentGame.activeBoosts.moneyRemaining} restantes)
+                    </div>
+                `;
+            }
+
+            if (currentGame.activeBoosts.weightRemaining > 0) {
+                hasBoosts = true;
+                container.innerHTML += `
+                    <div class="boost-item">
+                        ⚖️ Peso x${currentGame.activeBoosts.weightMultiplier} (${currentGame.activeBoosts.weightRemaining} restantes)
+                    </div>
+                `;
+            }
+
+            panel.style.display = hasBoosts ? 'block' : 'none';
         }
 
         function startGameTimer() {
@@ -1731,7 +2227,7 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
 
             // Probabilidad de cofre (10%)
             if (Math.random() < 0.1) {
-                const chest = chestTypes[Math.floor(Math.random() * chestTypes.length)];
+                const chest = getRandomChest();
                 showChestResult(chest);
                 return;
             }
@@ -1755,8 +2251,8 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
                 return null;
             }
             
+            // NO incrementar aquí, se incrementará solo si responde bien
             const question = currentGame.questions[currentGame.currentQuestionIndex];
-            currentGame.currentQuestionIndex++;
             return question;
         }
 
@@ -1813,21 +2309,87 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
                 document.getElementById('questionModal').classList.remove('active');
                 
                 if (isCorrect) {
+                    // Solo avanzar a la siguiente pregunta si responde correctamente
+                    currentGame.currentQuestionIndex++;
                     currentGame.player.correctAnswers++;
+                    
+                    // Incrementar combo
+                    currentGame.player.combo++;
+                    showComboDisplay();
+                    
+                    updateGameUI();
                     const fish = getRandomFish();
                     showFishResult(fish);
                 } else {
-                    showNotification('❌ Respuesta incorrecta. ¡Inténtalo de nuevo!', 2000);
+                    // No avanzar, permitir reintentar la misma pregunta
+                    // Resetear combo
+                    resetCombo();
+                    updateGameUI();
+                    showNotification('❌ Respuesta incorrecta. ¡Inténtalo de nuevo! Combo perdido.', 2500);
                 }
             }, 1500);
         }
 
+        // Sistema de combo
+        function showComboDisplay() {
+            const display = document.getElementById('comboDisplay');
+            const number = document.getElementById('comboNumber');
+            
+            if (currentGame.player.combo >= 3) {
+                number.textContent = currentGame.player.combo;
+                display.style.display = 'block';
+                
+                // Añadir animación
+                number.style.animation = 'none';
+                setTimeout(() => {
+                    number.style.animation = 'comboCount 0.5s';
+                }, 10);
+            } else {
+                display.style.display = 'none';
+            }
+        }
+
+        function resetCombo() {
+            if (currentGame.player.combo > currentGame.player.maxCombo) {
+                currentGame.player.maxCombo = currentGame.player.combo;
+            }
+            currentGame.player.combo = 0;
+            document.getElementById('comboDisplay').style.display = 'none';
+        }
+
         function getRandomFish() {
-            const totalWeight = fishTypes.reduce((sum, fish) => sum + fish.weight, 0);
+            // Aplicar multiplicador de suerte (aumenta probabilidad de peces raros)
+            const luckMultiplier = currentGame.activeBoosts.luckMultiplier;
+            
+            // Modificar pesos basados en rareza y suerte
+            const modifiedFishTypes = fishTypes.map(fish => {
+                let modifiedWeight = fish.weight;
+                
+                // La suerte favorece peces raros
+                if (luckMultiplier > 1) {
+                    if (fish.rarity === 'raro') modifiedWeight *= luckMultiplier * 2;
+                    else if (fish.rarity === 'épico') modifiedWeight *= luckMultiplier * 3;
+                    else if (fish.rarity === 'legendario') modifiedWeight *= luckMultiplier * 5;
+                    else if (fish.rarity === 'mítico') modifiedWeight *= luckMultiplier * 8;
+                    else if (fish.rarity === 'secreto') modifiedWeight *= luckMultiplier * 12;
+                }
+                
+                // Bonus de combo (más combo = más probabilidad de raros)
+                if (currentGame.player.combo >= 5) {
+                    const comboBonus = Math.min(currentGame.player.combo / 5, 3);
+                    if (fish.rarity !== 'común') {
+                        modifiedWeight *= (1 + comboBonus * 0.5);
+                    }
+                }
+                
+                return { ...fish, modifiedWeight };
+            });
+
+            const totalWeight = modifiedFishTypes.reduce((sum, fish) => sum + fish.modifiedWeight, 0);
             let random = Math.random() * totalWeight;
 
-            for (const fish of fishTypes) {
-                random -= fish.weight;
+            for (const fish of modifiedFishTypes) {
+                random -= fish.modifiedWeight;
                 if (random <= 0) {
                     return fish;
                 }
@@ -1836,17 +2398,75 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
             return fishTypes[0];
         }
 
-        function showFishResult(fish) {
-            const value = Math.floor(Math.random() * (fish.maxValue - fish.minValue + 1)) + fish.minValue;
-            currentGame.player.money += value;
-            currentGame.player.fishCaught++;
+        function getRandomChest() {
+            const totalWeight = chestTypes.reduce((sum, chest) => sum + chest.weight, 0);
+            let random = Math.random() * totalWeight;
 
+            for (const chest of chestTypes) {
+                random -= chest.weight;
+                if (random <= 0) {
+                    return chest;
+                }
+            }
+
+            return chestTypes[0];
+        }
+
+        function showFishResult(fish) {
+            const baseValue = Math.floor(Math.random() * (fish.maxValue - fish.minValue + 1)) + fish.minValue;
+            const weight = (Math.random() * (fish.maxWeight - fish.minWeight) + fish.minWeight).toFixed(2);
+            
+            // Aplicar multiplicadores activos
+            let finalValue = baseValue;
+            if (currentGame.activeBoosts.moneyMultiplier > 1) {
+                finalValue *= currentGame.activeBoosts.moneyMultiplier;
+                currentGame.activeBoosts.moneyRemaining--;
+            }
+            
+            let finalWeight = parseFloat(weight);
+            if (currentGame.activeBoosts.weightMultiplier > 1) {
+                finalWeight *= currentGame.activeBoosts.weightMultiplier;
+                currentGame.activeBoosts.weightRemaining--;
+            }
+            
+            currentGame.player.money += Math.floor(finalValue);
+            currentGame.player.fishCaught++;
+            
+            // Añadir a colección
+            if (!currentGame.player.collection[fish.name]) {
+                currentGame.player.collection[fish.name] = 0;
+                showNotification(`🎉 ¡NUEVO! ${fish.name} añadido a tu colección!`, 3000);
+            }
+            currentGame.player.collection[fish.name]++;
+            
+            // Crear efecto visual de rareza
+            const rarityClass = `rarity-${fish.rarity.replace(/ /g, '-')}`;
+            
+            // Mostrar partículas según rareza
+            if (['épico', 'legendario', 'mítico', 'secreto'].includes(fish.rarity)) {
+                createParticles(fish.emoji, fish.rarity);
+            }
+            
+            // Mensaje especial para peces raros
+            let specialMessage = '';
+            if (fish.rarity === 'legendario') specialMessage = '🌟 ¡LEGENDARIO! 🌟';
+            else if (fish.rarity === 'mítico') specialMessage = '✨ ¡¡MÍTICO!! ✨';
+            else if (fish.rarity === 'secreto') specialMessage = '👑 ¡¡¡SECRETO!!! 👑';
+            
             document.getElementById('resultContent').innerHTML = `
-                <div class="fish-sprite">${fish.emoji}</div>
+                <div class="fish-sprite ${rarityClass}">${fish.emoji}</div>
+                ${specialMessage ? `<div style="font-size: 20px; margin: 10px 0; animation: pulse 0.5s infinite;">${specialMessage}</div>` : ''}
                 <h3 style="color: var(--color-success);">¡HAS PESCADO!</h3>
-                <p style="font-size: 24px; margin: 10px 0;">${fish.name}</p>
-                <p style="color: var(--color-warning);">Rareza: ${fish.rarity}</p>
-                <p style="font-size: 20px; margin-top: 10px;">💰 +${value}</p>
+                <p style="font-size: 28px; margin: 10px 0;" class="${rarityClass}">${fish.name}</p>
+                <p style="color: ${fish.color}; font-weight: bold; font-size: 16px;">★ ${fish.rarity.toUpperCase()} ★</p>
+                <div style="margin-top: 15px;">
+                    <p style="font-size: 18px;">⚖️ Peso: ${finalWeight.toFixed(2)} kg</p>
+                    <p style="font-size: 24px; color: var(--color-warning); margin-top: 10px;">
+                        💰 +${Math.floor(finalValue)} 
+                        ${currentGame.activeBoosts.moneyMultiplier > 1 ? `(x${currentGame.activeBoosts.moneyMultiplier})` : ''}
+                    </p>
+                </div>
+                ${currentGame.player.combo >= 3 ? `<p style="margin-top: 10px; color: #f39c12;">🔥 COMBO x${currentGame.player.combo}</p>` : ''}
             `;
 
             document.getElementById('resultModal').classList.add('active');
@@ -1862,19 +2482,57 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
             }
         }
 
+        // Sistema de partículas
+        function createParticles(emoji, rarity) {
+            const container = document.getElementById('particles');
+            const particleCount = rarity === 'secreto' ? 30 : rarity === 'mítico' ? 20 : 10;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.textContent = emoji;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 3000);
+            }
+        }
+
         function showChestResult(chest) {
             currentGame.player.chestsOpened++;
-            currentGame.player.money += chest.value;
+            
+            let message = chest.message;
+            
+            // Aplicar efecto según tipo de cofre
+            if (chest.bonusType === 'money') {
+                currentGame.player.money += chest.value;
+            } else if (chest.bonusType === 'luck') {
+                currentGame.activeBoosts.luckMultiplier = chest.value;
+                currentGame.activeBoosts.luckRemaining = chest.duration;
+            } else if (chest.bonusType === 'money_multiplier') {
+                currentGame.activeBoosts.moneyMultiplier = chest.value;
+                currentGame.activeBoosts.moneyRemaining = chest.duration;
+            } else if (chest.bonusType === 'weight_multiplier') {
+                currentGame.activeBoosts.weightMultiplier = chest.value;
+                currentGame.activeBoosts.weightRemaining = chest.duration;
+            } else if (chest.bonusType === 'super_luck') {
+                currentGame.activeBoosts.luckMultiplier = chest.value;
+                currentGame.activeBoosts.luckRemaining = chest.duration;
+                createParticles('✨', 'mítico');
+            } else if (chest.bonusType === 'money_loss') {
+                currentGame.player.money += chest.value;
+            } else if (chest.bonusType === 'time_bonus' && currentGame.mode === 'time') {
+                currentGame.timeRemaining += chest.value;
+            }
 
             document.getElementById('resultContent').innerHTML = `
-                <div class="chest-sprite">${chest.emoji}</div>
-                <h3 style="color: ${chest.type === 'bonus' ? 'var(--color-success)' : 'var(--color-danger)'};">
-                    ${chest.type === 'bonus' ? '¡COFRE ENCONTRADO!' : '¡COFRE MALDITO!'}
+                <div class="chest-sprite" style="color: ${chest.color};">${chest.emoji}</div>
+                <h3 style="color: ${chest.type === 'bonus' || chest.type === 'boost' ? 'var(--color-success)' : 'var(--color-danger)'};">
+                    ${chest.type === 'penalty' ? '¡COFRE MALDITO!' : '¡COFRE ENCONTRADO!'}
                 </h3>
-                <p style="font-size: 24px; margin: 10px 0;">${chest.name}</p>
-                <p style="font-size: 20px; margin-top: 10px;">
-                    💰 ${chest.value > 0 ? '+' : ''}${chest.value}
-                </p>
+                <p style="font-size: 24px; margin: 10px 0; color: ${chest.color};">${chest.name}</p>
+                <p style="font-size: 18px; margin-top: 15px;">${message}</p>
             `;
 
             document.getElementById('resultModal').classList.add('active');
@@ -2198,6 +2856,39 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
 
             saveToLocalStorage();
             showNotification('✅ Temarios de ejemplo cargados');
+        }
+
+        // ==================== COLECCIÓN DE PECES ====================
+        
+        function updateFishCollection() {
+            const container = document.getElementById('fishCollection');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            // Usar colección del jugador almacenada o del juego actual
+            const collection = currentGame.player?.collection || {};
+            let discoveredCount = Object.keys(collection).length;
+            
+            const uniqueElement = document.getElementById('uniqueFishCaught');
+            if (uniqueElement) {
+                uniqueElement.textContent = discoveredCount;
+            }
+            
+            fishTypes.forEach(fish => {
+                const count = collection[fish.name] || 0;
+                const isUnlocked = count > 0;
+                
+                const card = document.createElement('div');
+                card.className = 'collection-fish' + (isUnlocked ? '' : ' locked');
+                card.innerHTML = `
+                    <div class="fish-emoji">${isUnlocked ? fish.emoji : '❓'}</div>
+                    <div style="font-size: 14px; font-weight: bold; color: ${fish.color};">${isUnlocked ? fish.name : '???'}</div>
+                    <div style="font-size: 12px; color: ${fish.color};">${isUnlocked ? fish.rarity : '???'}</div>
+                    <div class="fish-count">${isUnlocked ? `x${count}` : 'No capturado'}</div>
+                `;
+                container.appendChild(card);
+            });
         }
     </script>
 </body>
