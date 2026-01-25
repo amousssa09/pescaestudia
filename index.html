@@ -2101,9 +2101,18 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
             document.getElementById('playerMoney').textContent = currentGame.player.money;
             document.getElementById('fishCaught').textContent = currentGame.player.fishCaught;
             
-            // Mostrar progreso de preguntas
-            document.getElementById('questionProgress').textContent = 
-                `${currentGame.currentQuestionIndex}/${currentGame.questions.length}`;
+            // Mostrar progreso de preguntas con ciclos
+            const totalQuestions = currentGame.questions.length;
+            const currentIndex = currentGame.currentQuestionIndex % totalQuestions;
+            const cycleCount = Math.floor(currentGame.currentQuestionIndex / totalQuestions);
+            
+            if (cycleCount > 0) {
+                document.getElementById('questionProgress').textContent = 
+                    `${currentIndex}/${totalQuestions} (Ciclo ${cycleCount + 1})`;
+            } else {
+                document.getElementById('questionProgress').textContent = 
+                    `${currentIndex}/${totalQuestions}`;
+            }
             
             // Mostrar combo
             const comboElement = document.getElementById('comboStat');
@@ -2218,13 +2227,6 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
         // ==================== MECÁNICA DE PESCA ====================
         
         function castHook() {
-            // Verificar si quedan preguntas
-            if (currentGame.currentQuestionIndex >= currentGame.questions.length) {
-                showNotification('🎓 ¡Has completado todas las preguntas del temario!', 5000);
-                setTimeout(() => endGame(), 2000);
-                return;
-            }
-
             // Probabilidad de cofre (10%)
             if (Math.random() < 0.1) {
                 const chest = getRandomChest();
@@ -2232,11 +2234,10 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
                 return;
             }
 
-            // Mostrar pregunta
+            // Mostrar pregunta (ahora se repiten en ciclo)
             const question = getRandomQuestion();
             if (!question) {
-                showNotification('🎓 ¡Has completado todas las preguntas del temario!', 5000);
-                setTimeout(() => endGame(), 2000);
+                alert('No hay preguntas disponibles en este temario');
                 return;
             }
 
@@ -2245,10 +2246,15 @@ La Tierra es plana | V/F | Correcta: F"></textarea>
         }
 
         function getRandomQuestion() {
-            // Usar preguntas en orden secuencial
-            if (currentGame.currentQuestionIndex >= currentGame.questions.length) {
-                // Ya se respondieron todas las preguntas
+            // Usar preguntas en orden secuencial, pero repetir cuando se completen todas
+            if (currentGame.questions.length === 0) {
                 return null;
+            }
+            
+            // Si llegamos al final, reiniciar el ciclo
+            if (currentGame.currentQuestionIndex >= currentGame.questions.length) {
+                currentGame.currentQuestionIndex = 0;
+                showNotification('🔄 ¡Ciclo completado! Las preguntas se repiten para seguir estudiando', 3000);
             }
             
             // NO incrementar aquí, se incrementará solo si responde bien
